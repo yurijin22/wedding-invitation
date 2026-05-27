@@ -12,7 +12,7 @@ export default function Couple() {
   const { groom, bride, message } = weddingData;
 
   return (
-    <section className="py-24 px-8 text-center bg-[#FAFAF7]">
+    <section className="py-24 px-8 text-center bg-[#F2EBE0]">
       <motion.div
         initial="hidden"
         whileInView="visible"
@@ -22,7 +22,7 @@ export default function Couple() {
       >
         {/* 헤더 */}
         <motion.div variants={fadeUp} className="space-y-4">
-          <p className="font-script text-4xl text-[#49311C]/80 tracking-wide">
+          <p className="font-script text-4xl text-[#1E1208]/80 tracking-wide">
             We&apos;re getting married
           </p>
           <div className="section-divider" />
@@ -31,7 +31,7 @@ export default function Couple() {
         {/* 초대 문구 */}
         <motion.p
           variants={fadeUp}
-          className="text-[14px] leading-[2.2] text-[#7a5c3c]/80 whitespace-pre-line font-light tracking-wide"
+          className="text-[14px] leading-[2.2] text-[#3D2B1F]/80 whitespace-pre-line font-light tracking-wide"
         >
           {message}
         </motion.p>
@@ -39,7 +39,7 @@ export default function Couple() {
         {/* 민트 배경 카드 */}
         <motion.div
           variants={fadeUp}
-          className="bg-[#D7EAE2]/40 rounded-2xl px-6 py-8 space-y-6"
+          className="bg-[#C8B8A8]/40 rounded-2xl px-6 py-8 space-y-6"
         >
           <PersonInfo
             side="신랑"
@@ -49,9 +49,9 @@ export default function Couple() {
             englishFirst={groom.englishName.split(" ")[0]}
           />
           <div className="flex items-center gap-3">
-            <div className="flex-1 h-px bg-[#9cc4b2]/50" />
-            <span className="font-script text-xl text-[#6aaa94]">&amp;</span>
-            <div className="flex-1 h-px bg-[#9cc4b2]/50" />
+            <div className="flex-1 h-px bg-[#A89888]/50" />
+            <span className="font-script text-xl text-[#8B7060]">&amp;</span>
+            <div className="flex-1 h-px bg-[#A89888]/50" />
           </div>
           <PersonInfo
             side="신부"
@@ -81,9 +81,9 @@ function PersonInfo({
 }) {
   return (
     <div className="space-y-1.5 text-center">
-      <p className="font-script text-2xl text-[#49311C]/60 italic">{englishFirst}</p>
-      <p className="text-xl tracking-widest text-[#49311C]">{name}</p>
-      <p className="text-[12px] text-[#b08a68] font-sans font-light tracking-wide">
+      <p className="font-script text-2xl text-[#1E1208]/60 italic">{englishFirst}</p>
+      <p className="text-xl tracking-widest text-[#1E1208]">{name}</p>
+      <p className="text-[12px] text-[#8B7060] font-sans font-light tracking-wide">
         {father} · {mother}의 {side === "신부" ? "딸" : "아들"}
       </p>
     </div>

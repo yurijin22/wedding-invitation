@@ -30,19 +30,19 @@ function AccountItem({ account }: { account: Account }) {
   };
 
   return (
-    <div className="flex items-center justify-between py-3.5 border-b border-[#D7EAE2] last:border-0">
+    <div className="flex items-center justify-between py-3.5 border-b border-[#C8B8A8] last:border-0">
       <div className="space-y-0.5">
-        <p className="text-[11px] text-[#b08a68] font-sans tracking-wider">{account.bank}</p>
-        <p className="text-sm text-[#49311C] tracking-wider font-sans">{account.number}</p>
-        <p className="text-[11px] text-[#9cc4b2] font-sans">{account.holder}</p>
+        <p className="text-[11px] text-[#8B7060] font-sans tracking-wider">{account.bank}</p>
+        <p className="text-sm text-[#1E1208] tracking-wider font-sans">{account.number}</p>
+        <p className="text-[11px] text-[#A89888] font-sans">{account.holder}</p>
       </div>
       <button
         onClick={copy}
         className={`
           flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-sans tracking-wider transition-all duration-200
           ${copied
-            ? "bg-[#D7EAE2] text-[#6aaa94]"
-            : "border border-[#D7EAE2] text-[#9cc4b2] hover:bg-[#D7EAE2] hover:text-[#49311C]"
+            ? "bg-[#C8B8A8] text-[#8B7060]"
+            : "border border-[#C8B8A8] text-[#A89888] hover:bg-[#C8B8A8] hover:text-[#1E1208]"
           }
         `}
       >
@@ -56,16 +56,16 @@ function AccordionGroup({ title, accounts }: { title: string; accounts: Account[
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="bg-white rounded-2xl overflow-hidden shadow-[0_2px_20px_rgba(73,49,28,0.05)]">
+    <div className="bg-[#F8F3EC] rounded-2xl overflow-hidden shadow-[0_2px_20px_rgba(30,18,8,0.05)]">
       <button
         className="w-full flex items-center justify-between px-6 py-4"
         onClick={() => setOpen((v) => !v)}
       >
-        <span className="text-sm tracking-wider text-[#49311C]">{title}</span>
+        <span className="text-sm tracking-wider text-[#1E1208]">{title}</span>
         <motion.span
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.25 }}
-          className="text-[#9cc4b2]"
+          className="text-[#A89888]"
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path d="M3 5.5L8 10.5L13 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -115,7 +115,7 @@ export default function Accounts() {
   ];
 
   return (
-    <section className="py-24 px-8 bg-[#F4F0E8]">
+    <section className="py-24 px-8 bg-[#E9DDD0]">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -124,8 +124,8 @@ export default function Accounts() {
         className="max-w-sm mx-auto space-y-8"
       >
         <div className="text-center space-y-4">
-          <p className="font-script text-3xl text-[#49311C]/70 italic">With heart</p>
-          <p className="text-base tracking-widest text-[#49311C]">마음 전하기</p>
+          <p className="font-script text-3xl text-[#1E1208]/70 italic">With heart</p>
+          <p className="text-base tracking-widest text-[#1E1208]">마음 전하기</p>
           <div className="section-divider" />
         </div>
 

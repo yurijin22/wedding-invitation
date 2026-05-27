@@ -48,7 +48,7 @@ export default function Map() {
         map,
         icon: {
           content: `<div style="
-            background:#49311C;color:#fff;padding:6px 14px;
+            background:#1E1208;color:#fff;padding:6px 14px;
             border-radius:20px;font-size:12px;font-family:'Noto Sans KR',sans-serif;
             white-space:nowrap;box-shadow:0 4px 12px rgba(73,49,28,0.3);letter-spacing:0.05em;
           ">${venue.name}</div>`,
@@ -58,8 +58,8 @@ export default function Map() {
 
       const infoWindow = new window.naver.maps.InfoWindow({
         content: `<div style="padding:10px 14px;font-size:13px;font-family:'Noto Sans KR',sans-serif;line-height:1.6;">
-          <strong style="color:#49311C">${venue.name}</strong><br/>
-          <span style="color:#b08a68;font-size:12px;">${venue.address}</span>
+          <strong style="color:#1E1208">${venue.name}</strong><br/>
+          <span style="color:#8B7060;font-size:12px;">${venue.address}</span>
         </div>`,
       });
 
@@ -97,7 +97,7 @@ export default function Map() {
   };
 
   return (
-    <section className="py-24 bg-[#FAFAF7]">
+    <section className="py-24 bg-[#F2EBE0]">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -106,30 +106,30 @@ export default function Map() {
         className="space-y-6"
       >
         <div className="text-center space-y-4 px-8">
-          <p className="font-script text-3xl text-[#49311C]/70 italic">Find us here</p>
-          <p className="text-base tracking-widest text-[#49311C]">{venue.name}</p>
+          <p className="font-script text-3xl text-[#1E1208]/70 italic">Find us here</p>
+          <p className="text-base tracking-widest text-[#1E1208]">{venue.name}</p>
           <div className="section-divider" />
-          <p className="text-sm text-[#b08a68] font-sans font-light leading-relaxed">
+          <p className="text-sm text-[#8B7060] font-sans font-light leading-relaxed">
             {venue.address}
             <br />
-            <span className="text-xs text-[#b08a68]/70">{venue.addressDetail}</span>
+            <span className="text-xs text-[#8B7060]/70">{venue.addressDetail}</span>
           </p>
         </div>
 
         {/* 지도 */}
         <div
           ref={mapRef}
-          className="w-full bg-[#D7EAE2]/50"
+          className="w-full bg-[#C8B8A8]/50"
           style={{ height: "280px" }}
         >
           {weddingData.naverMapsClientId === "YOUR_NAVER_MAPS_CLIENT_ID" && (
-            <div className="w-full h-full flex flex-col items-center justify-center gap-2 bg-[#D7EAE2]/30">
+            <div className="w-full h-full flex flex-col items-center justify-center gap-2 bg-[#C8B8A8]/30">
               <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                <path d="M16 2C10.48 2 6 6.48 6 12c0 8 10 18 10 18s10-10 10-18c0-5.52-4.48-10-10-10zm0 13.5A3.5 3.5 0 1 1 16 8.5a3.5 3.5 0 0 1 0 7z" fill="#9cc4b2"/>
+                <path d="M16 2C10.48 2 6 6.48 6 12c0 8 10 18 10 18s10-10 10-18c0-5.52-4.48-10-10-10zm0 13.5A3.5 3.5 0 1 1 16 8.5a3.5 3.5 0 0 1 0 7z" fill="#A89888"/>
               </svg>
-              <p className="text-sm text-[#9cc4b2] font-sans text-center leading-relaxed">
+              <p className="text-sm text-[#A89888] font-sans text-center leading-relaxed">
                 네이버 지도 API 키를 설정해주세요<br/>
-                <span className="text-xs text-[#b08a68]/60">lib/wedding-data.ts → naverMapsClientId</span>
+                <span className="text-xs text-[#8B7060]/60">lib/wedding-data.ts → naverMapsClientId</span>
               </p>
             </div>
           )}
@@ -154,7 +154,7 @@ export default function Map() {
         <div className="text-center">
           <a
             href={`tel:${venue.tel}`}
-            className="text-xs text-[#b08a68] font-sans underline underline-offset-4"
+            className="text-xs text-[#8B7060] font-sans underline underline-offset-4"
           >
             {venue.tel}
           </a>

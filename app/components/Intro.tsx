@@ -13,8 +13,8 @@ export default function Intro() {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/gallery/photo-1.jpg')" }}
       />
-      {/* 브라운 오버레이 */}
-      <div className="absolute inset-0 bg-[#2a1a0a]/50" />
+      {/* 다크 초콜릿 오버레이 */}
+      <div className="absolute inset-0 bg-[#1E1208]/60" />
 
       {/* 콘텐츠 */}
       <div className="relative z-10 text-center text-white px-8 flex flex-col items-center gap-8">
@@ -42,9 +42,9 @@ export default function Intro() {
 
           {/* 민트 구분 */}
           <div className="flex items-center gap-3 w-full">
-            <div className="flex-1 h-px bg-[#D7EAE2]/40" />
-            <span className="text-[#D7EAE2] font-script text-lg">&amp;</span>
-            <div className="flex-1 h-px bg-[#D7EAE2]/40" />
+            <div className="flex-1 h-px bg-[#C8B8A8]/40" />
+            <span className="text-[#C8B8A8] font-script text-lg">&amp;</span>
+            <div className="flex-1 h-px bg-[#C8B8A8]/40" />
           </div>
 
           <p className="font-script text-5xl font-light tracking-wide leading-tight">
@@ -78,7 +78,7 @@ export default function Intro() {
         <motion.div
           animate={{ y: [0, 7, 0] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-          className="text-[#D7EAE2]/60"
+          className="text-[#C8B8A8]/60"
         >
           <svg width="20" height="28" viewBox="0 0 20 28" fill="none">
             <rect x="1" y="1" width="18" height="26" rx="9" stroke="currentColor" strokeWidth="1.2" />

@@ -33,7 +33,7 @@ export default function Gallery() {
   }, []);
 
   return (
-    <section className="py-24 bg-[#FAFAF7]">
+    <section className="py-24 bg-[#F2EBE0]">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -43,7 +43,7 @@ export default function Gallery() {
       >
         {/* 섹션 헤더 */}
         <div className="text-center space-y-4 px-8">
-          <p className="font-script text-3xl text-[#49311C]/70 italic">Our moments</p>
+          <p className="font-script text-3xl text-[#1E1208]/70 italic">Our moments</p>
           <div className="section-divider" />
         </div>
 
