@@ -5,15 +5,15 @@
   --font-serif: var(--font-serif);
   --font-sans: var(--font-sans);
 
-  /* 컬러 팔레트 — EPOISE */
-  --color-brown: #1E1208;
-  --color-brown-light: #3D2B1F;
-  --color-brown-muted: #8B7060;
-  --color-mint: #C8B8A8;
-  --color-mint-dark: #A89888;
-  --color-mint-deep: #8B7060;
-  --color-cream: #F2EBE0;
-  --color-ivory: #E9DDD0;
+  /* 컬러 팔레트 — Brown / White / Cool Mint */
+  --color-brown: #261E1A;
+  --color-brown-light: #3A2E2A;
+  --color-brown-muted: #6B7870;
+  --color-mint: #96C5BC;
+  --color-mint-dark: #7CBFB4;
+  --color-mint-deep: #5A9E95;
+  --color-cream: #FFFFFF;
+  --color-ivory: #F0F8F6;
 }
 
 html {
@@ -21,8 +21,8 @@ html {
 }
 
 body {
-  background: #F2EBE0;
-  color: #1E1208;
+  background: #FFFFFF;
+  color: #261E1A;
   font-family: var(--font-serif), "Nanum Myeongjo", serif;
   -webkit-font-smoothing: antialiased;
 }
@@ -42,24 +42,24 @@ body {
 .section-divider {
   width: 32px;
   height: 1px;
-  background: #C8B8A8;
+  background: #96C5BC;
   margin: 0 auto;
 }
 
 .section-divider-brown {
   width: 32px;
   height: 1px;
-  background: #8B7060;
+  background: #5A9E95;
   margin: 0 auto;
 }
 
 /* Swiper 커스텀 */
 .swiper-pagination-bullet {
-  background: #C8B8A8 !important;
+  background: #96C5BC !important;
   opacity: 0.5;
 }
 .swiper-pagination-bullet-active {
-  background: #8B7060 !important;
+  background: #5A9E95 !important;
   opacity: 1 !important;
 }
 .swiper-button-prev::after,
@@ -72,7 +72,7 @@ body {
 .lightbox-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(25, 15, 8, 0.95);
+  background: rgba(38, 30, 26, 0.95);
   z-index: 9999;
   display: flex;
   align-items: center;

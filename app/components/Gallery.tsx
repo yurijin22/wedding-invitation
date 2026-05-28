@@ -1,186 +1,140 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Thumbs, FreeMode } from "swiper/modules";
-import type { Swiper as SwiperType } from "swiper";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/thumbs";
-import "swiper/css/free-mode";
 import { weddingData } from "@/lib/wedding-data";
 
 export default function Gallery() {
   const { galleryImages } = weddingData;
-  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
-  const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [lightboxIndex, setLightboxIndex] = useState(0);
-  const [lightboxCurrent, setLightboxCurrent] = useState(0);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  const openLightbox = useCallback((index: number) => {
-    setLightboxIndex(index);
-    setLightboxCurrent(index);
-    setLightboxOpen(true);
-    document.body.style.overflow = "hidden";
-  }, []);
+  const close = () => setLightboxIndex(null);
 
-  const closeLightbox = useCallback(() => {
-    setLightboxOpen(false);
-    document.body.style.overflow = "";
-  }, []);
-
+  // 피그마 구조: 상단 가로 스트립 사진 + 다크 섹션 + Our Moments + 사진 그리드
   return (
-    <section className="py-24 bg-[#F2EBE0]">
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.7 }}
-        className="space-y-6"
-      >
-        {/* 섹션 헤더 */}
-        <div className="text-center space-y-4 px-8">
-          <p className="font-script text-3xl text-[#1E1208]/70 italic">Our moments</p>
-          <div className="section-divider" />
-        </div>
+    <>
+      {/* 상단 풀블리드 가로 사진 스트립 */}
+      <div className="w-full relative overflow-hidden" style={{ height: 220, backgroundColor: "#D4CFC9" }}>
+        <Image
+          src={galleryImages[2] ?? ""}
+          alt=""
+          fill
+          className="object-cover"
+          onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+        />
+      </div>
 
-        {/* 메인 슬라이더 */}
-        <Swiper
-          modules={[Navigation, Pagination, Thumbs]}
-          thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
-          navigation
-          pagination={{ clickable: true }}
-          loop={galleryImages.length > 1}
-          className="w-full"
-          style={{ paddingBottom: "36px" }}
-        >
-          {galleryImages.map((src, i) => (
-            <SwiperSlide key={i}>
-              <div
-                className="relative w-full cursor-zoom-in"
-                style={{ aspectRatio: "3/4" }}
-                onClick={() => openLightbox(i)}
-              >
-                <Image
-                  src={src}
-                  alt={`웨딩 사진 ${i + 1}`}
-                  fill
-                  sizes="100vw"
-                  className="object-cover"
-                  priority={i === 0}
-                />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+      {/* 44px 흰 gap */}
+      <div className="h-[44px] bg-white" />
 
-        {/* 썸네일 슬라이더 */}
-        <div className="px-4">
-          <Swiper
-            modules={[FreeMode, Thumbs]}
-            onSwiper={setThumbsSwiper}
-            freeMode
-            watchSlidesProgress
-            slidesPerView={4.5}
-            spaceBetween={6}
+      {/* 다크 갤러리 섹션 */}
+      <section className="bg-[#261E1A] relative overflow-hidden">
+        {/* Our Moments 타이틀 */}
+        <div className="pt-[80px] pl-[36px]">
+          <p
+            className="font-script text-[#96C5BC] leading-[1.05]"
+            style={{ fontSize: 72 }}
           >
-            {galleryImages.map((src, i) => (
-              <SwiperSlide key={i}>
-                <div
-                  className="relative cursor-pointer rounded-lg overflow-hidden opacity-50 transition-opacity [&.swiper-slide-thumb-active]:opacity-100"
-                  style={{ aspectRatio: "1/1" }}
-                  onClick={() => openLightbox(i)}
-                >
-                  <Image
-                    src={src}
-                    alt={`썸네일 ${i + 1}`}
-                    fill
-                    sizes="25vw"
-                    className="object-cover"
-                  />
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+            Our
+            <br />
+            Moments
+          </p>
         </div>
 
-        {/* 그리드 */}
-        <div className="px-4 grid grid-cols-3 gap-1.5">
-          {galleryImages.map((src, i) => (
-            <div
+        {/* 풀블리드 대형 사진 */}
+        <div
+          className="w-full relative mt-6 overflow-hidden"
+          style={{ height: 480, backgroundColor: "#3A2E2A" }}
+        >
+          <Image
+            src={galleryImages[3] ?? ""}
+            alt=""
+            fill
+            className="object-cover"
+            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+          />
+        </div>
+
+        {/* 사진 그리드 */}
+        <div className="grid grid-cols-3 gap-0.5 mt-0.5">
+          {galleryImages.slice(4, 13).map((src, i) => (
+            <button
               key={i}
-              className="relative cursor-pointer overflow-hidden rounded-lg"
-              style={{ aspectRatio: "1/1" }}
-              onClick={() => openLightbox(i)}
+              className="relative aspect-square overflow-hidden"
+              style={{ backgroundColor: "#3A2E2A" }}
+              onClick={() => setLightboxIndex(i + 4)}
             >
               <Image
                 src={src}
-                alt={`갤러리 ${i + 1}`}
+                alt=""
                 fill
-                sizes="33vw"
-                className="object-cover hover:scale-105 transition-transform duration-500"
+                className="object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
               />
-            </div>
+            </button>
           ))}
         </div>
-      </motion.div>
+
+        {/* 더보기 */}
+        {galleryImages.length > 13 && (
+          <div className="text-center py-6">
+            <p className="text-[11px] text-white/30 font-sans tracking-widest">
+              {galleryImages.length}장의 사진
+            </p>
+          </div>
+        )}
+      </section>
 
       {/* 라이트박스 */}
       <AnimatePresence>
-        {lightboxOpen && (
+        {lightboxIndex !== null && (
           <motion.div
-            className="lightbox-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={closeLightbox}
+            className="fixed inset-0 z-50 flex items-center justify-center"
+            style={{ background: "rgba(38,30,26,0.95)" }}
+            onClick={close}
           >
-            {/* 닫기 */}
-            <button
-              className="absolute top-5 right-5 z-10 text-white/60 hover:text-white p-2 transition-colors"
-              onClick={closeLightbox}
-              aria-label="닫기"
-            >
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                <path d="M5 5L17 17M17 5L5 17" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-              </svg>
-            </button>
-
-            {/* 라이트박스 스와이퍼 */}
-            <div className="w-full max-w-lg" onClick={(e) => e.stopPropagation()}>
-              <Swiper
-                modules={[Navigation]}
-                navigation
-                initialSlide={lightboxIndex}
-                loop={galleryImages.length > 1}
-                onSlideChange={(s) => setLightboxCurrent(s.realIndex)}
+            <div className="relative w-full h-full" onClick={(e) => e.stopPropagation()}>
+              <Image
+                src={galleryImages[lightboxIndex]}
+                alt=""
+                fill
+                className="object-contain"
+              />
+              <button
+                onClick={close}
+                className="absolute top-5 right-5 text-white/60 text-2xl font-light"
               >
-                {galleryImages.map((src, i) => (
-                  <SwiperSlide key={i}>
-                    <div className="relative w-full" style={{ aspectRatio: "3/4" }}>
-                      <Image
-                        src={src}
-                        alt={`웨딩 사진 ${i + 1}`}
-                        fill
-                        sizes="100vw"
-                        className="object-contain"
-                      />
-                    </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+                ×
+              </button>
+              <div className="absolute bottom-5 left-0 right-0 flex justify-center gap-6">
+                <button
+                  className="text-white/40 text-sm font-sans"
+                  onClick={() => setLightboxIndex((i) => Math.max(0, (i ?? 0) - 1))}
+                >
+                  ← prev
+                </button>
+                <span className="text-white/30 text-xs font-sans self-center">
+                  {lightboxIndex + 1} / {galleryImages.length}
+                </span>
+                <button
+                  className="text-white/40 text-sm font-sans"
+                  onClick={() =>
+                    setLightboxIndex((i) =>
+                      Math.min(galleryImages.length - 1, (i ?? 0) + 1)
+                    )
+                  }
+                >
+                  next →
+                </button>
+              </div>
             </div>
-
-            {/* 카운터 */}
-            <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/30 text-xs font-sans tracking-widest">
-              {lightboxCurrent + 1} / {galleryImages.length}
-            </p>
           </motion.div>
         )}
       </AnimatePresence>
-    </section>
+    </>
   );
 }

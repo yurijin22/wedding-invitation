@@ -43,27 +43,18 @@ export default function Map() {
         scaleControl: false,
       });
 
-      const marker = new window.naver.maps.Marker({
+      new window.naver.maps.Marker({
         position,
         map,
         icon: {
           content: `<div style="
-            background:#1E1208;color:#fff;padding:6px 14px;
+            background:#141414;color:#fff;padding:6px 14px;
             border-radius:20px;font-size:12px;font-family:'Noto Sans KR',sans-serif;
-            white-space:nowrap;box-shadow:0 4px 12px rgba(73,49,28,0.3);letter-spacing:0.05em;
+            white-space:nowrap;box-shadow:0 4px 12px rgba(20,20,20,0.25);letter-spacing:0.05em;
           ">${venue.name}</div>`,
           anchor: { x: 0, y: 0 },
         },
       });
-
-      const infoWindow = new window.naver.maps.InfoWindow({
-        content: `<div style="padding:10px 14px;font-size:13px;font-family:'Noto Sans KR',sans-serif;line-height:1.6;">
-          <strong style="color:#1E1208">${venue.name}</strong><br/>
-          <span style="color:#8B7060;font-size:12px;">${venue.address}</span>
-        </div>`,
-      });
-
-      infoWindow.open(map, marker);
     };
 
     if (window.naver?.maps) {
@@ -97,69 +88,65 @@ export default function Map() {
   };
 
   return (
-    <section className="py-24 bg-[#F2EBE0]">
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.7 }}
-        className="space-y-6"
+    <motion.section
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.7 }}
+      className="bg-white"
+    >
+      {/* 지도 영역 */}
+      <div
+        ref={mapRef}
+        className="w-full bg-[#E8E4DE]"
+        style={{ height: "280px" }}
       >
-        <div className="text-center space-y-4 px-8">
-          <p className="font-script text-3xl text-[#1E1208]/70 italic">Find us here</p>
-          <p className="text-base tracking-widest text-[#1E1208]">{venue.name}</p>
-          <div className="section-divider" />
-          <p className="text-sm text-[#8B7060] font-sans font-light leading-relaxed">
-            {venue.address}
-            <br />
-            <span className="text-xs text-[#8B7060]/70">{venue.addressDetail}</span>
-          </p>
-        </div>
+        {weddingData.naverMapsClientId === "YOUR_NAVER_MAPS_CLIENT_ID" && (
+          <div className="w-full h-full flex items-center justify-center">
+            <p className="text-xs text-[#AAAAAA] font-sans text-center leading-relaxed">
+              지도 영역
+              <br />
+              <span className="text-[10px]">naverMapsClientId 설정 후 활성화</span>
+            </p>
+          </div>
+        )}
+      </div>
 
-        {/* 지도 */}
-        <div
-          ref={mapRef}
-          className="w-full bg-[#C8B8A8]/50"
-          style={{ height: "280px" }}
-        >
-          {weddingData.naverMapsClientId === "YOUR_NAVER_MAPS_CLIENT_ID" && (
-            <div className="w-full h-full flex flex-col items-center justify-center gap-2 bg-[#C8B8A8]/30">
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                <path d="M16 2C10.48 2 6 6.48 6 12c0 8 10 18 10 18s10-10 10-18c0-5.52-4.48-10-10-10zm0 13.5A3.5 3.5 0 1 1 16 8.5a3.5 3.5 0 0 1 0 7z" fill="#A89888"/>
-              </svg>
-              <p className="text-sm text-[#A89888] font-sans text-center leading-relaxed">
-                네이버 지도 API 키를 설정해주세요<br/>
-                <span className="text-xs text-[#8B7060]/60">lib/wedding-data.ts → naverMapsClientId</span>
-              </p>
-            </div>
-          )}
+      {/* 다크 정보 패널 */}
+      <div className="bg-[#261E1A] px-6 pt-7 pb-6 space-y-4">
+        <div className="space-y-1">
+          <p className="text-[22px] text-white font-sans font-light tracking-wide">
+            {venue.name}
+          </p>
+          <p className="text-[12px] text-white/50 font-sans">{venue.hall}</p>
+          <p className="text-[12px] text-white/50 font-sans">{venue.address}</p>
         </div>
 
         {/* 길찾기 버튼 */}
-        <div className="flex gap-3 px-8 max-w-sm mx-auto">
+        <div className="flex gap-2.5 pt-1">
           <button
             onClick={openNaverMap}
-            className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl bg-[#03C75A] text-white text-xs font-sans tracking-wider hover:brightness-95 transition-all active:scale-[0.98]"
+            className="flex-1 py-3 rounded-xl bg-[#03C75A] text-white text-[12px] font-sans tracking-wider active:opacity-90 transition-opacity"
           >
             네이버 지도
           </button>
           <button
             onClick={openKakaoMap}
-            className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl bg-[#FEE500] text-[#3C1E1E] text-xs font-sans tracking-wider hover:brightness-95 transition-all active:scale-[0.98]"
+            className="flex-1 py-3 rounded-xl bg-[#FEE500] text-[#3C1E1E] text-[12px] font-sans tracking-wider active:opacity-90 transition-opacity"
           >
             카카오맵
           </button>
         </div>
 
-        <div className="text-center">
+        <div className="text-center pt-1">
           <a
             href={`tel:${venue.tel}`}
-            className="text-xs text-[#8B7060] font-sans underline underline-offset-4"
+            className="text-[11px] text-white/30 font-sans"
           >
             {venue.tel}
           </a>
         </div>
-      </motion.div>
-    </section>
+      </div>
+    </motion.section>
   );
 }

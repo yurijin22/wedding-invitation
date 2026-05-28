@@ -4,22 +4,23 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { weddingData } from "@/lib/wedding-data";
 
-type Account = {
+type Person = {
   label: string;
+  name: string;
   bank: string;
   number: string;
-  holder: string;
 };
 
-function AccountItem({ account }: { account: Account }) {
+function AccountRow({ person }: { person: Person }) {
+  const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
     try {
-      await navigator.clipboard.writeText(account.number);
+      await navigator.clipboard.writeText(person.number);
     } catch {
       const el = document.createElement("textarea");
-      el.value = account.number;
+      el.value = person.number;
       document.body.appendChild(el);
       el.select();
       document.execCommand("copy");
@@ -30,47 +31,34 @@ function AccountItem({ account }: { account: Account }) {
   };
 
   return (
-    <div className="flex items-center justify-between py-3.5 border-b border-[#C8B8A8] last:border-0">
-      <div className="space-y-0.5">
-        <p className="text-[11px] text-[#8B7060] font-sans tracking-wider">{account.bank}</p>
-        <p className="text-sm text-[#1E1208] tracking-wider font-sans">{account.number}</p>
-        <p className="text-[11px] text-[#A89888] font-sans">{account.holder}</p>
-      </div>
+    <div className="border-t border-[#E8E4E0]">
       <button
-        onClick={copy}
-        className={`
-          flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-sans tracking-wider transition-all duration-200
-          ${copied
-            ? "bg-[#C8B8A8] text-[#8B7060]"
-            : "border border-[#C8B8A8] text-[#A89888] hover:bg-[#C8B8A8] hover:text-[#1E1208]"
-          }
-        `}
-      >
-        {copied ? "복사됨 ✓" : "복사"}
-      </button>
-    </div>
-  );
-}
-
-function AccordionGroup({ title, accounts }: { title: string; accounts: Account[] }) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <div className="bg-[#F8F3EC] rounded-2xl overflow-hidden shadow-[0_2px_20px_rgba(30,18,8,0.05)]">
-      <button
-        className="w-full flex items-center justify-between px-6 py-4"
+        className="w-full flex items-center px-6 py-[18px]"
         onClick={() => setOpen((v) => !v)}
       >
-        <span className="text-sm tracking-wider text-[#1E1208]">{title}</span>
-        <motion.span
+        <span className="text-[12px] text-[#8C8C8C] font-sans w-24 text-left leading-none">
+          {person.label}
+        </span>
+        <span className="flex-1" />
+        <span className="text-[14px] text-[#141414] font-sans mr-3 leading-none">
+          {person.name}
+        </span>
+        <motion.svg
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.25 }}
-          className="text-[#A89888]"
+          width="12"
+          height="7"
+          viewBox="0 0 12 7"
+          fill="none"
+          className="text-[#AAAAAA] flex-shrink-0"
         >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M3 5.5L8 10.5L13 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
-        </motion.span>
+          <path
+            d="M1 1L6 6L11 1"
+            stroke="currentColor"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+          />
+        </motion.svg>
       </button>
 
       <AnimatePresence initial={false}>
@@ -82,10 +70,19 @@ function AccordionGroup({ title, accounts }: { title: string; accounts: Account[
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="px-6 pb-4">
-              {accounts.map((acc, i) => (
-                <AccountItem key={i} account={acc} />
-              ))}
+            <div className="mx-6 mb-5 bg-[#F5F3F0] rounded-2xl px-4 py-4 space-y-2.5">
+              <p className="text-[10.5px] text-[#8C8C8C] font-sans text-center tracking-wider">
+                {person.bank}
+              </p>
+              <p className="text-[15px] text-[#141414] font-sans text-center tracking-widest">
+                {person.number}
+              </p>
+              <button
+                onClick={copy}
+                className="w-full py-2.5 bg-[#141414] text-white text-[12px] font-sans rounded-xl tracking-wider transition-opacity active:opacity-80"
+              >
+                {copied ? "복사됨 ✓" : "계좌번호 복사"}
+              </button>
             </div>
           </motion.div>
         )}
@@ -97,42 +94,37 @@ function AccordionGroup({ title, accounts }: { title: string; accounts: Account[
 export default function Accounts() {
   const { groom, bride } = weddingData;
 
-  const groups = [
-    {
-      title: `신랑측 — ${groom.lastName}씨 가족`,
-      accounts: [
-        { label: "신랑", ...groom.account },
-        { label: "신랑 아버지", ...groom.fatherAccount },
-      ],
-    },
-    {
-      title: `신부측 — ${bride.lastName}씨 가족`,
-      accounts: [
-        { label: "신부", ...bride.account },
-        { label: "신부 아버지", ...bride.fatherAccount },
-      ],
-    },
+  const people: Person[] = [
+    { label: "신랑", name: groom.account.holder, bank: groom.account.bank, number: groom.account.number },
+    { label: "신랑 아버지", name: groom.fatherAccount.holder, bank: groom.fatherAccount.bank, number: groom.fatherAccount.number },
+    { label: "신부", name: bride.account.holder, bank: bride.account.bank, number: bride.account.number },
+    { label: "신부 아버지", name: bride.fatherAccount.holder, bank: bride.fatherAccount.bank, number: bride.fatherAccount.number },
   ];
 
   return (
-    <section className="py-24 px-8 bg-[#E9DDD0]">
+    <section className="py-24 bg-white">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.7 }}
-        className="max-w-sm mx-auto space-y-8"
+        className="max-w-sm mx-auto"
       >
-        <div className="text-center space-y-4">
-          <p className="font-script text-3xl text-[#1E1208]/70 italic">With heart</p>
-          <p className="text-base tracking-widest text-[#1E1208]">마음 전하기</p>
-          <div className="section-divider" />
+        <div className="text-center mb-10 px-8">
+          <p className="font-script text-[30px] text-[#141414] italic mb-3">Monetary gift</p>
+          <div className="w-8 h-px bg-[#D4CFC9] mx-auto mb-4" />
+          <p className="text-[11.5px] text-[#8C8C8C] font-sans leading-relaxed">
+            마음을 전하고 싶으신 분들을 위해
+            <br />
+            계좌번호를 안내해드립니다
+          </p>
         </div>
 
-        <div className="space-y-3">
-          {groups.map((g, i) => (
-            <AccordionGroup key={i} title={g.title} accounts={g.accounts} />
+        <div>
+          {people.map((person, i) => (
+            <AccountRow key={i} person={person} />
           ))}
+          <div className="border-t border-[#E8E4E0]" />
         </div>
       </motion.div>
     </section>

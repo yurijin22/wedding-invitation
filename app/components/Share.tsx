@@ -78,7 +78,7 @@ export default function Share() {
   };
 
   return (
-    <section className="py-24 px-8 bg-[#1E1208] text-white">
+    <section className="py-24 px-8 bg-[#261E1A] text-white">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -87,9 +87,9 @@ export default function Share() {
         className="max-w-sm mx-auto space-y-10 text-center"
       >
         <div className="space-y-4">
-          <p className="font-script text-4xl text-white/70 italic">Share the joy</p>
-          <div className="w-8 h-px bg-[#C8B8A8]/40 mx-auto" />
-          <p className="text-xs tracking-[0.3em] text-white/40 font-sans">
+          <p className="font-script text-4xl text-white italic">Share the joy</p>
+          <div className="w-8 h-px bg-white/20 mx-auto" />
+          <p className="text-[11px] tracking-[0.2em] text-white/45 font-sans">
             소중한 분들에게 청첩장을 전해주세요
           </p>
         </div>
@@ -107,7 +107,7 @@ export default function Share() {
 
           <button
             onClick={shareWebAPI}
-            className="w-full flex items-center justify-center gap-3 py-4 rounded-2xl border border-[#C8B8A8]/30 text-[#C8B8A8] font-sans text-sm tracking-wider hover:bg-white/5 transition-all active:scale-[0.98]"
+            className="w-full flex items-center justify-center gap-3 py-4 rounded-2xl border border-white/20 text-white font-sans text-sm tracking-wider hover:bg-white/5 transition-all active:scale-[0.98]"
           >
             {copied ? (
               "복사되었습니다 ✓"

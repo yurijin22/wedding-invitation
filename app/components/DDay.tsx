@@ -48,7 +48,7 @@ export default function DDay() {
   const { wedding } = weddingData;
 
   return (
-    <section className="py-24 px-8 bg-[#E9DDD0] text-center">
+    <section className="py-24 px-8 bg-white text-center">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -57,18 +57,18 @@ export default function DDay() {
         className="max-w-sm mx-auto space-y-8"
       >
         <div className="space-y-3">
-          <p className="font-script text-3xl text-[#1E1208]/70 italic">
+          <p className="font-script text-3xl text-[#141414] italic">
             {timeLeft.isToday ? "Today is the day" : "Counting down"}
           </p>
-          <p className="text-xs tracking-[0.3em] text-[#8B7060] font-sans">
+          <p className="text-[11px] tracking-[0.3em] text-[#8C8C8C] font-sans">
             {wedding.dateKorean}
           </p>
         </div>
 
         {timeLeft.isToday ? (
-          <p className="text-2xl tracking-widest text-[#1E1208]">오늘이에요 ♥</p>
+          <p className="text-2xl tracking-widest text-[#261E1A]">오늘이에요 ♥</p>
         ) : timeLeft.isPast ? (
-          <p className="text-2xl tracking-widest text-[#1E1208]">
+          <p className="text-2xl tracking-widest text-[#261E1A]">
             결혼 <span className="font-script text-3xl">D+{timeLeft.days}</span>
           </p>
         ) : (
@@ -84,7 +84,7 @@ export default function DDay() {
         )}
 
         {!timeLeft.isToday && !timeLeft.isPast && (
-          <p className="text-xs text-[#8B7060] font-sans font-light tracking-widest">
+          <p className="text-xs text-[#6B7870] font-sans font-light tracking-widest">
             결혼식까지 남은 시간
           </p>
         )}
@@ -96,16 +96,16 @@ export default function DDay() {
 function TimeUnit({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center gap-1 min-w-[52px]">
-      <span className="font-script text-4xl text-[#1E1208] tabular-nums font-light">
+      <span className="font-script text-4xl text-[#141414] tabular-nums font-light">
         {String(value).padStart(2, "0")}
       </span>
-      <span className="text-[10px] text-[#8B7060] font-sans tracking-widest uppercase">{label}</span>
+      <span className="text-[10px] text-[#6B7870] font-sans tracking-widest uppercase">{label}</span>
     </div>
   );
 }
 
 function Colon() {
   return (
-    <span className="text-[#A89888] text-2xl pb-4 font-light">:</span>
+    <span className="text-[#D4CFC9] text-2xl pb-4 font-light">:</span>
   );
 }
