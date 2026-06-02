@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
   const ext = file.name.split(".").pop() ?? "jpg";
   const blob = await put(`special/${key}.${ext}`, file, {
     access: "public",
-    allowOverwrite: true,
+    addRandomSuffix: false,
   });
 
   return NextResponse.json({ url: blob.url });
