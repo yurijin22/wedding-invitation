@@ -1,9 +1,18 @@
 "use client";
 
 import Image from "next/image";
-
+import { useState, useEffect } from "react";
 
 export default function Intro() {
+  const [specialPhotos, setSpecialPhotos] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    fetch("/api/special").then(r => r.json()).then(setSpecialPhotos).catch(() => {});
+  }, []);
+
+  const photo1 = specialPhotos["intro-1"] ?? "/gallery/photo-1.jpg";
+  const photo2 = specialPhotos["intro-2"] ?? "/gallery/photo-2.jpg";
+
   return (
     <section
       style={{
@@ -50,11 +59,11 @@ export default function Intro() {
         {/* 2. 사진 2장: 각 120×120, gap 8px, 중앙정렬 */}
         <div style={{ display: "flex", justifyContent: "center", gap: 8 }}>
           <div style={{ width: 120, height: 120, position: "relative", overflow: "hidden", backgroundColor: "#D9D9D9", flexShrink: 0 }}>
-            <Image src="/gallery/photo-1.jpg" alt="" fill sizes="120px" style={{ objectFit: "cover" }}
+            <Image src={photo1} alt="" fill sizes="120px" style={{ objectFit: "cover" }}
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
           </div>
           <div style={{ width: 120, height: 120, position: "relative", overflow: "hidden", backgroundColor: "#D9D9D9", flexShrink: 0 }}>
-            <Image src="/gallery/photo-2.jpg" alt="" fill sizes="120px" style={{ objectFit: "cover" }}
+            <Image src={photo2} alt="" fill sizes="120px" style={{ objectFit: "cover" }}
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
           </div>
         </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useState, useEffect } from "react";
 import { weddingData } from "@/lib/wedding-data";
 
 // Instrument Serif — scaleX(0.92) 공통 적용
@@ -13,6 +14,13 @@ const IS: React.CSSProperties = {
 
 export default function Outro() {
   const { groom, bride } = weddingData;
+  const [outroPhoto, setOutroPhoto] = useState("/gallery/photo-1.jpg");
+
+  useEffect(() => {
+    fetch("/api/special").then(r => r.json()).then((d: Record<string,string>) => {
+      if (d["outro"]) setOutroPhoto(d["outro"]);
+    }).catch(() => {});
+  }, []);
 
   return (
     <section style={{ position: "relative", height: 488, overflow: "hidden" }}>
@@ -39,7 +47,7 @@ export default function Outro() {
         border: "6px solid rgba(255,255,255,0.9)",
         boxShadow: "0 2px 12px rgba(0,0,0,0.1)", zIndex: 10,
       }}>
-        <Image src="/gallery/photo-1.jpg" alt="couple" fill style={{ objectFit: "cover" }} sizes="155px"
+        <Image src={outroPhoto} alt="couple" fill style={{ objectFit: "cover" }} sizes="155px"
           onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
       </div>
 
