@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 const IS: React.CSSProperties = {
   fontFamily: "var(--font-serif)",
-  fontSize: 24,
+  fontSize: 28,
   lineHeight: "36px",
   letterSpacing: "0.4px",
   color: "#FFFFFF",
@@ -38,7 +38,7 @@ export default function Visual() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 1 }}
-        style={{ position: "relative", zIndex: 10, margin: 0, paddingTop: 60, paddingLeft: 41, lineHeight: "36px" }}
+        style={{ position: "relative", zIndex: 10, margin: 0, paddingTop: 60, paddingLeft: 28, lineHeight: "36px" }}
       >
         <span style={IS}>We Decide on </span>
         <span style={IT}>Together</span>

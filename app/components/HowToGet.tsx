@@ -65,7 +65,7 @@ export default function HowToGet() {
             style={{ display: "flex", flexDirection: "column", gap: 20, listStyle: "none", margin: 0, padding: "0 0 0 12px" }}
           >
             {directions[active].map((line, i) => (
-              <li key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+              <li key={i} style={{ display: "flex", gap: 12, alignItems: "center" }}>
                 <span style={{ width: 22, height: 22, borderRadius: "50%", backgroundColor: "#A0CEFF", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 600, flexShrink: 0 }}>
                   {i + 1}
                 </span>
