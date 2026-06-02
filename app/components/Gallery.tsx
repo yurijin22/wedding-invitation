@@ -1,16 +1,26 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { weddingData } from "@/lib/wedding-data";
 
 export default function Gallery() {
-  const { galleryImages } = weddingData;
+  const { galleryImages: localImages } = weddingData;
+  const [blobImages, setBlobImages] = useState<string[]>([]);
   const [visibleCount, setVisibleCount] = useState(12);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const topRef = useRef<HTMLDivElement>(null);
 
+  // Blob에서 사진 불러오기 (있으면 Blob 우선, 없으면 로컬)
+  useEffect(() => {
+    fetch("/api/photos")
+      .then(r => r.json())
+      .then(d => { if (d.urls?.length > 0) setBlobImages(d.urls); })
+      .catch(() => {});
+  }, []);
+
+  const galleryImages = blobImages.length > 0 ? blobImages : localImages;
   const displayed = galleryImages.slice(0, visibleCount);
   const hasMore = visibleCount < galleryImages.length;
   const rows: string[][] = [];
