@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import FallingLeaves from "./FallingLeaves";
 
 export default function Intro() {
   return (
@@ -16,6 +17,8 @@ export default function Intro() {
         backgroundPosition: "top left",
       }}
     >
+      <FallingLeaves />
+
       {/* 콘텐츠 블록: 하단 60px 여백, 좌우 16px 패딩 */}
       <div
         style={{
