@@ -69,7 +69,7 @@ export default function HowToGet() {
                 <span style={{ width: 22, height: 22, borderRadius: "50%", backgroundColor: "#A0CEFF", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 600, flexShrink: 0 }}>
                   {i + 1}
                 </span>
-                <p style={{ fontSize: 14.5, fontWeight: 300, color: "#4D4740", lineHeight: "170%", margin: 0 }}>
+                <p style={{ fontSize: 14.5, fontWeight: 300, color: "#4D4740", lineHeight: "170%", margin: 0, wordBreak: "keep-all" }}>
                   {line}
                 </p>
               </li>
