@@ -52,7 +52,7 @@ export default function Gallery() {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "flex-end",
-              paddingBottom: 12,
+              paddingBottom: 40,
             }}
           >
             <button
