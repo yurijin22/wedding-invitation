@@ -17,15 +17,28 @@ export default function Location() {
   const { venue } = wedding;
 
   const open = (type: string) => {
+    const name = encodeURIComponent("라마다서울신도림호텔");
+    const lat = venue.lat;
+    const lng = venue.lng;
+
     if (type === "naver") {
-      window.open(`naver://map/place?lat=${venue.lat}&lng=${venue.lng}&name=${encodeURIComponent(venue.name)}`, "_blank");
-      setTimeout(() => window.open(`https://map.naver.com/v5/search/${encodeURIComponent(venue.name)}`, "_blank"), 500);
+      // 네이버 지도 길찾기 (목적지)
+      const app = `naver://map/navigation?dlat=${lat}&dlng=${lng}&dname=${name}&appname=wedding`;
+      const web = `https://map.naver.com/v5/directions/-/-/${lng},${lat},${decodeURIComponent(name)}/-/car`;
+      window.open(app, "_blank");
+      setTimeout(() => window.open(web, "_blank"), 1000);
     } else if (type === "kakao") {
-      window.open(`kakaomap://look?p=${venue.lat},${venue.lng}`, "_blank");
-      setTimeout(() => window.open(`https://map.kakao.com/link/map/${encodeURIComponent(venue.name)},${venue.lat},${venue.lng}`, "_blank"), 500);
+      // 카카오맵 길찾기 (목적지)
+      const app = `kakaomap://route?ep=${lat},${lng}&by=CAR`;
+      const web = `https://map.kakao.com/link/to/${name},${lat},${lng}`;
+      window.open(app, "_blank");
+      setTimeout(() => window.open(web, "_blank"), 1000);
     } else {
-      window.open(`tmap://route?goalname=${encodeURIComponent(venue.name)}&goalx=${venue.lng}&goaly=${venue.lat}`, "_blank");
-      setTimeout(() => window.open(`https://tmap.life/${venue.lat},${venue.lng}`, "_blank"), 500);
+      // 티맵 길찾기 (목적지)
+      const app = `tmap://route?goalname=${name}&goalx=${lng}&goaly=${lat}&goaladdr=${encodeURIComponent("서울 구로구 경인로 624")}`;
+      const web = `https://tmap.life/path?goalname=${decodeURIComponent(name)}&goalx=${lng}&goaly=${lat}`;
+      window.open(app, "_blank");
+      setTimeout(() => window.open(web, "_blank"), 1000);
     }
   };
 
