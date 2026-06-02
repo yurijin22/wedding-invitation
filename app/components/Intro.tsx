@@ -41,8 +41,9 @@ export default function Intro() {
             margin: 0,
           }}
         >
-          <span style={{ display: "block" }}>The year&apos;s loveliest smile falls softly upon September 20, blessing the moment</span>
-          <span style={{ display: "block" }}>we become one forever, with love blooming through the years to come,</span>
+          <span style={{ display: "block" }}>The year&apos;s loveliest smile falls softly upon September 20,</span>
+          <span style={{ display: "block" }}>blessing the moment we become one forever,</span>
+          <span style={{ display: "block" }}>with love blooming through the years to come,</span>
           <span style={{ display: "block" }}>walking hand in hand through the seasons ahead.</span>
         </p>
 
