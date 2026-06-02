@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-const QUOTE_TEXT = "The year's loveliest smile falls softly upon September 20, blessing the moment  we become one forever, with love blooming through the years to come,  walking hand in hand through the seasons ahead.";
+const QUOTE_TEXT = null; // 아래 JSX에서 직접 처리
 
 export default function Intro() {
   return (
@@ -42,7 +42,9 @@ export default function Intro() {
             margin: 0,
           }}
         >
-          {QUOTE_TEXT}
+          The year&apos;s loveliest smile falls softly upon September 20, blessing the moment<br />
+          we become one forever, with love blooming through the years to come,<br />
+          walking hand in hand through the seasons ahead.
         </p>
 
         {/* 2. 사진 2장: 각 120×120, gap 8px, 중앙정렬 */}
