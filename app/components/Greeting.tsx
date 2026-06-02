@@ -7,13 +7,13 @@ export default function Greeting() {
   const { groom, bride } = weddingData;
 
   return (
-    <section style={{ backgroundColor: "#FFFFFF", height: 590, display: "flex", alignItems: "center" }}>
+    <section style={{ backgroundColor: "#FFFFFF", paddingTop: 80, paddingBottom: 80 }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.7 }}
-        style={{ width: "100%", display: "flex", flexDirection: "column", gap: 56 }}
+        style={{ width: "100%", display: "flex", flexDirection: "column" }}
       >
         {/* 본문 3단락 */}
         <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
@@ -28,8 +28,8 @@ export default function Greeting() {
           </p>
         </div>
 
-        {/* 날짜 — 별도 영역 */}
-        <p style={{ fontFamily: "var(--font-serif)", fontSize: 18, lineHeight: "26px", letterSpacing: "0.1em", color: "#5F9DDF", textAlign: "center", margin: 0 }}>
+        {/* 날짜 — 한글과 간격 48px, 부모님과 간격 56px */}
+        <p style={{ fontFamily: "var(--font-serif)", fontSize: 18, lineHeight: "26px", letterSpacing: "0.1em", color: "#5F9DDF", textAlign: "center", margin: "48px 0 56px" }}>
           2026.09.20 Sunday 12:10
         </p>
 

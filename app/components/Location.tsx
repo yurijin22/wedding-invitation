@@ -43,9 +43,9 @@ export default function Location() {
           <p style={{ fontFamily: "var(--font-script)", fontStyle: "italic", fontWeight: 500, fontSize: 30, color: "#fff", textAlign: "center", lineHeight: "42px", margin: 0 }}>
             Location
           </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-            {/* 한글 venue명 — 18px */}
-            <p style={{ fontSize: 18, fontWeight: 400, color: "#fff", lineHeight: 1.5, margin: 0 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {/* 한글 venue명 — 18px Light */}
+            <p style={{ fontSize: 18, fontWeight: 300, color: "#fff", lineHeight: 1.5, margin: 0 }}>
               {venue.nameKorean}
             </p>
             {/* 영문 venue명 */}
@@ -67,16 +67,15 @@ export default function Location() {
             onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
         </div>
 
-        {/* 버튼 3개 — 이미지 버튼 */}
+        {/* 버튼 3개 — img 태그로 직접 로드 */}
         <div style={{ display: "flex", gap: 8 }}>
           {BUTTONS.map(({ src, fn }) => (
             <button
               key={fn}
               onClick={() => open(fn)}
-              style={{ flex: 1, height: 46, backgroundColor: "#fff", border: "none", borderRadius: 8, cursor: "pointer", padding: 0, position: "relative", overflow: "hidden" }}
+              style={{ flex: 1, height: 46, backgroundColor: "#fff", border: "none", borderRadius: 8, cursor: "pointer", padding: 4, display: "flex", alignItems: "center", justifyContent: "center" }}
             >
-              <Image src={src} alt={fn} fill style={{ objectFit: "contain" }} sizes="109px"
-                onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+              <img src={src} alt={fn} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
             </button>
           ))}
         </div>

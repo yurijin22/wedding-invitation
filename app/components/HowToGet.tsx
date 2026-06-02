@@ -44,14 +44,12 @@ export default function HowToGet() {
                   transition: "all 0.2s",
                 }}
               >
-                <div style={{ width: 20, height: 20, position: "relative", flexShrink: 0 }}>
-                  <Image
-                    src={isActive ? tab.active : tab.inactive}
-                    alt={tab.label}
-                    fill
-                    style={{ objectFit: "contain" }}
-                  />
-                </div>
+                <img
+                  src={isActive ? tab.active : tab.inactive}
+                  alt={tab.label}
+                  width={20} height={20}
+                  style={{ objectFit: "contain", flexShrink: 0 }}
+                />
                 <span>{tab.label}</span>
               </button>
             );
@@ -64,7 +62,7 @@ export default function HowToGet() {
             key={active}
             initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            style={{ display: "flex", flexDirection: "column", gap: 12, listStyle: "none", margin: 0, padding: "0 0 0 24px" }}
+            style={{ display: "flex", flexDirection: "column", gap: 12, listStyle: "none", margin: 0, padding: "0 0 0 12px" }}
           >
             {directions[active].map((line, i) => (
               <li key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>

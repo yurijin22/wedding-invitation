@@ -65,9 +65,7 @@ export default function Gallery() {
               >
                 more photos
               </span>
-              <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
-                <path d="M6 11L15 20L24 11" stroke="#111" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              <img src="/arrow-bottom.png" alt="더보기" width={30} height={30} style={{ objectFit: "contain" }} />
             </button>
           </div>
         )}
@@ -85,9 +83,7 @@ export default function Gallery() {
             }}
             style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer" }}
           >
-            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" style={{ transform: "rotate(180deg)" }}>
-              <path d="M6 11L15 20L24 11" stroke="#111" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+              <img src="/arrow-bottom.png" alt="위로" width={30} height={30} style={{ objectFit: "contain", transform: "rotate(180deg)" }} />
             <span
               className="font-script"
               style={{ fontSize: 18, fontWeight: 500, color: "#111", fontStyle: "italic", lineHeight: "26px", letterSpacing: "0.4px" }}

@@ -42,7 +42,7 @@ export default function Share() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.7 }}
-        style={{ display: "flex", flexDirection: "column", gap: 24 }}
+        style={{ display: "flex", flexDirection: "column", gap: 20 }}
       >
         {/* 헤더 */}
         <div style={{ display: "flex", flexDirection: "column", gap: 10, textAlign: "center" }}>

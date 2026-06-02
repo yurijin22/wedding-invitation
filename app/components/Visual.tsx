@@ -46,6 +46,7 @@ export default function Visual() {
         src="/visual-bg.png"
         alt=""
         fill
+        priority
         style={{ objectFit: "cover" }}
         onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
       />
