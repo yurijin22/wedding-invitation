@@ -61,13 +61,13 @@ export default function Gallery() {
             >
               <span
                 className="font-script"
-                style={{ fontSize: 16, color: "#111", fontStyle: "italic", lineHeight: "26px", letterSpacing: "0.4px" }}
+                style={{ fontSize: 18, fontWeight: 500, color: "#111", fontStyle: "italic", lineHeight: "26px", letterSpacing: "0.4px" }}
               >
                 more photos
               </span>
-              <div style={{ width: 30, height: 30, position: "relative" }}>
-                <Image src="/arrow-bottom.png" alt="더보기" fill style={{ objectFit: "contain" }} />
-              </div>
+              <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                <path d="M6 11L15 20L24 11" stroke="#111" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </button>
           </div>
         )}
@@ -75,7 +75,7 @@ export default function Gallery() {
 
       {/* 다 펼쳐진 후 — 처음으로 돌아가기 */}
       {!hasMore && visibleCount > 12 && (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, padding: "16px 0 60px" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, padding: "16px 0 40px" }}>
           <button
             onClick={() => {
               setVisibleCount(12);
@@ -85,12 +85,12 @@ export default function Gallery() {
             }}
             style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer" }}
           >
-            <div style={{ width: 30, height: 30, position: "relative", transform: "rotate(180deg)" }}>
-              <Image src="/arrow-bottom.png" alt="처음으로" fill style={{ objectFit: "contain" }} />
-            </div>
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" style={{ transform: "rotate(180deg)" }}>
+              <path d="M6 11L15 20L24 11" stroke="#111" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
             <span
               className="font-script"
-              style={{ fontSize: 16, color: "#111", fontStyle: "italic", lineHeight: "26px", letterSpacing: "0.4px" }}
+              style={{ fontSize: 18, fontWeight: 500, color: "#111", fontStyle: "italic", lineHeight: "26px", letterSpacing: "0.4px" }}
             >
               go back
             </span>

@@ -47,7 +47,7 @@ export default function Share() {
         {/* 헤더 */}
         <div style={{ display: "flex", flexDirection: "column", gap: 10, textAlign: "center" }}>
           <p style={{ fontFamily: "var(--font-script)", fontStyle: "italic", fontWeight: 500, fontSize: 30, color: "#141414", lineHeight: "42px", margin: 0 }}>Share the Joy</p>
-          <p style={{ fontSize: 12, fontWeight: 300, color: "#8C8C8C", lineHeight: "20px" }}>소중한 분들에게 청첩장을 전해주세요</p>
+          <p style={{ fontSize: 14, fontWeight: 300, color: "#8C8C8C", lineHeight: "22px" }}>소중한 분들에게 청첩장을 전해주세요</p>
         </div>
 
         {/* 버튼 */}

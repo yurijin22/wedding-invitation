@@ -27,9 +27,9 @@ export default function Outro() {
         textAlign: "center", lineHeight: "20px", letterSpacing: "0.01em",
         color: "#000", zIndex: 10, margin: 0,
       }}>
-        <span style={{ ...IS, fontSize: 16 }}>&ldquo; Save the </span>
-        <span style={{ fontFamily: "var(--font-italianno)", fontSize: 20 }}>Date</span>
-        <span style={{ ...IS, fontSize: 16 }}> &rdquo;</span>
+        <span style={{ ...IS, fontSize: 24 }}>&ldquo; Save the </span>
+        <span style={{ fontFamily: "var(--font-italianno)", fontSize: 30 }}>Date</span>
+        <span style={{ ...IS, fontSize: 24 }}> &rdquo;</span>
       </p>
 
       {/* 커플 사진 */}
@@ -54,10 +54,10 @@ export default function Outro() {
           { label: "Location", value: "RAMADA Seoul Simdorim\n5F Saint Grace Hall" },
         ].map(({ label, value }) => (
           <div key={label} style={{ display: "flex", flexDirection: "column", gap: 7, width: 100 }}>
-            <p style={{ ...IS, fontSize: 12, color: "#141414", textAlign: "center", lineHeight: "20px", margin: 0 }}>
+            <p style={{ ...IS, fontSize: 14, color: "#141414", textAlign: "center", lineHeight: "20px", margin: 0 }}>
               {label}
             </p>
-            <p style={{ ...IS, fontSize: 10, color: "#141414", textAlign: "center", lineHeight: "16px", margin: 0, letterSpacing: "0.02em", whiteSpace: "pre-line" }}>
+            <p style={{ ...IS, fontSize: 12, color: "#141414", textAlign: "center", lineHeight: "16px", margin: 0, letterSpacing: "0.02em", whiteSpace: "pre-line" }}>
               {value}
             </p>
           </div>

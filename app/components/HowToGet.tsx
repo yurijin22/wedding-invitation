@@ -64,7 +64,7 @@ export default function HowToGet() {
             key={active}
             initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            style={{ display: "flex", flexDirection: "column", gap: 12, listStyle: "none", margin: 0, padding: 0 }}
+            style={{ display: "flex", flexDirection: "column", gap: 12, listStyle: "none", margin: 0, padding: "0 0 0 24px" }}
           >
             {directions[active].map((line, i) => (
               <li key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>

@@ -77,9 +77,9 @@ export default function Visual() {
         transition={{ duration: 0.8 }}
         style={{
           position: "absolute",
-          left: 40,
+          left: 24,
           top: 120,
-          width: 310,
+          width: 342,
           height: 445,
           zIndex: 10,
           overflow: "hidden",
@@ -90,7 +90,7 @@ export default function Visual() {
           alt=""
           fill
           style={{ objectFit: "cover" }}
-          sizes="310px"
+          sizes="342px"
           onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
         />
       </motion.div>
@@ -104,10 +104,11 @@ export default function Visual() {
         style={{
           position: "absolute",
           top: 589,
-          left: 79,
+          right: 24,
           margin: 0,
           zIndex: 10,
           lineHeight: "36px",
+          textAlign: "right",
         }}
       >
         <span style={IS}>from this </span>

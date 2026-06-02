@@ -46,7 +46,7 @@ function AccountRow({ account }: { account: Account }) {
 }
 
 function Group({ title, accounts }: { title: string; accounts: Account[] }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   return (
     <div>
       {/* 그룹 헤더: h=56, pad t=18 b=18 */}

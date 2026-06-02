@@ -75,7 +75,7 @@ export default function DateSection() {
                   style={{
                     fontFamily: "var(--font-script)",
                     fontWeight: isSun ? 600 : 500,
-                    fontSize: isSun ? 16 : 14,
+                    fontSize: isSun ? 20 : 17,
                     lineHeight: "20px",
                     letterSpacing: "0.35px",
                     color: isSun ? ACCENT : DAY_COLOR,
@@ -100,8 +100,8 @@ export default function DateSection() {
                         position: "absolute",
                         fontFamily: "var(--font-script)",
                         fontWeight: 700,
-                        fontSize: 24,
-                        lineHeight: "28px",
+                        fontSize: 28,
+                        lineHeight: "32px",
                         color: BG,
                         marginTop: -6,
                       }}>
@@ -113,7 +113,7 @@ export default function DateSection() {
                     <span style={{
                       fontFamily: "var(--font-script)",
                       fontWeight: 700,
-                      fontSize: 20,
+                      fontSize: 24,
                       lineHeight: "24px",
                       letterSpacing: "0.35px",
                       color: "#FFFFFF",
@@ -128,7 +128,7 @@ export default function DateSection() {
                   <span style={{
                     fontFamily: "var(--font-script)",
                     fontWeight: 700,
-                    fontSize: 20,
+                    fontSize: 24,
                     lineHeight: "16px",
                     letterSpacing: "0.6px",
                     color: ACCENT,
