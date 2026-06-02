@@ -12,7 +12,7 @@ import Outro from "@/app/components/Outro";
 
 export default function Home() {
   return (
-    <main className="max-w-[480px] mx-auto w-full">
+    <main className="max-w-[390px] mx-auto w-full">
       <Intro />
       <Greeting />
       <DateSection />
