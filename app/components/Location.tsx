@@ -73,9 +73,9 @@ export default function Location() {
             <button
               key={fn}
               onClick={() => open(fn)}
-              style={{ flex: 1, height: 46, backgroundColor: "#fff", border: "none", borderRadius: 8, cursor: "pointer", padding: 0, overflow: "hidden" }}
+              style={{ flex: 1, height: 46, backgroundColor: "transparent", border: "none", borderRadius: 8, cursor: "pointer", padding: 0, overflow: "hidden" }}
             >
-              <img src={src} alt={fn} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              <img src={src} alt={fn} style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} />
             </button>
           ))}
         </div>
