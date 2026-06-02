@@ -1,19 +1,10 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
 @import "tailwindcss";
 
 @theme inline {
   --font-script: var(--font-script);
   --font-serif: var(--font-serif);
   --font-sans: var(--font-sans);
-
-  /* 컬러 팔레트 — Brown / White / Cool Mint */
-  --color-brown: #261E1A;
-  --color-brown-light: #3A2E2A;
-  --color-brown-muted: #6B7870;
-  --color-mint: #96C5BC;
-  --color-mint-dark: #7CBFB4;
-  --color-mint-deep: #5A9E95;
-  --color-cream: #FFFFFF;
-  --color-ivory: #F0F8F6;
 }
 
 html {
@@ -22,57 +13,38 @@ html {
 
 body {
   background: #FFFFFF;
-  color: #261E1A;
-  font-family: var(--font-serif), "Nanum Myeongjo", serif;
+  color: #1A1A1A;
+  font-family: 'Pretendard Variable', Pretendard, var(--font-sans), 'Noto Sans KR', sans-serif;
+  letter-spacing: -0.004em; /* Pretendard 기본 자간 -0.4% */
   -webkit-font-smoothing: antialiased;
 }
 
-/* 필기체 */
+/* 필기체 — Cormorant Garamond */
 .font-script {
-  font-family: var(--font-script), "Cormorant Garamond", serif;
+  font-family: var(--font-script), 'Cormorant Garamond', serif;
   font-style: italic;
 }
 
-/* 산세리프 */
-.font-sans {
-  font-family: var(--font-sans), "Noto Sans KR", sans-serif;
+/* Instrument Serif */
+.font-serif {
+  font-family: var(--font-serif), 'Instrument Serif', serif;
 }
 
-/* 구분선 */
-.section-divider {
-  width: 32px;
-  height: 1px;
-  background: #96C5BC;
-  margin: 0 auto;
+/* Pretendard 유틸 */
+.font-pretendard {
+  font-family: 'Pretendard Variable', Pretendard, 'Noto Sans KR', sans-serif;
 }
 
-.section-divider-brown {
-  width: 32px;
-  height: 1px;
-  background: #5A9E95;
-  margin: 0 auto;
-}
-
-/* Swiper 커스텀 */
-.swiper-pagination-bullet {
-  background: #96C5BC !important;
-  opacity: 0.5;
-}
-.swiper-pagination-bullet-active {
-  background: #5A9E95 !important;
-  opacity: 1 !important;
-}
-.swiper-button-prev::after,
-.swiper-button-next::after {
-  font-size: 16px !important;
-  color: rgba(255, 255, 255, 0.9) !important;
+/* Italianno */
+.font-italianno {
+  font-family: var(--font-italianno), 'Italianno', cursive;
 }
 
 /* 라이트박스 */
 .lightbox-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(38, 30, 26, 0.95);
+  background: rgba(26, 20, 16, 0.95);
   z-index: 9999;
   display: flex;
   align-items: center;

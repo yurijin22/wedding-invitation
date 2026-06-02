@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Nanum_Myeongjo, Noto_Sans_KR } from "next/font/google";
+import { Cormorant_Garamond, Instrument_Serif, Italianno, Noto_Sans_KR } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { weddingData } from "@/lib/wedding-data";
@@ -11,10 +11,17 @@ const cormorant = Cormorant_Garamond({
   style: ["normal", "italic"],
 });
 
-const nanumMyeongjo = Nanum_Myeongjo({
+const instrumentSerif = Instrument_Serif({
   variable: "--font-serif",
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["400"],
+  style: ["normal", "italic"],
+});
+
+const italianno = Italianno({
+  variable: "--font-italianno",
+  subsets: ["latin"],
+  weight: ["400"],
 });
 
 const notoSansKR = Noto_Sans_KR({
@@ -61,7 +68,7 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${cormorant.variable} ${nanumMyeongjo.variable} ${notoSansKR.variable}`}
+      className={`${cormorant.variable} ${instrumentSerif.variable} ${italianno.variable} ${notoSansKR.variable}`}
     >
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />

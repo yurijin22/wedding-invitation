@@ -20,10 +20,16 @@
       "Bash(security dump-keychain *)",
       "Bash(python3 -c ' *)",
       "Bash(xargs python3 -c ' *)",
-      "mcp__claude_ai_Figma__use_figma"
+      "mcp__claude_ai_Figma__use_figma",
+      "Bash(git push *)",
+      "mcp__claude_ai_Figma__get_screenshot",
+      "Bash(npx tsc *)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(curl -s -o /tmp/intro-screenshot.png \"http://localhost:3000\")"
     ],
     "additionalDirectories": [
-      "/Users/yrjin/Desktop/업무/study/invitation"
+      "/Users/yrjin/Desktop/업무/study/invitation",
+      "/tmp"
     ]
   }
 }

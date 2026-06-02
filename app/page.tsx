@@ -1,23 +1,29 @@
 import Intro from "@/app/components/Intro";
-import Couple from "@/app/components/Couple";
+import Greeting from "@/app/components/Greeting";
+import DateSection from "@/app/components/DateSection";
+import Visual from "@/app/components/Visual";
 import Gallery from "@/app/components/Gallery";
-import Map from "@/app/components/Map";
-import Directions from "@/app/components/Directions";
+import Notice from "@/app/components/Notice";
+import Location from "@/app/components/Location";
+import HowToGet from "@/app/components/HowToGet";
 import Accounts from "@/app/components/Accounts";
 import Share from "@/app/components/Share";
-import Footer from "@/app/components/Footer";
+import Outro from "@/app/components/Outro";
 
 export default function Home() {
   return (
     <main className="max-w-[480px] mx-auto w-full">
       <Intro />
-      <Couple />
+      <Greeting />
+      <DateSection />
+      <Visual />
       <Gallery />
-      <Map />
-      <Directions />
+      <Location />
+      <HowToGet />
+      <Notice />
       <Accounts />
       <Share />
-      <Footer />
+      <Outro />
     </main>
   );
 }

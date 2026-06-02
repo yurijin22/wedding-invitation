@@ -1,140 +1,124 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { weddingData } from "@/lib/wedding-data";
 
 export default function Gallery() {
   const { galleryImages } = weddingData;
+  const [visibleCount, setVisibleCount] = useState(12);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const topRef = useRef<HTMLDivElement>(null);
 
-  const close = () => setLightboxIndex(null);
+  const displayed = galleryImages.slice(0, visibleCount);
+  const hasMore = visibleCount < galleryImages.length;
+  const rows: string[][] = [];
+  for (let i = 0; i < displayed.length; i += 3) rows.push(displayed.slice(i, i + 3));
 
-  // 피그마 구조: 상단 가로 스트립 사진 + 다크 섹션 + Our Moments + 사진 그리드
   return (
-    <>
-      {/* 상단 풀블리드 가로 사진 스트립 */}
-      <div className="w-full relative overflow-hidden" style={{ height: 220, backgroundColor: "#D4CFC9" }}>
-        <Image
-          src={galleryImages[2] ?? ""}
-          alt=""
-          fill
-          className="object-cover"
-          onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-        />
-      </div>
-
-      {/* 44px 흰 gap */}
-      <div className="h-[44px] bg-white" />
-
-      {/* 다크 갤러리 섹션 */}
-      <section className="bg-[#261E1A] relative overflow-hidden">
-        {/* Our Moments 타이틀 */}
-        <div className="pt-[80px] pl-[36px]">
-          <p
-            className="font-script text-[#96C5BC] leading-[1.05]"
-            style={{ fontSize: 72 }}
-          >
-            Our
-            <br />
-            Moments
-          </p>
-        </div>
-
-        {/* 풀블리드 대형 사진 */}
-        <div
-          className="w-full relative mt-6 overflow-hidden"
-          style={{ height: 480, backgroundColor: "#3A2E2A" }}
-        >
-          <Image
-            src={galleryImages[3] ?? ""}
-            alt=""
-            fill
-            className="object-cover"
-            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-          />
-        </div>
-
+    <section style={{ backgroundColor: "#fff", padding: "4px 4px 0 4px" }}>
+      <div ref={topRef} style={{ position: "relative" }}>
         {/* 사진 그리드 */}
-        <div className="grid grid-cols-3 gap-0.5 mt-0.5">
-          {galleryImages.slice(4, 13).map((src, i) => (
-            <button
-              key={i}
-              className="relative aspect-square overflow-hidden"
-              style={{ backgroundColor: "#3A2E2A" }}
-              onClick={() => setLightboxIndex(i + 4)}
-            >
-              <Image
-                src={src}
-                alt=""
-                fill
-                className="object-cover"
-                onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-              />
-            </button>
-          ))}
-        </div>
+        {rows.map((row, ri) => (
+          <div key={ri} style={{ display: "flex", gap: 4, marginBottom: 4 }}>
+            {row.map((src, ci) => {
+              const idx = ri * 3 + ci;
+              return (
+                <button
+                  key={ci}
+                  onClick={() => setLightboxIndex(idx)}
+                  style={{ flex: 1, height: 128, position: "relative", overflow: "hidden", backgroundColor: "#D4CFC9", border: "none", padding: 0, cursor: "pointer" }}
+                >
+                  <Image src={src} alt="" fill style={{ objectFit: "cover" }} sizes="125px"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                </button>
+              );
+            })}
+          </div>
+        ))}
 
-        {/* 더보기 */}
-        {galleryImages.length > 13 && (
-          <div className="text-center py-6">
-            <p className="text-[11px] text-white/30 font-sans tracking-widest">
-              {galleryImages.length}장의 사진
-            </p>
+        {/* 하단 페이드 + more photos — 9장씩 추가 */}
+        {hasMore && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 152,
+              background: "linear-gradient(to bottom, transparent, white 70%)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              paddingBottom: 12,
+            }}
+          >
+            <button
+              onClick={() => setVisibleCount(c => Math.min(c + 9, galleryImages.length))}
+              style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer" }}
+            >
+              <span
+                className="font-script"
+                style={{ fontSize: 16, color: "#111", fontStyle: "italic", lineHeight: "26px", letterSpacing: "0.4px" }}
+              >
+                more photos
+              </span>
+              <div style={{ width: 30, height: 30, position: "relative" }}>
+                <Image src="/arrow-bottom.png" alt="더보기" fill style={{ objectFit: "contain" }} />
+              </div>
+            </button>
           </div>
         )}
-      </section>
+      </div>
+
+      {/* 다 펼쳐진 후 — 처음으로 돌아가기 */}
+      {!hasMore && visibleCount > 12 && (
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, padding: "16px 0 60px" }}>
+          <button
+            onClick={() => {
+              setVisibleCount(12);
+              setTimeout(() => {
+                topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+              }, 50);
+            }}
+            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer" }}
+          >
+            <div style={{ width: 30, height: 30, position: "relative", transform: "rotate(180deg)" }}>
+              <Image src="/arrow-bottom.png" alt="처음으로" fill style={{ objectFit: "contain" }} />
+            </div>
+            <span
+              className="font-script"
+              style={{ fontSize: 16, color: "#111", fontStyle: "italic", lineHeight: "26px", letterSpacing: "0.4px" }}
+            >
+              go back
+            </span>
+          </button>
+        </div>
+      )}
+      {!hasMore && visibleCount <= 12 && <div style={{ height: 12 }} />}
 
       {/* 라이트박스 */}
       <AnimatePresence>
         {lightboxIndex !== null && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center"
-            style={{ background: "rgba(38,30,26,0.95)" }}
-            onClick={close}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            style={{ position: "fixed", inset: 0, zIndex: 50, backgroundColor: "rgba(26,20,16,0.95)", display: "flex", alignItems: "center", justifyContent: "center" }}
+            onClick={() => setLightboxIndex(null)}
           >
-            <div className="relative w-full h-full" onClick={(e) => e.stopPropagation()}>
-              <Image
-                src={galleryImages[lightboxIndex]}
-                alt=""
-                fill
-                className="object-contain"
-              />
-              <button
-                onClick={close}
-                className="absolute top-5 right-5 text-white/60 text-2xl font-light"
-              >
-                ×
-              </button>
-              <div className="absolute bottom-5 left-0 right-0 flex justify-center gap-6">
-                <button
-                  className="text-white/40 text-sm font-sans"
-                  onClick={() => setLightboxIndex((i) => Math.max(0, (i ?? 0) - 1))}
-                >
-                  ← prev
-                </button>
-                <span className="text-white/30 text-xs font-sans self-center">
-                  {lightboxIndex + 1} / {galleryImages.length}
-                </span>
-                <button
-                  className="text-white/40 text-sm font-sans"
-                  onClick={() =>
-                    setLightboxIndex((i) =>
-                      Math.min(galleryImages.length - 1, (i ?? 0) + 1)
-                    )
-                  }
-                >
-                  next →
-                </button>
+            <div style={{ position: "relative", width: "100%", height: "100%" }} onClick={e => e.stopPropagation()}>
+              <Image src={galleryImages[lightboxIndex]} alt="" fill style={{ objectFit: "contain" }} sizes="100vw" />
+              <button onClick={() => setLightboxIndex(null)} style={{ position: "absolute", top: 20, right: 20, color: "rgba(255,255,255,0.6)", fontSize: 28, background: "none", border: "none", cursor: "pointer" }}>×</button>
+              <div style={{ position: "absolute", bottom: 24, left: 0, right: 0, display: "flex", justifyContent: "center", gap: 32 }}>
+                <button style={{ color: "rgba(255,255,255,0.4)", fontSize: 14, background: "none", border: "none", cursor: "pointer" }} onClick={() => setLightboxIndex(i => Math.max(0, (i ?? 0) - 1))}>← prev</button>
+                <span style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, alignSelf: "center" }}>{lightboxIndex + 1} / {galleryImages.length}</span>
+                <button style={{ color: "rgba(255,255,255,0.4)", fontSize: 14, background: "none", border: "none", cursor: "pointer" }} onClick={() => setLightboxIndex(i => Math.min(galleryImages.length - 1, (i ?? 0) + 1))}>next →</button>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </section>
   );
 }

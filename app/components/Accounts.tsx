@@ -4,85 +4,88 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { weddingData } from "@/lib/wedding-data";
 
-type Person = {
-  label: string;
-  name: string;
-  bank: string;
-  number: string;
-};
+type Account = { holder: string; bank: string; number: string };
 
-function AccountRow({ person }: { person: Person }) {
-  const [open, setOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
-
+function CopyBtn({ text }: { text: string }) {
+  const [done, setDone] = useState(false);
   const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(person.number);
-    } catch {
-      const el = document.createElement("textarea");
-      el.value = person.number;
-      document.body.appendChild(el);
-      el.select();
-      document.execCommand("copy");
-      document.body.removeChild(el);
-    }
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try { await navigator.clipboard.writeText(text); }
+    catch { const el = document.createElement("textarea"); el.value = text; document.body.appendChild(el); el.select(); document.execCommand("copy"); document.body.removeChild(el); }
+    setDone(true); setTimeout(() => setDone(false), 2000);
   };
-
   return (
-    <div className="border-t border-[#E8E4E0]">
+    <button onClick={copy} style={{
+      width: 46, height: 39,
+      backgroundColor: "#361D17", color: "#fff",
+      fontSize: 14, fontWeight: 400,
+      border: "none", borderRadius: 6,
+      cursor: "pointer", flexShrink: 0,
+      paddingLeft: 8, paddingRight: 8, paddingTop: 4, paddingBottom: 4,
+    }}>
+      {done ? "✓" : "복사"}
+    </button>
+  );
+}
+
+// 이름(80px) + [은행명/계좌번호(160px)] + 복사버튼(46px), gap=16
+function AccountRow({ account }: { account: Account }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 8, height: 39 }}>
+      {/* 이름 */}
+      <p style={{ width: 80, fontSize: 14, fontWeight: 400, color: "#141414", margin: 0, flexShrink: 0 }}>
+        {account.holder}
+      </p>
+      {/* 은행 + 계좌번호 */}
+      <div style={{ width: 160, display: "flex", flexDirection: "column", gap: 8, flex: 1 }}>
+        <p style={{ fontSize: 12, fontWeight: 700, color: "#111111", margin: 0 }}>{account.bank}</p>
+        <p style={{ fontSize: 14, fontWeight: 400, color: "#141414", margin: 0, letterSpacing: "0.004em" }}>{account.number}</p>
+      </div>
+      <CopyBtn text={account.number} />
+    </div>
+  );
+}
+
+function Group({ title, accounts }: { title: string; accounts: Account[] }) {
+  const [open, setOpen] = useState(true);
+  return (
+    <div>
+      {/* 그룹 헤더: h=56, pad t=18 b=18 */}
       <button
-        className="w-full flex items-center px-6 py-[18px]"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => setOpen(v => !v)}
+        style={{
+          width: "100%", height: 56,
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          background: "none", border: "none", cursor: "pointer",
+          paddingTop: 18, paddingBottom: 18, paddingLeft: 0, paddingRight: 0,
+        }}
       >
-        <span className="text-[12px] text-[#8C8C8C] font-sans w-24 text-left leading-none">
-          {person.label}
-        </span>
-        <span className="flex-1" />
-        <span className="text-[14px] text-[#141414] font-sans mr-3 leading-none">
-          {person.name}
-        </span>
+        <span style={{ fontSize: 16, fontWeight: 400, color: "#111111" }}>{title}</span>
         <motion.svg
-          animate={{ rotate: open ? 180 : 0 }}
-          transition={{ duration: 0.25 }}
-          width="12"
-          height="7"
-          viewBox="0 0 12 7"
-          fill="none"
-          className="text-[#AAAAAA] flex-shrink-0"
+          animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}
+          width="20" height="20" viewBox="0 0 20 20" fill="none"
         >
-          <path
-            d="M1 1L6 6L11 1"
-            stroke="currentColor"
-            strokeWidth="1.2"
-            strokeLinecap="round"
-          />
+          <path d="M4 8L10 13L16 8" stroke="#000" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
         </motion.svg>
       </button>
 
+      {/* 카드: bg=#E4E4E4, radius=10, pad l=16 r=16 t=20 b=20, gap=20 */}
       <AnimatePresence initial={false}>
         {open && (
           <motion.div
-            initial={{ height: 0 }}
-            animate={{ height: "auto" }}
-            exit={{ height: 0 }}
+            initial={{ height: 0 }} animate={{ height: "auto" }} exit={{ height: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden"
+            style={{ overflow: "hidden" }}
           >
-            <div className="mx-6 mb-5 bg-[#F5F3F0] rounded-2xl px-4 py-4 space-y-2.5">
-              <p className="text-[10.5px] text-[#8C8C8C] font-sans text-center tracking-wider">
-                {person.bank}
-              </p>
-              <p className="text-[15px] text-[#141414] font-sans text-center tracking-widest">
-                {person.number}
-              </p>
-              <button
-                onClick={copy}
-                className="w-full py-2.5 bg-[#141414] text-white text-[12px] font-sans rounded-xl tracking-wider transition-opacity active:opacity-80"
-              >
-                {copied ? "복사됨 ✓" : "계좌번호 복사"}
-              </button>
+            <div style={{
+              backgroundColor: "#E4E4E4", borderRadius: 10,
+              paddingLeft: 16, paddingRight: 16, paddingTop: 20, paddingBottom: 20,
+            }}>
+              {accounts.map((acc, i) => (
+                <div key={i}>
+                  {i > 0 && <div style={{ height: 1, backgroundColor: "#D9D9D9", marginTop: 20, marginBottom: 20 }} />}
+                  <AccountRow account={acc} />
+                </div>
+              ))}
             </div>
           </motion.div>
         )}
@@ -93,38 +96,33 @@ function AccountRow({ person }: { person: Person }) {
 
 export default function Accounts() {
   const { groom, bride } = weddingData;
-
-  const people: Person[] = [
-    { label: "신랑", name: groom.account.holder, bank: groom.account.bank, number: groom.account.number },
-    { label: "신랑 아버지", name: groom.fatherAccount.holder, bank: groom.fatherAccount.bank, number: groom.fatherAccount.number },
-    { label: "신부", name: bride.account.holder, bank: bride.account.bank, number: bride.account.number },
-    { label: "신부 아버지", name: bride.fatherAccount.holder, bank: bride.fatherAccount.bank, number: bride.fatherAccount.number },
+  const groups = [
+    { title: "신랑측에게", accounts: [groom.account, groom.fatherAccount, groom.motherAccount] },
+    { title: "신부측에게", accounts: [bride.account, bride.fatherAccount, bride.motherAccount] },
   ];
 
   return (
-    <section className="py-24 bg-white">
+    <section style={{ backgroundColor: "#EFEFEF", paddingTop: 60, paddingBottom: 60 }}>
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
+        viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.7 }}
-        className="max-w-sm mx-auto"
+        style={{ display: "flex", flexDirection: "column", gap: 20 }}
       >
-        <div className="text-center mb-10 px-8">
-          <p className="font-script text-[30px] text-[#141414] italic mb-3">Monetary gift</p>
-          <div className="w-8 h-px bg-[#D4CFC9] mx-auto mb-4" />
-          <p className="text-[11.5px] text-[#8C8C8C] font-sans leading-relaxed">
-            마음을 전하고 싶으신 분들을 위해
-            <br />
-            계좌번호를 안내해드립니다
+        {/* 헤더 */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, textAlign: "center" }}>
+          <p style={{ fontFamily: "var(--font-script)", fontStyle: "italic", fontWeight: 500, fontSize: 30, color: "#141414", lineHeight: "42px", margin: 0 }}>
+            With Thanks
+          </p>
+          <p style={{ fontSize: 14, fontWeight: 300, color: "#8C8C8C", lineHeight: "22px", margin: 0 }}>
+            귀한 마음으로 축복해 주시는 것만으로도<br />저희에게는 큰 선물입니다.
           </p>
         </div>
 
-        <div>
-          {people.map((person, i) => (
-            <AccountRow key={i} person={person} />
-          ))}
-          <div className="border-t border-[#E8E4E0]" />
+        {/* 그룹들: 좌우 24px 패딩 */}
+        <div style={{ paddingLeft: 24, paddingRight: 24, display: "flex", flexDirection: "column", gap: 8 }}>
+          {groups.map((g, i) => <Group key={i} title={g.title} accounts={g.accounts} />)}
         </div>
       </motion.div>
     </section>

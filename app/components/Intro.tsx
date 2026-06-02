@@ -2,61 +2,73 @@
 
 import Image from "next/image";
 
-const QUOTE = `The year's last, loveliest smile falls softly upon this day, as every season we have walked through together gathers in quiet light, blessing the moment we choose to begin again as one,\nwith hearts full of gratitude, tenderness, and a love that will continue\nto bloom through all the years to come.`;
+const QUOTE_TEXT = "The year's loveliest smile falls softly upon September 20, blessing the moment  we become one forever, with love blooming through the years to come,  walking hand in hand through the seasons ahead.";
 
 export default function Intro() {
   return (
     <section
-      className="relative w-full overflow-hidden"
       style={{
-        height: "707px",
-        backgroundImage: "url('/intro_bg.png')",
+        width: "100%",
+        height: 728,
+        position: "relative",
+        overflow: "hidden",
+        backgroundImage: "url('/intro-bg.png')",
         backgroundSize: "100% 100%",
-        backgroundPosition: "top center",
         backgroundRepeat: "no-repeat",
+        backgroundPosition: "top left",
       }}
     >
-      {/* 하단 quote + 사진 두 장 */}
-      <div className="absolute left-[18px] right-[18px]" style={{ top: "450px" }}>
-        {/* quote */}
+      {/* 콘텐츠 블록: 하단 44px 여백, 좌우 16px 패딩 */}
+      <div
+        style={{
+          position: "absolute",
+          left: 16,
+          right: 16,
+          bottom: 44,
+          display: "flex",
+          flexDirection: "column",
+          gap: 24,
+        }}
+      >
+        {/* 1. 상단 인용 텍스트 */}
         <p
-          className="font-script text-[#1A1A1A]/60 leading-relaxed"
-          style={{ fontSize: "10px", whiteSpace: "pre-line" }}
+          style={{
+            fontFamily: "var(--font-serif)",
+            fontSize: 13,
+            lineHeight: "20px",
+            letterSpacing: "0.01em",
+            color: "#111111",
+            textAlign: "center",
+            margin: 0,
+          }}
         >
-          {QUOTE}
+          {QUOTE_TEXT}
         </p>
 
-        {/* 커플 사진 두 장 */}
-        <div className="flex gap-[14px] mt-[18px]" style={{ paddingLeft: "47px" }}>
-          <div
-            className="relative overflow-hidden flex-shrink-0"
-            style={{ width: 122, height: 122, backgroundColor: "#D9D9D9" }}
-          >
-            <Image
-              src="/gallery/photo-1.jpg"
-              alt=""
-              fill
-              className="object-cover"
-              onError={(e) => {
-                (e.target as HTMLImageElement).style.display = "none";
-              }}
-            />
+        {/* 2. 사진 2장: 각 120×120, gap 8px, 중앙정렬 */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: 8,
+          }}
+        >
+          <div style={{ width: 120, height: 120, position: "relative", overflow: "hidden", backgroundColor: "#D9D9D9", flexShrink: 0 }}>
+            <Image src="/gallery/photo-1.jpg" alt="" fill sizes="120px" style={{ objectFit: "cover" }}
+              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
           </div>
-          <div
-            className="relative overflow-hidden flex-shrink-0"
-            style={{ width: 122, height: 122, backgroundColor: "#D9D9D9" }}
-          >
-            <Image
-              src="/gallery/photo-2.jpg"
-              alt=""
-              fill
-              className="object-cover"
-              onError={(e) => {
-                (e.target as HTMLImageElement).style.display = "none";
-              }}
-            />
+          <div style={{ width: 120, height: 120, position: "relative", overflow: "hidden", backgroundColor: "#D9D9D9", flexShrink: 0 }}>
+            <Image src="/gallery/photo-2.jpg" alt="" fill sizes="120px" style={{ objectFit: "cover" }}
+              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
           </div>
         </div>
+
+        {/* 3. " Save the Date " */}
+        <p style={{ textAlign: "center", lineHeight: "20px", letterSpacing: "0.01em", color: "#111111", margin: 0 }}>
+          <span style={{ fontFamily: "var(--font-serif)", fontSize: 20 }}>&ldquo; Save the </span>
+          <span style={{ fontFamily: "var(--font-italianno)", fontSize: 24 }}>Date</span>
+          <span style={{ fontFamily: "var(--font-serif)", fontSize: 20 }}> &rdquo;</span>
+        </p>
       </div>
     </section>
   );
