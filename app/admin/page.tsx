@@ -122,8 +122,9 @@ export default function AdminPage() {
             {SPECIAL_SLOTS.map(slot => (
               <div key={slot.key} style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8, alignItems: "center" }}>
                 {/* 사진 영역 */}
-                <label style={{ cursor: "pointer", width: "100%" }}>
-                  <input type="file" accept="image/*" style={{ display: "none" }}
+                <div style={{ cursor: "pointer", width: "100%" }}
+                  onClick={() => document.getElementById(`special-${slot.key}`)?.click()}>
+                  <input id={`special-${slot.key}`} type="file" accept="image/*" style={{ display: "none" }}
                     onChange={e => e.target.files?.[0] && uploadSpecial(slot.key, e.target.files[0])} />
                   <div style={{
                     width: "100%", aspectRatio: "1", backgroundColor: "#E4E4E4", borderRadius: 10,
@@ -137,7 +138,7 @@ export default function AdminPage() {
                       <p style={{ fontSize: 22, margin: 0 }}>+</p>
                     )}
                   </div>
-                </label>
+                </div>
                 <p style={{ fontSize: 11, color: "#8C8C8C", textAlign: "center", margin: 0 }}>{slot.label}<br />{slot.size}</p>
               </div>
             ))}
