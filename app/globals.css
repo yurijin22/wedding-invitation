@@ -12,7 +12,7 @@ html {
 }
 
 body {
-  background: #F4F1EC;
+  background: #FFFFFF;
   color: #1A1A1A;
   font-family: 'Pretendard Variable', Pretendard, var(--font-sans), 'Noto Sans KR', sans-serif;
   letter-spacing: -0.004em; /* Pretendard 기본 자간 -0.4% */
