@@ -25,7 +25,7 @@ export default function AdminPage() {
 
   useEffect(() => {
     const saved = sessionStorage.getItem(PW_KEY);
-    if (saved) { setPw(saved); setAuthed(true); }
+    if (saved) { setPw(saved); pwRef.current = saved; setAuthed(true); }
   }, []);
 
   const login = () => {
