@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 const IS: React.CSSProperties = {
@@ -23,15 +24,19 @@ const IT: React.CSSProperties = {
 
 export default function Visual() {
   return (
-    <section
-      style={{
-        position: "relative",
-        overflow: "hidden",
-        backgroundImage: "url('/visual-bg.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
+    <section style={{ position: "relative", overflow: "hidden" }}>
+      {/* 배경 이미지 — Next.js Image로 WebP 자동 변환 + 최적화 */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
+        <Image
+          src="/visual-bg.png"
+          alt=""
+          fill
+          priority
+          sizes="390px"
+          style={{ objectFit: "cover" }}
+        />
+      </div>
+
       {/* 상단 텍스트 */}
       <motion.p
         initial={{ opacity: 0 }}
@@ -44,7 +49,7 @@ export default function Visual() {
         <span style={IT}>Together</span>
       </motion.p>
 
-      {/* 메인 사진 — 자연 높이, 크롭 없음 */}
+      {/* 메인 사진 — Next.js Image, 자연 비율 유지 */}
       <motion.div
         initial={{ opacity: 0, scale: 0.97 }}
         whileInView={{ opacity: 1, scale: 1 }}
@@ -52,10 +57,13 @@ export default function Visual() {
         transition={{ duration: 0.8 }}
         style={{ position: "relative", zIndex: 10, margin: "24px 24px 0 24px" }}
       >
-        <img
+        <Image
           src="/visual-photo.png"
           alt=""
-          style={{ width: "100%", display: "block" }}
+          width={342}
+          height={500}
+          sizes="342px"
+          style={{ width: "100%", height: "auto", display: "block" }}
         />
       </motion.div>
 
