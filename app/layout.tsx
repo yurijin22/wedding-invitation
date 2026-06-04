@@ -76,16 +76,16 @@ export default function RootLayout({
       <body className="bg-[#FAFAF7] text-[#49311C] antialiased">
         {children}
         <Script
-          src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${weddingData.kakaoAppKey}`}
+          src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+          integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4"
+          crossOrigin="anonymous"
           strategy="lazyOnload"
-        />
-        <Script id="kakao-init" strategy="lazyOnload">
-          {`
-            if (typeof Kakao !== 'undefined' && !Kakao.isInitialized()) {
-              Kakao.init('${weddingData.kakaoAppKey}');
+          onLoad={() => {
+            if (window.Kakao && !window.Kakao.isInitialized()) {
+              window.Kakao.init('${weddingData.kakaoAppKey}');
             }
-          `}
-        </Script>
+          }}
+        />
       </body>
     </html>
   );

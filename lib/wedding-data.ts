@@ -87,7 +87,7 @@ export const weddingData = {
 
   galleryImages: Array.from({ length: 30 }, (_, i) => `/gallery/photo-${i + 1}.jpg`),
 
-  kakaoAppKey: "YOUR_KAKAO_APP_KEY",
+  kakaoAppKey: "e281380de260b4977be903e769b659fd",
   naverMapsClientId: "YOUR_NAVER_MAPS_CLIENT_ID",
 };
 
