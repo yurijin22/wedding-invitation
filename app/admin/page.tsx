@@ -69,7 +69,7 @@ export default function AdminPage() {
     setUploading(false);
   };
 
-  // 특별 사진: ref 기반 독립 업로드 (갤러리 상태와 완전 분리)
+  // 특별 사진: ref 기반 독립 업로드
   const uploadSpecial = (key: string, file: File) => {
     setUploadingKeys((prev) => new Set(prev).add(key));
     const form = new FormData();
@@ -80,7 +80,15 @@ export default function AdminPage() {
       headers: { "x-admin-password": pwRef.current },
       body: form,
     })
-      .then(() => fetchSpecial())
+      .then(async (res) => {
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          alert(`업로드 실패 (${res.status}): ${data.error ?? "알 수 없는 오류"}`);
+          return;
+        }
+        await fetchSpecial();
+      })
+      .catch((e) => alert(`업로드 오류: ${e}`))
       .finally(() => {
         setUploadingKeys((prev) => {
           const next = new Set(prev);
