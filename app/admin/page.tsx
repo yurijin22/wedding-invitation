@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 
 const PW_KEY = "admin_pw";
@@ -18,9 +18,10 @@ export default function AdminPage() {
   const [photos, setPhotos] = useState<string[]>([]);
   const [special, setSpecial] = useState<Record<string, string>>({});
   const [uploading, setUploading] = useState(false);
-  const [uploadingKey, setUploadingKey] = useState<string | null>(null);
+  const [uploadingKeys, setUploadingKeys] = useState<Set<string>>(new Set());
   const [deleting, setDeleting] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
+  const pwRef = useRef(pw);
 
   useEffect(() => {
     const saved = sessionStorage.getItem(PW_KEY);
@@ -29,6 +30,7 @@ export default function AdminPage() {
 
   const login = () => {
     setPw(pwInput);
+    pwRef.current = pwInput;
     sessionStorage.setItem(PW_KEY, pwInput);
     setAuthed(true);
   };
@@ -49,33 +51,43 @@ export default function AdminPage() {
     if (authed) { fetchPhotos(); fetchSpecial(); }
   }, [authed, fetchPhotos, fetchSpecial]);
 
+  // 갤러리: 병렬 업로드
   const uploadFiles = async (files: FileList | File[]) => {
     setUploading(true);
-    for (const file of Array.from(files)) {
-      const form = new FormData();
-      form.append("file", file);
-      await fetch("/api/upload", {
-        method: "POST",
-        headers: { "x-admin-password": pw },
-        body: form,
-      });
-    }
+    await Promise.all(
+      Array.from(files).map((file) => {
+        const form = new FormData();
+        form.append("file", file);
+        return fetch("/api/upload", {
+          method: "POST",
+          headers: { "x-admin-password": pwRef.current },
+          body: form,
+        });
+      })
+    );
     await fetchPhotos();
     setUploading(false);
   };
 
-  const uploadSpecial = async (key: string, file: File) => {
-    setUploadingKey(key);
+  // 특별 사진: ref 기반 독립 업로드 (갤러리 상태와 완전 분리)
+  const uploadSpecial = (key: string, file: File) => {
+    setUploadingKeys((prev) => new Set(prev).add(key));
     const form = new FormData();
     form.append("file", file);
     form.append("key", key);
-    await fetch("/api/special", {
+    fetch("/api/special", {
       method: "POST",
-      headers: { "x-admin-password": pw },
+      headers: { "x-admin-password": pwRef.current },
       body: form,
-    });
-    await fetchSpecial();
-    setUploadingKey(null);
+    })
+      .then(() => fetchSpecial())
+      .finally(() => {
+        setUploadingKeys((prev) => {
+          const next = new Set(prev);
+          next.delete(key);
+          return next;
+        });
+      });
   };
 
   const deletePhoto = async (url: string) => {
@@ -130,7 +142,7 @@ export default function AdminPage() {
                     width: "100%", aspectRatio: "1", backgroundColor: "#E4E4E4", borderRadius: 10,
                     overflow: "hidden", position: "relative", display: "flex", alignItems: "center", justifyContent: "center",
                   }}>
-                    {uploadingKey === slot.key ? (
+                    {uploadingKeys.has(slot.key) ? (
                       <p style={{ fontSize: 12, color: "#8C8C8C", margin: 0 }}>업로드 중...</p>
                     ) : special[slot.key] ? (
                       <Image src={special[slot.key]} alt={slot.label} fill style={{ objectFit: "cover" }} sizes="180px" />
