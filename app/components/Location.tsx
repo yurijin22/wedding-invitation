@@ -16,29 +16,36 @@ export default function Location() {
   const { wedding } = weddingData;
   const { venue } = wedding;
 
+  const openNav = (appUrl: string, webUrl: string) => {
+    // 앱 실행 시도 → 1초 후 페이지 그대로면 웹으로 폴백
+    const t = Date.now();
+    window.location.href = appUrl;
+    setTimeout(() => {
+      if (Date.now() - t < 1500) window.open(webUrl, "_blank");
+    }, 1000);
+  };
+
   const open = (type: string) => {
     const name = encodeURIComponent("라마다서울신도림호텔");
+    const addr = encodeURIComponent("서울 구로구 경인로 624");
     const lat = venue.lat;
     const lng = venue.lng;
 
     if (type === "naver") {
-      // 네이버 지도 길찾기 (목적지)
-      const app = `naver://map/navigation?dlat=${lat}&dlng=${lng}&dname=${name}&appname=wedding`;
-      const web = `https://map.naver.com/v5/directions/-/-/${lng},${lat},${decodeURIComponent(name)}/-/car`;
-      window.open(app, "_blank");
-      setTimeout(() => window.open(web, "_blank"), 1000);
+      openNav(
+        `naver://map/route?menu=route&dlat=${lat}&dlng=${lng}&dname=${name}`,
+        `https://map.naver.com/v5/search/${name}`
+      );
     } else if (type === "kakao") {
-      // 카카오맵 길찾기 (목적지)
-      const app = `kakaomap://route?ep=${lat},${lng}&by=CAR`;
-      const web = `https://map.kakao.com/link/to/${name},${lat},${lng}`;
-      window.open(app, "_blank");
-      setTimeout(() => window.open(web, "_blank"), 1000);
+      openNav(
+        `kakaomap://route?ep=${lat},${lng}&by=CAR`,
+        `https://map.kakao.com/link/to/${name},${lat},${lng}`
+      );
     } else {
-      // 티맵 길찾기 (목적지)
-      const app = `tmap://route?goalname=${name}&goalx=${lng}&goaly=${lat}&goaladdr=${encodeURIComponent("서울 구로구 경인로 624")}`;
-      const web = `https://tmap.life/path?goalname=${decodeURIComponent(name)}&goalx=${lng}&goaly=${lat}`;
-      window.open(app, "_blank");
-      setTimeout(() => window.open(web, "_blank"), 1000);
+      openNav(
+        `tmap://route?goalname=${name}&goalx=${lng}&goaly=${lat}&goaladdr=${addr}`,
+        `https://tmap.life/${lat},${lng}`
+      );
     }
   };
 
