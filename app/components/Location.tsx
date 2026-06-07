@@ -1,10 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { weddingData } from "@/lib/wedding-data";
-
-// window.naver 타입 선언은 Map.tsx의 전역 declare를 공유
 
 const BG = "#1D1000";
 
@@ -17,35 +14,12 @@ const BUTTONS = [
 export default function Location() {
   const { wedding } = weddingData;
   const { venue } = wedding;
-  const mapRef = useRef<HTMLDivElement>(null);
 
-  // 네이버 지도 로드 + 마커 표시
-  useEffect(() => {
-    const clientId = weddingData.naverMapsClientId;
-    if (!clientId || clientId === "YOUR_NAVER_MAPS_CLIENT_ID") return; // 키 미설정 시 그레이 유지
-
-    const init = () => {
-      if (!mapRef.current || !window.naver?.maps) return;
-      const center = new window.naver.maps.LatLng(venue.lat, venue.lng);
-      const map = new window.naver.maps.Map(mapRef.current, {
-        center,
-        zoom: 16,
-        scrollWheel: false, // 페이지 스크롤 가로채기 방지
-      });
-      new window.naver.maps.Marker({ position: center, map });
-    };
-
-    if (window.naver?.maps) { init(); return; }
-    const id = "naver-maps-sdk";
-    const existing = document.getElementById(id) as HTMLScriptElement | null;
-    if (existing) { existing.addEventListener("load", init); return; }
-    const script = document.createElement("script");
-    script.id = id;
-    script.async = true;
-    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${clientId}`;
-    script.onload = init;
-    document.head.appendChild(script);
-  }, [venue.lat, venue.lng]);
+  // 키/계정 불필요한 OpenStreetMap 임베드 (마커 포함)
+  const { lat, lng } = venue;
+  const dLat = 0.0035, dLng = 0.0055; // 표시 범위(줌)
+  const bbox = `${lng - dLng}%2C${lat - dLat}%2C${lng + dLng}%2C${lat + dLat}`;
+  const mapSrc = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat}%2C${lng}`;
 
   const openNav = (appUrl: string, webUrl: string) => {
     // 앱 실행 시도 → 1초 후 페이지 그대로면 웹으로 폴백
@@ -112,8 +86,13 @@ export default function Location() {
           </div>
         </div>
 
-        {/* 카카오 지도 */}
-        <div ref={mapRef} style={{ width: "100%", height: 245, borderRadius: 8, overflow: "hidden", backgroundColor: "#E5E5E5" }} />
+        {/* 지도 (OpenStreetMap — 키 불필요) */}
+        <iframe
+          title="오시는 길 지도"
+          src={mapSrc}
+          loading="lazy"
+          style={{ width: "100%", height: 245, border: 0, borderRadius: 8, display: "block", backgroundColor: "#E5E5E5" }}
+        />
 
         {/* 버튼 3개 — img 태그로 직접 로드 */}
         <div style={{ display: "flex", gap: 8 }}>
