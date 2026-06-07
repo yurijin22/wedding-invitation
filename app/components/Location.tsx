@@ -7,7 +7,7 @@ import { weddingData } from "@/lib/wedding-data";
 declare global {
   interface Window {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    kakao: any;
+    naver: any;
   }
 }
 
@@ -24,36 +24,30 @@ export default function Location() {
   const { venue } = wedding;
   const mapRef = useRef<HTMLDivElement>(null);
 
-  // 카카오 지도 로드 + 마커 표시
+  // 네이버 지도 로드 + 마커 표시
   useEffect(() => {
-    const init = () => {
-      window.kakao.maps.load(() => {
-        if (!mapRef.current) return;
-        const center = new window.kakao.maps.LatLng(venue.lat, venue.lng);
-        const map = new window.kakao.maps.Map(mapRef.current, { center, level: 3 });
-        new window.kakao.maps.Marker({ position: center, map });
-        // 페이지 스크롤 가로채기 방지 (휠 줌 비활성, 드래그/더블탭 줌은 유지)
-        map.setZoomable(false);
+    const clientId = weddingData.naverMapsClientId;
+    if (!clientId || clientId === "YOUR_NAVER_MAPS_CLIENT_ID") return; // 키 미설정 시 그레이 유지
 
-        // 컨테이너가 뒤늦게(애니메이션/스크롤로) 보일 때 회색으로 남는 것 방지
-        const fix = () => { map.relayout(); map.setCenter(center); };
-        setTimeout(fix, 400);
-        const io = new IntersectionObserver((entries) => {
-          if (entries.some((e) => e.isIntersecting)) fix();
-        });
-        io.observe(mapRef.current);
+    const init = () => {
+      if (!mapRef.current || !window.naver?.maps) return;
+      const center = new window.naver.maps.LatLng(venue.lat, venue.lng);
+      const map = new window.naver.maps.Map(mapRef.current, {
+        center,
+        zoom: 16,
+        scrollWheel: false, // 페이지 스크롤 가로채기 방지
       });
+      new window.naver.maps.Marker({ position: center, map });
     };
-    if (window.kakao && window.kakao.maps) { init(); return; }
-    const id = "kakao-maps-sdk";
-    if (document.getElementById(id)) {
-      document.getElementById(id)!.addEventListener("load", init);
-      return;
-    }
+
+    if (window.naver?.maps) { init(); return; }
+    const id = "naver-maps-sdk";
+    const existing = document.getElementById(id) as HTMLScriptElement | null;
+    if (existing) { existing.addEventListener("load", init); return; }
     const script = document.createElement("script");
     script.id = id;
     script.async = true;
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${weddingData.kakaoAppKey}&autoload=false`;
+    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${clientId}`;
     script.onload = init;
     document.head.appendChild(script);
   }, [venue.lat, venue.lng]);
