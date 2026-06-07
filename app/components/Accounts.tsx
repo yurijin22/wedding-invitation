@@ -108,7 +108,7 @@ export default function Accounts() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-110px" }}
         transition={{ duration: 1.15, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-        style={{ display: "flex", flexDirection: "column", gap: 20 }}
+        style={{ display: "flex", flexDirection: "column", gap: 44 }}
       >
         {/* 헤더 */}
         <div style={{ display: "flex", flexDirection: "column", gap: 10, textAlign: "center" }}>

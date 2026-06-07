@@ -68,7 +68,7 @@ export default function Intro() {
           style={{
             fontFamily: "var(--font-serif)",
             fontSize: 12,
-            lineHeight: "1.9",
+            lineHeight: "1.45",
             letterSpacing: "0",
             color: "#111111",
             textAlign: "center",

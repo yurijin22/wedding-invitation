@@ -95,7 +95,7 @@ export default function Location() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-110px" }}
         transition={{ duration: 1.15, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-        style={{ display: "flex", flexDirection: "column", gap: 29 }}
+        style={{ display: "flex", flexDirection: "column", gap: 52 }}
       >
         {/* 헤더 */}
         <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
@@ -111,7 +111,7 @@ export default function Location() {
             <p style={{ fontFamily: "var(--font-serif)", fontSize: 16, color: "#9EC5EE", letterSpacing: "0.04em", display: "block", textAlign: "center", transform: "scaleX(0.92)", transformOrigin: "center center", margin: 0 }}>
               {venue.nameEnglish}
             </p>
-            <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.12)" }} />
+            <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.12)", margin: "14px 0" }} />
             {/* 주소 / 전화 — gap 16px */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16 }}>
               <p style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", margin: 0 }}>{venue.address}</p>
