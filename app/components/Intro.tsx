@@ -3,6 +3,10 @@
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 
+// 로딩 중 표시할 그레이 플레이스홀더 (8×8 #E5E5E5)
+const GRAY_BLUR =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAAD0lEQVR4nGN4igMwDC0JABu1q8HC71HKAAAAAElFTkSuQmCC";
+
 export default function Intro() {
   const [specialPhotos, setSpecialPhotos] = useState<Record<string, string>>({});
   const quoteRef = useRef<HTMLParagraphElement>(null);
@@ -82,10 +86,12 @@ export default function Intro() {
         <div style={{ display: "flex", justifyContent: "center", gap: 8 }}>
           <div style={{ width: 120, height: 120, position: "relative", overflow: "hidden", backgroundColor: "#E5E5E5", flexShrink: 0 }}>
             <Image src={photo1} alt="" fill sizes="120px" style={{ objectFit: "cover" }}
+              placeholder="blur" blurDataURL={GRAY_BLUR}
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
           </div>
           <div style={{ width: 120, height: 120, position: "relative", overflow: "hidden", backgroundColor: "#E5E5E5", flexShrink: 0 }}>
             <Image src={photo2} alt="" fill sizes="120px" style={{ objectFit: "cover" }}
+              placeholder="blur" blurDataURL={GRAY_BLUR}
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
           </div>
         </div>
