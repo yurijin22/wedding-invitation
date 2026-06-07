@@ -47,7 +47,7 @@ export default function DateSection() {
             letterSpacing: "0.4px",
             color: ACCENT,
             textAlign: "center",
-            marginBottom: 36,
+            marginBottom: 52,
             marginTop: 0,
           }}
         >

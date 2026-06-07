@@ -50,7 +50,7 @@ export default function Gallery() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-110px" }}
         transition={{ duration: 1.15, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-        style={{ fontFamily: "var(--font-script)", fontStyle: "italic", fontWeight: 500, fontSize: 30, color: "#111", textAlign: "center", lineHeight: "42px", margin: 0, paddingTop: 76, paddingBottom: 28 }}
+        style={{ fontFamily: "var(--font-script)", fontStyle: "italic", fontWeight: 500, fontSize: 30, color: "#111", textAlign: "center", lineHeight: "42px", margin: 0, paddingTop: 76, paddingBottom: 44 }}
       >
         Gallery
       </motion.p>

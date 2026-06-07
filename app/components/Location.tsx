@@ -98,7 +98,7 @@ export default function Location() {
         style={{ display: "flex", flexDirection: "column", gap: 52 }}
       >
         {/* 헤더 */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 48 }}>
           <p style={{ fontFamily: "var(--font-script)", fontStyle: "italic", fontWeight: 500, fontSize: 30, color: "#fff", textAlign: "center", lineHeight: "42px", margin: 0 }}>
             Location
           </p>

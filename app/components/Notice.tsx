@@ -16,7 +16,7 @@ export default function Notice() {
         style={{ display: "flex", flexDirection: "column", gap: 48 }}
       >
         {/* 본문 */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 36 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 52 }}>
           <p style={{ fontFamily: "var(--font-script)", fontStyle: "italic", fontWeight: 500, fontSize: 30, color: "#111", textAlign: "center", lineHeight: "42px", margin: 0 }}>
             Notice
           </p>
