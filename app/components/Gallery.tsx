@@ -48,6 +48,17 @@ export default function Gallery() {
 
   return (
     <section style={{ backgroundColor: "#fff", padding: "4px 4px 0 4px" }}>
+      {/* 섹션 타이틀 — 다른 섹션과 동일 스타일 */}
+      <motion.p
+        initial={{ opacity: 0, y: 32 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-110px" }}
+        transition={{ duration: 1.15, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+        style={{ fontFamily: "var(--font-script)", fontStyle: "italic", fontWeight: 500, fontSize: 30, color: "#111", textAlign: "center", lineHeight: "42px", margin: 0, paddingTop: 76, paddingBottom: 28 }}
+      >
+        Gallery
+      </motion.p>
+
       <div ref={topRef} style={{ position: "relative" }}>
         {/* 사진 그리드 */}
         {rows.map((row, ri) => (
