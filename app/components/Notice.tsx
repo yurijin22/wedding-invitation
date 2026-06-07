@@ -7,7 +7,7 @@ export default function Notice() {
   const { notice } = weddingData;
 
   return (
-    <section style={{ backgroundColor: "#fff", paddingTop: 80, paddingBottom: 80 }}>
+    <section style={{ backgroundColor: "#fff", paddingTop: 100, paddingBottom: 100 }}>
       <motion.div
         initial={{ opacity: 0, y: 32 }}
         whileInView={{ opacity: 1, y: 0 }}

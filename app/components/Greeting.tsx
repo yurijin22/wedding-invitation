@@ -7,7 +7,7 @@ export default function Greeting() {
   const { groom, bride } = weddingData;
 
   return (
-    <section style={{ backgroundColor: "#FFFFFF", paddingTop: 80, paddingBottom: 80 }}>
+    <section style={{ backgroundColor: "#FFFFFF", paddingTop: 100, paddingBottom: 100 }}>
       <motion.div
         initial={{ opacity: 0, y: 32 }}
         whileInView={{ opacity: 1, y: 0 }}

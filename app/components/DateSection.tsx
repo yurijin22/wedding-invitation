@@ -28,7 +28,7 @@ export default function DateSection() {
     `D+${Math.abs(dday)}`;
 
   return (
-    <section style={{ backgroundColor: BG, paddingTop: 60, paddingBottom: 60 }}>
+    <section style={{ backgroundColor: BG, paddingTop: 90, paddingBottom: 90 }}>
       <motion.div
         initial={{ opacity: 0, y: 32 }}
         whileInView={{ opacity: 1, y: 0 }}

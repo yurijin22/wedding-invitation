@@ -5,9 +5,9 @@ import { motion } from "framer-motion";
 
 const IS: React.CSSProperties = {
   fontFamily: "var(--font-serif)",
-  fontSize: 28,
-  lineHeight: "36px",
-  letterSpacing: "0.4px",
+  fontSize: 18,
+  lineHeight: "28px",
+  letterSpacing: "0.3px",
   color: "#FFFFFF",
   display: "inline-block",
   transform: "scaleX(0.92)",
@@ -16,9 +16,9 @@ const IS: React.CSSProperties = {
 
 const IT: React.CSSProperties = {
   fontFamily: "var(--font-italianno)",
-  fontSize: 32,
-  lineHeight: "36px",
-  letterSpacing: "0.4px",
+  fontSize: 22,
+  lineHeight: "28px",
+  letterSpacing: "0.3px",
   color: "#FFFFFF",
 };
 
@@ -37,25 +37,13 @@ export default function Visual() {
         />
       </div>
 
-      {/* 상단 텍스트 */}
-      <motion.p
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1 }}
-        style={{ position: "relative", zIndex: 10, margin: 0, paddingTop: 60, paddingLeft: 28, lineHeight: "36px" }}
-      >
-        <span style={IS}>We Decide on </span>
-        <span style={IT}>Together</span>
-      </motion.p>
-
       {/* 메인 사진 — Next.js Image, 자연 비율 유지 */}
       <motion.div
         initial={{ opacity: 0, scale: 0.97 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        style={{ position: "relative", zIndex: 10, margin: "24px 24px 0 24px" }}
+        style={{ position: "relative", zIndex: 10, margin: "60px 24px 0 24px" }}
       >
         <Image
           src="/visual-photo.png"
@@ -67,14 +55,17 @@ export default function Visual() {
         />
       </motion.div>
 
-      {/* 하단 텍스트 */}
+      {/* 하단 텍스트 — 사진 아래에 2줄로 이어서 */}
       <motion.p
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 1, delay: 0.3 }}
-        style={{ position: "relative", zIndex: 10, margin: 0, paddingBottom: 60, paddingRight: 24, marginTop: 24, lineHeight: "36px", textAlign: "right" }}
+        style={{ position: "relative", zIndex: 10, margin: 0, paddingBottom: 60, marginTop: 20, lineHeight: "30px", textAlign: "center" }}
       >
+        <span style={IS}>We Decide on </span>
+        <span style={IT}>Together</span>
+        <br />
         <span style={IS}>from this </span>
         <span style={IT}>Weather </span>
         <span style={IS}>to </span>

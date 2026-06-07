@@ -25,7 +25,18 @@
       "mcp__claude_ai_Figma__get_screenshot",
       "Bash(npx tsc *)",
       "Bash(curl -s http://localhost:3000)",
-      "Bash(curl -s -o /tmp/intro-screenshot.png \"http://localhost:3000\")"
+      "Bash(curl -s -o /tmp/intro-screenshot.png \"http://localhost:3000\")",
+      "Bash(curl -s -o /dev/null -w \"admin page HTTP status: %{http_code}\\\\n\" http://localhost:3000/admin)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/admin)",
+      "Bash(curl -s -o /dev/null -w \"admin status: %{http_code}\\\\n\" http://localhost:3000/admin)",
+      "Bash(curl -s \"https://woogi-uoori-80hn4h2uy-elle22.vercel.app/api/special\")",
+      "Bash(curl -s \"http://localhost:3000/api/special\")",
+      "Bash(curl -s -I \"https://woogi-uoori-80hn4h2uy-elle22.vercel.app/\")",
+      "Bash(curl -s \"https://api.github.com/repos/yurijin22/wedding-invitation/commits/main\")",
+      "Bash(curl -s \"http://localhost:3000/api/photos\")",
+      "Bash(curl -s \"https://woogi-uoori.vercel.app/\" --max-time 15)",
+      "Bash(curl -s \"http://localhost:3000/\" --max-time 15)",
+      "Bash(open ~/Desktop/갤러리_추천순서_미리보기.jpg)"
     ],
     "additionalDirectories": [
       "/Users/yrjin/Desktop/업무/study/invitation",

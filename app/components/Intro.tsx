@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
-import { GRAY_BLUR } from "@/lib/placeholder";
 
 export default function Intro() {
   const [specialPhotos, setSpecialPhotos] = useState<Record<string, string>>({});
@@ -83,12 +82,10 @@ export default function Intro() {
         <div style={{ display: "flex", justifyContent: "center", gap: 8 }}>
           <div style={{ width: 120, height: 120, position: "relative", overflow: "hidden", backgroundColor: "#E5E5E5", flexShrink: 0 }}>
             <Image src={photo1} alt="" fill sizes="120px" style={{ objectFit: "cover" }}
-              placeholder="blur" blurDataURL={GRAY_BLUR}
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
           </div>
           <div style={{ width: 120, height: 120, position: "relative", overflow: "hidden", backgroundColor: "#E5E5E5", flexShrink: 0 }}>
             <Image src={photo2} alt="" fill sizes="120px" style={{ objectFit: "cover" }}
-              placeholder="blur" blurDataURL={GRAY_BLUR}
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
           </div>
         </div>

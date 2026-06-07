@@ -8,7 +8,6 @@ import { Keyboard } from "swiper/modules";
 import type { Swiper as SwiperClass } from "swiper";
 import "swiper/css";
 import { weddingData } from "@/lib/wedding-data";
-import { GRAY_BLUR } from "@/lib/placeholder";
 
 export default function Gallery() {
   const { galleryImages: localImages } = weddingData;
@@ -62,7 +61,6 @@ export default function Gallery() {
                   style={{ flex: 1, height: 128, position: "relative", overflow: "hidden", backgroundColor: "#E5E5E5", border: "none", padding: 0, cursor: "pointer" }}
                 >
                   <Image src={src} alt="" fill style={{ objectFit: "cover" }} sizes="125px" quality={55} loading="lazy"
-                    placeholder="blur" blurDataURL={GRAY_BLUR}
                     onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
                 </button>
               );
@@ -155,7 +153,7 @@ export default function Gallery() {
                       style={{ position: "relative", width: "100%", height: "100%" }}
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <Image src={src} alt="" fill style={{ objectFit: "contain" }} sizes="100vw" priority={i === lightboxIndex} placeholder="blur" blurDataURL={GRAY_BLUR} />
+                      <Image src={src} alt="" fill style={{ objectFit: "contain" }} sizes="100vw" priority={i === lightboxIndex} />
                     </div>
                   </div>
                 </SwiperSlide>
