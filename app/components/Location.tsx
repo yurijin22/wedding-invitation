@@ -4,12 +4,7 @@ import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { weddingData } from "@/lib/wedding-data";
 
-declare global {
-  interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    naver: any;
-  }
-}
+// window.naver 타입 선언은 Map.tsx의 전역 declare를 공유
 
 const BG = "#1D1000";
 
