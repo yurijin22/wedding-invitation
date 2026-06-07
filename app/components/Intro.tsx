@@ -42,17 +42,16 @@ export default function Intro() {
         <p
           style={{
             fontFamily: "var(--font-serif)",
-            fontSize: "clamp(9px, 3vw, 12.5px)",
-            lineHeight: "20px",
-            letterSpacing: "0.01em",
+            fontSize: "clamp(7px, 2.3vw, 9px)",
+            lineHeight: "1.9",
+            letterSpacing: "0",
             color: "#111111",
             textAlign: "center",
             margin: 0,
           }}
         >
-          <span style={{ display: "block", whiteSpace: "nowrap" }}>The year&apos;s loveliest smile falls softly upon September 20,</span>
-          <span style={{ display: "block", whiteSpace: "nowrap" }}>blessing the moment we become one forever,</span>
-          <span style={{ display: "block", whiteSpace: "nowrap" }}>with love blooming through the years to come,</span>
+          <span style={{ display: "block", whiteSpace: "nowrap" }}>The year&apos;s loveliest smile falls softly upon September 20, blessing the moment</span>
+          <span style={{ display: "block", whiteSpace: "nowrap" }}>we become one forever, with love blooming through the years to come,</span>
           <span style={{ display: "block", whiteSpace: "nowrap" }}>walking hand in hand through the seasons ahead.</span>
         </p>
 
