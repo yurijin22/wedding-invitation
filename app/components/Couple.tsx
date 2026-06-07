@@ -1,11 +1,11 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { weddingData } from "@/lib/wedding-data";
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7 } },
+  visible: { opacity: 1, y: 0, transition: { duration: 1.15, ease: [0.22, 1, 0.36, 1], delay: 0.1 } },
 };
 
 export default function Couple() {
@@ -16,7 +16,7 @@ export default function Couple() {
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
+        viewport={{ once: true, margin: "-110px" }}
         variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
         className="max-w-sm mx-auto space-y-12"
       >

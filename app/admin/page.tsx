@@ -21,6 +21,9 @@ export default function AdminPage() {
   const [uploadingKeys, setUploadingKeys] = useState<Set<string>>(new Set());
   const [deleting, setDeleting] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
+  const [dragIdx, setDragIdx] = useState<number | null>(null);
+  const [overIdx, setOverIdx] = useState<number | null>(null);
+  const [savingOrder, setSavingOrder] = useState(false);
   const pwRef = useRef(pw);
 
   useEffect(() => {
@@ -98,6 +101,29 @@ export default function AdminPage() {
       });
   };
 
+  // 순서 저장
+  const saveOrder = async (newOrder: string[]) => {
+    setPhotos(newOrder);
+    setSavingOrder(true);
+    await fetch("/api/order", {
+      method: "POST",
+      headers: { "x-admin-password": pwRef.current, "Content-Type": "application/json" },
+      body: JSON.stringify({ order: newOrder }),
+    }).catch(() => {});
+    setSavingOrder(false);
+  };
+
+  // 드래그로 순서 변경
+  const handleDrop = (target: number) => {
+    if (dragIdx === null || dragIdx === target) { setDragIdx(null); setOverIdx(null); return; }
+    const next = [...photos];
+    const [moved] = next.splice(dragIdx, 1);
+    next.splice(target, 0, moved);
+    setDragIdx(null);
+    setOverIdx(null);
+    saveOrder(next);
+  };
+
   const deletePhoto = async (url: string) => {
     if (!confirm("삭제할까요?")) return;
     setDeleting(url);
@@ -167,10 +193,15 @@ export default function AdminPage() {
 
         {/* ── 갤러리 사진 ── */}
         <div>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
             <p style={{ fontSize: 18, fontWeight: 500, color: "#261E1A", margin: 0 }}>갤러리 사진</p>
-            <span style={{ fontSize: 13, color: "#8C8C8C" }}>{photos.length}장</span>
+            <span style={{ fontSize: 13, color: "#8C8C8C" }}>
+              {savingOrder ? "순서 저장 중..." : `${photos.length}장`}
+            </span>
           </div>
+          <p style={{ fontSize: 12, color: "#8C8C8C", margin: "0 0 16px" }}>
+            썸네일을 드래그해서 순서를 바꾸면 청첩장에 그대로 반영됩니다.
+          </p>
 
           {/* 업로드 영역 */}
           <div
@@ -204,13 +235,28 @@ export default function AdminPage() {
           ) : (
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
               {photos.map((url, i) => (
-                <div key={url} style={{ position: "relative", aspectRatio: "1", backgroundColor: "#D4CFC9", borderRadius: 8, overflow: "hidden" }}>
-                  <Image src={url} alt={`photo-${i}`} fill style={{ objectFit: "cover" }} sizes="180px" />
+                <div
+                  key={url}
+                  draggable
+                  onDragStart={() => setDragIdx(i)}
+                  onDragOver={(e) => { e.preventDefault(); setOverIdx(i); }}
+                  onDragEnd={() => { setDragIdx(null); setOverIdx(null); }}
+                  onDrop={() => handleDrop(i)}
+                  style={{
+                    position: "relative", aspectRatio: "1", backgroundColor: "#D4CFC9",
+                    borderRadius: 8, overflow: "hidden", cursor: "grab",
+                    opacity: dragIdx === i ? 0.4 : 1,
+                    outline: overIdx === i && dragIdx !== null && dragIdx !== i ? "2px solid #361D17" : "none",
+                    outlineOffset: -2,
+                    transition: "opacity 0.15s",
+                  }}
+                >
+                  <Image src={url} alt={`photo-${i}`} fill style={{ objectFit: "cover", pointerEvents: "none" }} sizes="180px" />
                   <button onClick={() => deletePhoto(url)} disabled={deleting === url}
                     style={{ position: "absolute", top: 4, right: 4, width: 24, height: 24, borderRadius: "50%", backgroundColor: "rgba(38,30,26,0.7)", color: "#fff", border: "none", cursor: "pointer", fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center" }}>
                     ×
                   </button>
-                  <span style={{ position: "absolute", bottom: 4, left: 6, fontSize: 11, color: "rgba(255,255,255,0.8)" }}>{i + 1}</span>
+                  <span style={{ position: "absolute", bottom: 4, left: 6, fontSize: 11, color: "rgba(255,255,255,0.8)", textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}>{i + 1}</span>
                 </div>
               ))}
             </div>

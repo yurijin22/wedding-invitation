@@ -3,6 +3,10 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Keyboard } from "swiper/modules";
+import type { Swiper as SwiperClass } from "swiper";
+import "swiper/css";
 import { weddingData } from "@/lib/wedding-data";
 
 export default function Gallery() {
@@ -10,6 +14,8 @@ export default function Gallery() {
   const [blobImages, setBlobImages] = useState<string[]>([]);
   const [visibleCount, setVisibleCount] = useState(12);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const swiperRef = useRef<SwiperClass | null>(null);
   const topRef = useRef<HTMLDivElement>(null);
 
   // Blob에서 사진 불러오기 (있으면 Blob 우선, 없으면 로컬)
@@ -20,11 +26,25 @@ export default function Gallery() {
       .catch(() => {});
   }, []);
 
+  // 라이트박스 열릴 때 배경 스크롤 잠금
+  useEffect(() => {
+    if (lightboxIndex !== null) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => { document.body.style.overflow = prev; };
+    }
+  }, [lightboxIndex]);
+
   const galleryImages = blobImages.length > 0 ? blobImages : localImages;
   const displayed = galleryImages.slice(0, visibleCount);
   const hasMore = visibleCount < galleryImages.length;
   const rows: string[][] = [];
   for (let i = 0; i < displayed.length; i += 3) rows.push(displayed.slice(i, i + 3));
+
+  const openLightbox = (idx: number) => {
+    setActiveIndex(idx);
+    setLightboxIndex(idx);
+  };
 
   return (
     <section style={{ backgroundColor: "#fff", padding: "4px 4px 0 4px" }}>
@@ -37,7 +57,7 @@ export default function Gallery() {
               return (
                 <button
                   key={ci}
-                  onClick={() => setLightboxIndex(idx)}
+                  onClick={() => openLightbox(idx)}
                   style={{ flex: 1, height: 128, position: "relative", overflow: "hidden", backgroundColor: "#D4CFC9", border: "none", padding: 0, cursor: "pointer" }}
                 >
                   <Image src={src} alt="" fill style={{ objectFit: "cover" }} sizes="125px"
@@ -105,22 +125,60 @@ export default function Gallery() {
       )}
       {!hasMore && visibleCount <= 12 && <div style={{ height: 12 }} />}
 
-      {/* 라이트박스 */}
+      {/* 라이트박스 — 가로 스와이프 */}
       <AnimatePresence>
         {lightboxIndex !== null && (
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            style={{ position: "fixed", inset: 0, zIndex: 50, backgroundColor: "rgba(26,20,16,0.95)", display: "flex", alignItems: "center", justifyContent: "center" }}
-            onClick={() => setLightboxIndex(null)}
+            transition={{ duration: 0.3 }}
+            style={{ position: "fixed", inset: 0, zIndex: 50, backgroundColor: "rgba(26,20,16,0.96)" }}
           >
-            <div style={{ position: "relative", width: "100%", height: "100%" }} onClick={e => e.stopPropagation()}>
-              <Image src={galleryImages[lightboxIndex]} alt="" fill style={{ objectFit: "contain" }} sizes="100vw" />
-              <button onClick={() => setLightboxIndex(null)} style={{ position: "absolute", top: 20, right: 20, color: "rgba(255,255,255,0.6)", fontSize: 28, background: "none", border: "none", cursor: "pointer" }}>×</button>
-              <div style={{ position: "absolute", bottom: 24, left: 0, right: 0, display: "flex", justifyContent: "center", gap: 32 }}>
-                <button style={{ color: "rgba(255,255,255,0.4)", fontSize: 14, background: "none", border: "none", cursor: "pointer" }} onClick={() => setLightboxIndex(i => Math.max(0, (i ?? 0) - 1))}>← prev</button>
-                <span style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, alignSelf: "center" }}>{lightboxIndex + 1} / {galleryImages.length}</span>
-                <button style={{ color: "rgba(255,255,255,0.4)", fontSize: 14, background: "none", border: "none", cursor: "pointer" }} onClick={() => setLightboxIndex(i => Math.min(galleryImages.length - 1, (i ?? 0) + 1))}>next →</button>
-              </div>
+            <Swiper
+              modules={[Keyboard]}
+              initialSlide={lightboxIndex}
+              keyboard={{ enabled: true }}
+              spaceBetween={0}
+              onSwiper={(s) => { swiperRef.current = s; }}
+              onSlideChange={(s) => setActiveIndex(s.activeIndex)}
+              style={{ width: "100%", height: "100%" }}
+            >
+              {galleryImages.map((src, i) => (
+                <SwiperSlide key={i}>
+                  {/* 빈 영역(이미지 바깥) 탭 → 닫기 */}
+                  <div
+                    style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}
+                    onClick={() => setLightboxIndex(null)}
+                  >
+                    <div
+                      style={{ position: "relative", width: "100%", height: "100%" }}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Image src={src} alt="" fill style={{ objectFit: "contain" }} sizes="100vw" priority={i === lightboxIndex} />
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            {/* 닫기 */}
+            <button
+              onClick={() => setLightboxIndex(null)}
+              style={{ position: "absolute", top: 20, right: 20, zIndex: 10, color: "rgba(255,255,255,0.7)", fontSize: 30, background: "none", border: "none", cursor: "pointer", lineHeight: 1 }}
+            >×</button>
+
+            {/* 좌우 화살표 (데스크탑 보조) */}
+            <button
+              onClick={() => swiperRef.current?.slidePrev()}
+              style={{ position: "absolute", top: "50%", left: 8, transform: "translateY(-50%)", zIndex: 10, color: "rgba(255,255,255,0.5)", fontSize: 32, background: "none", border: "none", cursor: "pointer", padding: 12 }}
+            >‹</button>
+            <button
+              onClick={() => swiperRef.current?.slideNext()}
+              style={{ position: "absolute", top: "50%", right: 8, transform: "translateY(-50%)", zIndex: 10, color: "rgba(255,255,255,0.5)", fontSize: 32, background: "none", border: "none", cursor: "pointer", padding: 12 }}
+            >›</button>
+
+            {/* 카운터 */}
+            <div style={{ position: "absolute", bottom: 24, left: 0, right: 0, textAlign: "center", zIndex: 10, color: "rgba(255,255,255,0.5)", fontSize: 13, letterSpacing: "0.05em" }}>
+              {activeIndex + 1} / {galleryImages.length}
             </div>
           </motion.div>
         )}

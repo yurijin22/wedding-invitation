@@ -42,7 +42,7 @@ export default function Intro() {
         <p
           style={{
             fontFamily: "var(--font-serif)",
-            fontSize: 13,
+            fontSize: "clamp(9px, 3vw, 12.5px)",
             lineHeight: "20px",
             letterSpacing: "0.01em",
             color: "#111111",
@@ -50,10 +50,10 @@ export default function Intro() {
             margin: 0,
           }}
         >
-          <span style={{ display: "block" }}>The year&apos;s loveliest smile falls softly upon September 20,</span>
-          <span style={{ display: "block" }}>blessing the moment we become one forever,</span>
-          <span style={{ display: "block" }}>with love blooming through the years to come,</span>
-          <span style={{ display: "block" }}>walking hand in hand through the seasons ahead.</span>
+          <span style={{ display: "block", whiteSpace: "nowrap" }}>The year&apos;s loveliest smile falls softly upon September 20,</span>
+          <span style={{ display: "block", whiteSpace: "nowrap" }}>blessing the moment we become one forever,</span>
+          <span style={{ display: "block", whiteSpace: "nowrap" }}>with love blooming through the years to come,</span>
+          <span style={{ display: "block", whiteSpace: "nowrap" }}>walking hand in hand through the seasons ahead.</span>
         </p>
 
         {/* 2. 사진 2장: 각 120×120, gap 8px, 중앙정렬 */}

@@ -9,10 +9,10 @@ export default function Notice() {
   return (
     <section style={{ backgroundColor: "#fff", paddingTop: 80, paddingBottom: 80 }}>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 32 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.7 }}
+        viewport={{ once: true, margin: "-110px" }}
+        transition={{ duration: 1.15, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
         style={{ display: "flex", flexDirection: "column", gap: 48 }}
       >
         {/* 본문 */}

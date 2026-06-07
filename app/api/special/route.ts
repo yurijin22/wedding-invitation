@@ -1,7 +1,11 @@
 import { put, list, del } from "@vercel/blob";
 import { NextRequest, NextResponse } from "next/server";
+import sharp from "sharp";
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "wedding2026";
+
+export const runtime = "nodejs";
+export const maxDuration = 60;
 
 export async function GET() {
   try {
@@ -43,9 +47,17 @@ export async function POST(req: NextRequest) {
       await del(b.url);
     }
 
-    const ext = file.name.split(".").pop() ?? "jpg";
-    const blob = await put(`special/${key}.${ext}`, file, {
+    // 리사이즈 + WebP 압축 (특별 사진은 작게 표시되므로 최대 1000px)
+    const input = Buffer.from(await file.arrayBuffer());
+    const resized = await sharp(input)
+      .rotate()
+      .resize({ width: 1000, height: 1000, fit: "inside", withoutEnlargement: true })
+      .webp({ quality: 82 })
+      .toBuffer();
+
+    const blob = await put(`special/${key}.webp`, resized, {
       access: "public",
+      contentType: "image/webp",
       addRandomSuffix: false,
       allowOverwrite: true,
       cacheControlMaxAge: 60,
