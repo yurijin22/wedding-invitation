@@ -1,7 +1,15 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { weddingData } from "@/lib/wedding-data";
+
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    kakao: any;
+  }
+}
 
 const BG = "#1D1000";
 
@@ -14,12 +22,36 @@ const BUTTONS = [
 export default function Location() {
   const { wedding } = weddingData;
   const { venue } = wedding;
+  const mapRef = useRef<HTMLDivElement>(null);
 
-  // 키/계정 불필요한 OpenStreetMap 임베드 (마커 포함)
-  const { lat, lng } = venue;
-  const dLat = 0.0035, dLng = 0.0055; // 표시 범위(줌)
-  const bbox = `${lng - dLng}%2C${lat - dLat}%2C${lng + dLng}%2C${lat + dLat}`;
-  const mapSrc = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat}%2C${lng}`;
+  // 카카오 지도 로드 + 마커
+  useEffect(() => {
+    const init = () => {
+      window.kakao.maps.load(() => {
+        if (!mapRef.current) return;
+        const center = new window.kakao.maps.LatLng(venue.lat, venue.lng);
+        const map = new window.kakao.maps.Map(mapRef.current, { center, level: 3 });
+        new window.kakao.maps.Marker({ position: center, map });
+        map.setZoomable(false); // 페이지 스크롤 가로채기 방지
+
+        // 컨테이너가 뒤늦게 보일 때 회색으로 남는 것 방지
+        const fix = () => { map.relayout(); map.setCenter(center); };
+        setTimeout(fix, 400);
+        const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) fix(); });
+        io.observe(mapRef.current);
+      });
+    };
+    if (window.kakao && window.kakao.maps) { init(); return; }
+    const id = "kakao-maps-sdk";
+    const existing = document.getElementById(id) as HTMLScriptElement | null;
+    if (existing) { existing.addEventListener("load", init); return; }
+    const script = document.createElement("script");
+    script.id = id;
+    script.async = true;
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${weddingData.kakaoAppKey}&autoload=false`;
+    script.onload = init;
+    document.head.appendChild(script);
+  }, [venue.lat, venue.lng]);
 
   const openNav = (appUrl: string, webUrl: string) => {
     // 앱 실행 시도 → 1초 후 페이지 그대로면 웹으로 폴백
@@ -86,13 +118,8 @@ export default function Location() {
           </div>
         </div>
 
-        {/* 지도 (OpenStreetMap — 키 불필요) */}
-        <iframe
-          title="오시는 길 지도"
-          src={mapSrc}
-          loading="lazy"
-          style={{ width: "100%", height: 245, border: 0, borderRadius: 8, display: "block", backgroundColor: "#E5E5E5" }}
-        />
+        {/* 카카오 지도 */}
+        <div ref={mapRef} style={{ width: "100%", height: 245, borderRadius: 8, overflow: "hidden", backgroundColor: "#E5E5E5" }} />
 
         {/* 버튼 3개 — img 태그로 직접 로드 */}
         <div style={{ display: "flex", gap: 8 }}>
