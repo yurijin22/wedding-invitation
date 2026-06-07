@@ -52,34 +52,38 @@ export default function Location() {
   }, [venue.lat, venue.lng, venue.name]);
 
   const openNav = (appUrl: string, webUrl: string) => {
-    // 앱 실행 시도 → 1초 후 페이지 그대로면 웹으로 폴백
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    // 데스크탑(앱 없음)에선 앱스킴이 "유효하지 않은 주소" 에러 → 웹 지도로 바로 이동
+    if (!isMobile) { window.open(webUrl, "_blank"); return; }
+    // 모바일: 앱 실행 시도 → 안 열리면 웹으로 폴백
     const t = Date.now();
     window.location.href = appUrl;
     setTimeout(() => {
-      if (Date.now() - t < 1500) window.open(webUrl, "_blank");
-    }, 1000);
+      if (Date.now() - t < 1600) window.open(webUrl, "_blank");
+    }, 1200);
   };
 
   const open = (type: string) => {
     const name = encodeURIComponent("라마다서울신도림호텔");
-    const addr = encodeURIComponent("서울 구로구 경인로 624");
     const lat = venue.lat;
     const lng = venue.lng;
+    const appname = typeof window !== "undefined" ? window.location.hostname : "wedding";
 
     if (type === "naver") {
       openNav(
-        `naver://map/route?menu=route&dlat=${lat}&dlng=${lng}&dname=${name}`,
-        `https://map.naver.com/v5/search/${name}`
+        `nmap://place?lat=${lat}&lng=${lng}&name=${name}&appname=${appname}`,
+        `https://map.naver.com/p/search/${name}`
       );
     } else if (type === "kakao") {
       openNav(
-        `kakaomap://route?ep=${lat},${lng}&by=CAR`,
-        `https://map.kakao.com/link/to/${name},${lat},${lng}`
+        `kakaomap://look?p=${lat},${lng}`,
+        `https://map.kakao.com/link/map/${name},${lat},${lng}`
       );
     } else {
+      // TMAP은 웹 지도가 없어 데스크탑에선 네이버 웹으로 위치만 표시
       openNav(
-        `tmap://route?goalname=${name}&goalx=${lng}&goaly=${lat}&goaladdr=${addr}`,
-        `https://tmap.life/${lat},${lng}`
+        `tmap://route?goalname=${name}&goalx=${lng}&goaly=${lat}`,
+        `https://map.naver.com/p/search/${name}`
       );
     }
   };
@@ -100,16 +104,16 @@ export default function Location() {
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {/* 한글 venue명 — 18px Light */}
-            <p style={{ fontSize: 18, fontWeight: 300, color: "#fff", lineHeight: 1.5, margin: 0 }}>
+            <p style={{ fontSize: 18, fontWeight: 300, color: "#fff", lineHeight: 1.5, margin: 0, textAlign: "center" }}>
               {venue.nameKorean}
             </p>
             {/* 영문 venue명 */}
-            <p style={{ fontFamily: "var(--font-serif)", fontSize: 16, color: "#9EC5EE", letterSpacing: "0.04em", display: "inline-block", transform: "scaleX(0.92)", transformOrigin: "left center", margin: 0 }}>
+            <p style={{ fontFamily: "var(--font-serif)", fontSize: 16, color: "#9EC5EE", letterSpacing: "0.04em", display: "block", textAlign: "center", transform: "scaleX(0.92)", transformOrigin: "center center", margin: 0 }}>
               {venue.nameEnglish}
             </p>
             <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.12)" }} />
             {/* 주소 / 전화 — gap 16px */}
-            <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16 }}>
               <p style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", margin: 0 }}>{venue.address}</p>
               <a href={`tel:${venue.tel}`} style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", textDecoration: "none", flexShrink: 0 }}>{venue.tel}</a>
             </div>

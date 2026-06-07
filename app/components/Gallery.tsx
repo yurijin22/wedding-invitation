@@ -4,20 +4,21 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Keyboard } from "swiper/modules";
+import { Keyboard, Thumbs, FreeMode } from "swiper/modules";
 import type { Swiper as SwiperClass } from "swiper";
 import "swiper/css";
+import "swiper/css/thumbs";
+import "swiper/css/free-mode";
 import { weddingData } from "@/lib/wedding-data";
 
 export default function Gallery() {
   const { galleryImages: localImages } = weddingData;
   const [blobImages, setBlobImages] = useState<string[]>([]);
   const [loaded, setLoaded] = useState(false);
-  const [visibleCount, setVisibleCount] = useState(12);
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const swiperRef = useRef<SwiperClass | null>(null);
-  const topRef = useRef<HTMLDivElement>(null);
+  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const lightboxRef = useRef<SwiperClass | null>(null);
 
   // Blob에서 사진 불러오기 (있으면 Blob 우선, 없으면 로컬)
   useEffect(() => {
@@ -37,21 +38,12 @@ export default function Gallery() {
     }
   }, [lightboxIndex]);
 
-  // 로딩 전엔 로컬 이미지를 띄우지 않음 → 그레이 스켈레톤만 (살색 깜빡임 방지)
+  // 로딩 전엔 로컬 이미지를 띄우지 않음 → 그레이 스켈레톤만
   const galleryImages = blobImages.length > 0 ? blobImages : (loaded ? localImages : []);
-  const displayed = galleryImages.slice(0, visibleCount);
-  const hasMore = visibleCount < galleryImages.length;
-  const rows: string[][] = [];
-  for (let i = 0; i < displayed.length; i += 3) rows.push(displayed.slice(i, i + 3));
-  const showSkeleton = !loaded && displayed.length === 0;
-
-  const openLightbox = (idx: number) => {
-    setActiveIndex(idx);
-    setLightboxIndex(idx);
-  };
+  const showSkeleton = !loaded && galleryImages.length === 0;
 
   return (
-    <section style={{ backgroundColor: "#fff", padding: "4px 4px 0 4px" }}>
+    <section style={{ backgroundColor: "#fff", padding: "0 16px" }}>
       {/* 섹션 타이틀 — 다른 섹션과 동일 스타일 */}
       <motion.p
         initial={{ opacity: 0, y: 32 }}
@@ -63,93 +55,76 @@ export default function Gallery() {
         Gallery
       </motion.p>
 
-      <div ref={topRef} style={{ position: "relative" }}>
-        {/* 로딩 중 그레이 스켈레톤 (4행 × 3열) */}
-        {showSkeleton && Array.from({ length: 4 }).map((_, ri) => (
-          <div key={`sk-${ri}`} style={{ display: "flex", gap: 4, marginBottom: 4 }}>
-            {Array.from({ length: 3 }).map((__, ci) => (
-              <div key={ci} style={{ flex: 1, height: 128, backgroundColor: "#E5E5E5" }} />
+      {showSkeleton ? (
+        <div style={{ paddingBottom: 76 }}>
+          <div style={{ width: "100%", aspectRatio: "3 / 4", backgroundColor: "#E5E5E5", borderRadius: 4 }} />
+          <div style={{ display: "flex", gap: 6, marginTop: 6 }}>
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} style={{ width: 60, height: 60, backgroundColor: "#E5E5E5", borderRadius: 4, flexShrink: 0 }} />
             ))}
           </div>
-        ))}
-
-        {/* 사진 그리드 */}
-        {rows.map((row, ri) => (
-          <div key={ri} style={{ display: "flex", gap: 4, marginBottom: 4 }}>
-            {row.map((src, ci) => {
-              const idx = ri * 3 + ci;
-              return (
-                <button
-                  key={ci}
-                  onClick={() => openLightbox(idx)}
-                  style={{ flex: 1, height: 128, position: "relative", overflow: "hidden", backgroundColor: "#E5E5E5", border: "none", padding: 0, cursor: "pointer" }}
+        </div>
+      ) : (
+        <div style={{ paddingBottom: 76 }}>
+          {/* 메인 이미지 — 스와이프 + 탭하면 전체화면 */}
+          <Swiper
+            modules={[Thumbs, Keyboard]}
+            thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : undefined }}
+            keyboard={{ enabled: true }}
+            spaceBetween={8}
+            onSlideChange={(s) => setActiveIndex(s.activeIndex)}
+            style={{ borderRadius: 4, overflow: "hidden" }}
+          >
+            {galleryImages.map((src, i) => (
+              <SwiperSlide key={i}>
+                <div
+                  onClick={() => setLightboxIndex(i)}
+                  style={{ position: "relative", width: "100%", aspectRatio: "3 / 4", backgroundColor: "#E5E5E5", cursor: "pointer" }}
                 >
-                  <Image src={src} alt="" fill style={{ objectFit: "cover" }} sizes="125px" quality={55} loading="lazy"
+                  <Image src={src} alt="" fill style={{ objectFit: "cover" }} sizes="390px" quality={70}
+                    priority={i === 0}
                     onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
-                </button>
-              );
-            })}
-          </div>
-        ))}
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
 
-        {/* 하단 페이드 + more photos — 9장씩 추가 */}
-        {hasMore && (
-          <div
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: 152,
-              background: "linear-gradient(to bottom, transparent, white 70%)",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              paddingBottom: 40,
-            }}
+          {/* 썸네일 스트립 — 가로 스크롤, 탭하면 메인 전환 */}
+          <Swiper
+            modules={[Thumbs, FreeMode]}
+            onSwiper={setThumbsSwiper}
+            watchSlidesProgress
+            freeMode
+            slidesPerView="auto"
+            spaceBetween={6}
+            style={{ marginTop: 6 }}
           >
-            <button
-              onClick={() => setVisibleCount(c => Math.min(c + 9, galleryImages.length))}
-              style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer" }}
-            >
-              <span
-                className="font-script"
-                style={{ fontSize: 18, fontWeight: 500, color: "#111", fontStyle: "italic", lineHeight: "26px", letterSpacing: "0.4px" }}
-              >
-                more photos
-              </span>
-              <img src="/arrow-bottom.png" alt="더보기" width={30} height={30} style={{ objectFit: "contain" }} />
-            </button>
-          </div>
-        )}
-      </div>
+            {galleryImages.map((src, i) => (
+              <SwiperSlide key={i} style={{ width: 60 }}>
+                <div
+                  style={{
+                    position: "relative", width: 60, height: 60, borderRadius: 4, overflow: "hidden",
+                    backgroundColor: "#E5E5E5", cursor: "pointer",
+                    opacity: i === activeIndex ? 1 : 0.45,
+                    outline: i === activeIndex ? "2px solid #1D1000" : "none",
+                    outlineOffset: -2, transition: "opacity 0.2s",
+                  }}
+                >
+                  <Image src={src} alt="" fill style={{ objectFit: "cover" }} sizes="60px" quality={40} loading="lazy"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
 
-      {/* 다 펼쳐진 후 — 처음으로 돌아가기 */}
-      {!hasMore && visibleCount > 12 && (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, padding: "16px 0 40px" }}>
-          <button
-            onClick={() => {
-              setVisibleCount(12);
-              setTimeout(() => {
-                topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-              }, 50);
-            }}
-            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer" }}
-          >
-              <img src="/arrow-bottom.png" alt="위로" width={30} height={30} style={{ objectFit: "contain", transform: "rotate(180deg)" }} />
-            <span
-              className="font-script"
-              style={{ fontSize: 18, fontWeight: 500, color: "#111", fontStyle: "italic", lineHeight: "26px", letterSpacing: "0.4px" }}
-            >
-              go back
-            </span>
-          </button>
+          {/* 인덱스 카운터 */}
+          <p style={{ textAlign: "center", fontSize: 12, color: "#9BA2A8", letterSpacing: "0.05em", margin: "14px 0 0" }}>
+            {activeIndex + 1} / {galleryImages.length}
+          </p>
         </div>
       )}
-      {!hasMore && visibleCount <= 12 && <div style={{ height: 12 }} />}
 
-      {/* 라이트박스 — 가로 스와이프 */}
+      {/* 라이트박스 — 전체화면 가로 스와이프 */}
       <AnimatePresence>
         {lightboxIndex !== null && (
           <motion.div
@@ -162,13 +137,12 @@ export default function Gallery() {
               initialSlide={lightboxIndex}
               keyboard={{ enabled: true }}
               spaceBetween={0}
-              onSwiper={(s) => { swiperRef.current = s; }}
+              onSwiper={(s) => { lightboxRef.current = s; }}
               onSlideChange={(s) => setActiveIndex(s.activeIndex)}
               style={{ width: "100%", height: "100%" }}
             >
               {galleryImages.map((src, i) => (
                 <SwiperSlide key={i}>
-                  {/* 빈 영역(이미지 바깥) 탭 → 닫기 */}
                   <div
                     style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}
                     onClick={() => setLightboxIndex(null)}
@@ -184,23 +158,18 @@ export default function Gallery() {
               ))}
             </Swiper>
 
-            {/* 닫기 */}
             <button
               onClick={() => setLightboxIndex(null)}
               style={{ position: "absolute", top: 20, right: 20, zIndex: 10, color: "rgba(255,255,255,0.7)", fontSize: 30, background: "none", border: "none", cursor: "pointer", lineHeight: 1 }}
             >×</button>
-
-            {/* 좌우 화살표 (데스크탑 보조) */}
             <button
-              onClick={() => swiperRef.current?.slidePrev()}
+              onClick={() => lightboxRef.current?.slidePrev()}
               style={{ position: "absolute", top: "50%", left: 8, transform: "translateY(-50%)", zIndex: 10, color: "rgba(255,255,255,0.5)", fontSize: 32, background: "none", border: "none", cursor: "pointer", padding: 12 }}
             >‹</button>
             <button
-              onClick={() => swiperRef.current?.slideNext()}
+              onClick={() => lightboxRef.current?.slideNext()}
               style={{ position: "absolute", top: "50%", right: 8, transform: "translateY(-50%)", zIndex: 10, color: "rgba(255,255,255,0.5)", fontSize: 32, background: "none", border: "none", cursor: "pointer", padding: 12 }}
             >›</button>
-
-            {/* 카운터 */}
             <div style={{ position: "absolute", bottom: 24, left: 0, right: 0, textAlign: "center", zIndex: 10, color: "rgba(255,255,255,0.5)", fontSize: 13, letterSpacing: "0.05em" }}>
               {activeIndex + 1} / {galleryImages.length}
             </div>
