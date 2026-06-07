@@ -3,13 +3,7 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { weddingData } from "@/lib/wedding-data";
-
-declare global {
-  interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    kakao: any;
-  }
-}
+import "leaflet/dist/leaflet.css";
 
 const BG = "#1D1000";
 
@@ -24,34 +18,38 @@ export default function Location() {
   const { venue } = wedding;
   const mapRef = useRef<HTMLDivElement>(null);
 
-  // 카카오 지도 로드 + 마커
+  // Leaflet 지도 (CARTO Voyager 타일) — 키/계정 불필요, 외부 SDK 차단 영향 없음
   useEffect(() => {
-    const init = () => {
-      window.kakao.maps.load(() => {
-        if (!mapRef.current) return;
-        const center = new window.kakao.maps.LatLng(venue.lat, venue.lng);
-        const map = new window.kakao.maps.Map(mapRef.current, { center, level: 3 });
-        new window.kakao.maps.Marker({ position: center, map });
-        map.setZoomable(false); // 페이지 스크롤 가로채기 방지
-
-        // 컨테이너가 뒤늦게 보일 때 회색으로 남는 것 방지
-        const fix = () => { map.relayout(); map.setCenter(center); };
-        setTimeout(fix, 400);
-        const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) fix(); });
-        io.observe(mapRef.current);
+    let cancelled = false;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let map: any;
+    import("leaflet").then((mod) => {
+      const L = mod.default;
+      const el = mapRef.current;
+      if (cancelled || !el || el.dataset.init) return;
+      el.dataset.init = "1";
+      map = L.map(el, { scrollWheelZoom: false, zoomControl: true, attributionControl: true })
+        .setView([venue.lat, venue.lng], 16);
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+        subdomains: "abcd",
+        maxZoom: 20,
+        attribution: '&copy; OpenStreetMap &copy; CARTO',
+      }).addTo(map);
+      const icon = L.divIcon({
+        className: "",
+        html: `<div style="transform:translate(-50%,-50%);background:#1D1000;color:#fff;padding:6px 12px;border-radius:16px;font-size:12px;font-weight:600;white-space:nowrap;font-family:'Noto Sans KR',sans-serif;box-shadow:0 3px 10px rgba(0,0,0,0.3);">${venue.name}</div>`,
+        iconSize: [0, 0],
+        iconAnchor: [0, 0],
       });
+      L.marker([venue.lat, venue.lng], { icon }).addTo(map);
+      setTimeout(() => map && map.invalidateSize(), 300);
+    });
+    return () => {
+      cancelled = true;
+      if (map) map.remove();
+      if (mapRef.current) delete mapRef.current.dataset.init;
     };
-    if (window.kakao && window.kakao.maps) { init(); return; }
-    const id = "kakao-maps-sdk";
-    const existing = document.getElementById(id) as HTMLScriptElement | null;
-    if (existing) { existing.addEventListener("load", init); return; }
-    const script = document.createElement("script");
-    script.id = id;
-    script.async = true;
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${weddingData.kakaoAppKey}&autoload=false`;
-    script.onload = init;
-    document.head.appendChild(script);
-  }, [venue.lat, venue.lng]);
+  }, [venue.lat, venue.lng, venue.name]);
 
   const openNav = (appUrl: string, webUrl: string) => {
     // 앱 실행 시도 → 1초 후 페이지 그대로면 웹으로 폴백
@@ -118,8 +116,8 @@ export default function Location() {
           </div>
         </div>
 
-        {/* 카카오 지도 */}
-        <div ref={mapRef} style={{ width: "100%", height: 245, borderRadius: 8, overflow: "hidden", backgroundColor: "#E5E5E5" }} />
+        {/* 지도 (Leaflet + CARTO 타일) */}
+        <div ref={mapRef} style={{ width: "100%", height: 245, borderRadius: 8, overflow: "hidden", backgroundColor: "#E5E5E5", zIndex: 0 }} />
 
         {/* 버튼 3개 — img 태그로 직접 로드 */}
         <div style={{ display: "flex", gap: 8 }}>
