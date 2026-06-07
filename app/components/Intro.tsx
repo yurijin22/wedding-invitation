@@ -73,9 +73,9 @@ export default function Intro() {
             margin: 0,
           }}
         >
-          <span style={{ display: "block", whiteSpace: "nowrap" }}>The year&apos;s loveliest smile falls softly upon September 20, blessing</span>
-          <span style={{ display: "block", whiteSpace: "nowrap" }}>the moment we become one forever, with love blooming through</span>
-          <span style={{ display: "block", whiteSpace: "nowrap" }}>the years to come, walking hand in hand through the seasons ahead.</span>
+          <span style={{ display: "block", whiteSpace: "nowrap" }}>The year&apos;s loveliest smile falls softly upon September 20, blessing the moment</span>
+          <span style={{ display: "block", whiteSpace: "nowrap" }}>we become one forever, with love blooming through the years to come,</span>
+          <span style={{ display: "block", whiteSpace: "nowrap" }}>walking hand in hand through the seasons ahead.</span>
         </p>
 
         {/* 2. 사진 2장: 각 120×120, gap 8px, 중앙정렬 */}
