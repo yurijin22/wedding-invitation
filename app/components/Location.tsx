@@ -34,6 +34,14 @@ export default function Location() {
         new window.kakao.maps.Marker({ position: center, map });
         // 페이지 스크롤 가로채기 방지 (휠 줌 비활성, 드래그/더블탭 줌은 유지)
         map.setZoomable(false);
+
+        // 컨테이너가 뒤늦게(애니메이션/스크롤로) 보일 때 회색으로 남는 것 방지
+        const fix = () => { map.relayout(); map.setCenter(center); };
+        setTimeout(fix, 400);
+        const io = new IntersectionObserver((entries) => {
+          if (entries.some((e) => e.isIntersecting)) fix();
+        });
+        io.observe(mapRef.current);
       });
     };
     if (window.kakao && window.kakao.maps) { init(); return; }
