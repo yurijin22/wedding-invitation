@@ -2,10 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
-
-// 로딩 중 표시할 그레이 플레이스홀더 (8×8 #E5E5E5)
-const GRAY_BLUR =
-  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAAD0lEQVR4nGN4igMwDC0JABu1q8HC71HKAAAAAElFTkSuQmCC";
+import { GRAY_BLUR } from "@/lib/placeholder";
 
 export default function Intro() {
   const [specialPhotos, setSpecialPhotos] = useState<Record<string, string>>({});

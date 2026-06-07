@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { weddingData } from "@/lib/wedding-data";
+import { GRAY_BLUR } from "@/lib/placeholder";
 
 // Instrument Serif — scaleX(0.92) 공통 적용
 const IS: React.CSSProperties = {
@@ -48,6 +49,7 @@ export default function Outro() {
         boxShadow: "0 2px 12px rgba(0,0,0,0.1)", zIndex: 10,
       }}>
         <Image src={outroPhoto} alt="couple" fill style={{ objectFit: "cover" }} sizes="155px"
+          placeholder="blur" blurDataURL={GRAY_BLUR}
           onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
       </div>
 
