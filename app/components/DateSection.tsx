@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-const BG = "#160C00";
+const BG = "#1D1000";
 const ACCENT = "#9EC5EE";
 const DAY_COLOR = "#867774";
 const DAYS = ["Thu","Fri","Sat","Sun","Mon","Tue","Wed"];

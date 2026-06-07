@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { weddingData } from "@/lib/wedding-data";
 
-const BG = "#160C00";
+const BG = "#1D1000";
 
 const BUTTONS = [
   { src: "/navermap.png", fn: "naver" },
