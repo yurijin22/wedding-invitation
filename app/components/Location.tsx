@@ -1,8 +1,15 @@
 "use client";
 
-import Image from "next/image";
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { weddingData } from "@/lib/wedding-data";
+
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    kakao: any;
+  }
+}
 
 const BG = "#1D1000";
 
@@ -15,6 +22,33 @@ const BUTTONS = [
 export default function Location() {
   const { wedding } = weddingData;
   const { venue } = wedding;
+  const mapRef = useRef<HTMLDivElement>(null);
+
+  // 카카오 지도 로드 + 마커 표시
+  useEffect(() => {
+    const init = () => {
+      window.kakao.maps.load(() => {
+        if (!mapRef.current) return;
+        const center = new window.kakao.maps.LatLng(venue.lat, venue.lng);
+        const map = new window.kakao.maps.Map(mapRef.current, { center, level: 3 });
+        new window.kakao.maps.Marker({ position: center, map });
+        // 페이지 스크롤 가로채기 방지 (휠 줌 비활성, 드래그/더블탭 줌은 유지)
+        map.setZoomable(false);
+      });
+    };
+    if (window.kakao && window.kakao.maps) { init(); return; }
+    const id = "kakao-maps-sdk";
+    if (document.getElementById(id)) {
+      document.getElementById(id)!.addEventListener("load", init);
+      return;
+    }
+    const script = document.createElement("script");
+    script.id = id;
+    script.async = true;
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${weddingData.kakaoAppKey}&autoload=false`;
+    script.onload = init;
+    document.head.appendChild(script);
+  }, [venue.lat, venue.lng]);
 
   const openNav = (appUrl: string, webUrl: string) => {
     // 앱 실행 시도 → 1초 후 페이지 그대로면 웹으로 폴백
@@ -81,11 +115,8 @@ export default function Location() {
           </div>
         </div>
 
-        {/* 지도 이미지 */}
-        <div style={{ position: "relative", width: "100%", height: 245, borderRadius: 8, overflow: "hidden", backgroundColor: "#E5E5E5" }}>
-          <Image src="/locationmap.png" alt="지도" fill style={{ objectFit: "cover" }} sizes="342px"
-            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
-        </div>
+        {/* 카카오 지도 */}
+        <div ref={mapRef} style={{ width: "100%", height: 245, borderRadius: 8, overflow: "hidden", backgroundColor: "#E5E5E5" }} />
 
         {/* 버튼 3개 — img 태그로 직접 로드 */}
         <div style={{ display: "flex", gap: 8 }}>
