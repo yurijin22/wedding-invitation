@@ -9,9 +9,13 @@ export async function GET() {
     const result: Record<string, string> = {};
     for (const b of blobs) {
       const key = b.pathname.replace("special/", "").replace(/\.[^.]+$/, "");
-      result[key] = b.url;
+      // 재업로드 시 URL이 같아 캐시가 남는 문제 방지: 업로드 시각을 버전으로 부착
+      const version = new Date(b.uploadedAt).getTime();
+      result[key] = `${b.url}?v=${version}`;
     }
-    return NextResponse.json(result);
+    return NextResponse.json(result, {
+      headers: { "Cache-Control": "no-store" },
+    });
   } catch (e) {
     console.error("special GET error:", e);
     return NextResponse.json({}, { status: 500 });
@@ -43,6 +47,8 @@ export async function POST(req: NextRequest) {
     const blob = await put(`special/${key}.${ext}`, file, {
       access: "public",
       addRandomSuffix: false,
+      allowOverwrite: true,
+      cacheControlMaxAge: 60,
     });
 
     return NextResponse.json({ url: blob.url });
