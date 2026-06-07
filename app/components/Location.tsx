@@ -82,7 +82,7 @@ export default function Location() {
         </div>
 
         {/* 지도 이미지 */}
-        <div style={{ position: "relative", width: "100%", height: 245, borderRadius: 8, overflow: "hidden", backgroundColor: "#3A2E2A" }}>
+        <div style={{ position: "relative", width: "100%", height: 245, borderRadius: 8, overflow: "hidden", backgroundColor: "#E5E5E5" }}>
           <Image src="/locationmap.png" alt="지도" fill style={{ objectFit: "cover" }} sizes="342px"
             onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
         </div>

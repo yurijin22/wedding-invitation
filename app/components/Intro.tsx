@@ -80,11 +80,11 @@ export default function Intro() {
 
         {/* 2. 사진 2장: 각 120×120, gap 8px, 중앙정렬 */}
         <div style={{ display: "flex", justifyContent: "center", gap: 8 }}>
-          <div style={{ width: 120, height: 120, position: "relative", overflow: "hidden", backgroundColor: "#D9D9D9", flexShrink: 0 }}>
+          <div style={{ width: 120, height: 120, position: "relative", overflow: "hidden", backgroundColor: "#E5E5E5", flexShrink: 0 }}>
             <Image src={photo1} alt="" fill sizes="120px" style={{ objectFit: "cover" }}
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
           </div>
-          <div style={{ width: 120, height: 120, position: "relative", overflow: "hidden", backgroundColor: "#D9D9D9", flexShrink: 0 }}>
+          <div style={{ width: 120, height: 120, position: "relative", overflow: "hidden", backgroundColor: "#E5E5E5", flexShrink: 0 }}>
             <Image src={photo2} alt="" fill sizes="120px" style={{ objectFit: "cover" }}
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
           </div>

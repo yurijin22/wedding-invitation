@@ -58,9 +58,9 @@ export default function Gallery() {
                 <button
                   key={ci}
                   onClick={() => openLightbox(idx)}
-                  style={{ flex: 1, height: 128, position: "relative", overflow: "hidden", backgroundColor: "#D4CFC9", border: "none", padding: 0, cursor: "pointer" }}
+                  style={{ flex: 1, height: 128, position: "relative", overflow: "hidden", backgroundColor: "#E5E5E5", border: "none", padding: 0, cursor: "pointer" }}
                 >
-                  <Image src={src} alt="" fill style={{ objectFit: "cover" }} sizes="125px"
+                  <Image src={src} alt="" fill style={{ objectFit: "cover" }} sizes="125px" quality={55} loading="lazy"
                     onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
                 </button>
               );

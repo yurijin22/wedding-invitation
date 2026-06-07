@@ -43,7 +43,7 @@ export default function Outro() {
       {/* 커플 사진 */}
       <div style={{
         position: "absolute", left: 116, top: 162,
-        width: 155, height: 155, overflow: "hidden",
+        width: 155, height: 155, overflow: "hidden", backgroundColor: "#E5E5E5",
         border: "6px solid rgba(255,255,255,0.9)",
         boxShadow: "0 2px 12px rgba(0,0,0,0.1)", zIndex: 10,
       }}>
