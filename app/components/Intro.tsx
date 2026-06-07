@@ -5,10 +5,11 @@ import { useState, useEffect, useRef } from "react";
 
 export default function Intro() {
   const [specialPhotos, setSpecialPhotos] = useState<Record<string, string>>({});
+  const [specialLoaded, setSpecialLoaded] = useState(false);
   const quoteRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
-    fetch("/api/special").then(r => r.json()).then(setSpecialPhotos).catch(() => {});
+    fetch("/api/special").then(r => r.json()).then(setSpecialPhotos).catch(() => {}).finally(() => setSpecialLoaded(true));
   }, []);
 
   // 인용 문구: 3줄을 유지하면서 폭에 들어가는 "최대 폰트"를 자동 계산
@@ -32,8 +33,9 @@ export default function Intro() {
     return () => window.removeEventListener("resize", fit);
   }, []);
 
-  const photo1 = specialPhotos["intro-1"] ?? "/gallery/photo-1.jpg";
-  const photo2 = specialPhotos["intro-2"] ?? "/gallery/photo-2.jpg";
+  // 로딩 중엔 null → 그레이 박스만, 로딩 후 특별사진(없으면 기본 이미지)
+  const photo1 = specialPhotos["intro-1"] ?? (specialLoaded ? "/gallery/photo-1.jpg" : null);
+  const photo2 = specialPhotos["intro-2"] ?? (specialLoaded ? "/gallery/photo-2.jpg" : null);
 
   return (
     <section
@@ -81,12 +83,12 @@ export default function Intro() {
         {/* 2. 사진 2장: 각 120×120, gap 8px, 중앙정렬 */}
         <div style={{ display: "flex", justifyContent: "center", gap: 8 }}>
           <div style={{ width: 120, height: 120, position: "relative", overflow: "hidden", backgroundColor: "#E5E5E5", flexShrink: 0 }}>
-            <Image src={photo1} alt="" fill sizes="120px" style={{ objectFit: "cover" }}
-              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+            {photo1 && <Image src={photo1} alt="" fill sizes="120px" style={{ objectFit: "cover" }}
+              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />}
           </div>
           <div style={{ width: 120, height: 120, position: "relative", overflow: "hidden", backgroundColor: "#E5E5E5", flexShrink: 0 }}>
-            <Image src={photo2} alt="" fill sizes="120px" style={{ objectFit: "cover" }}
-              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+            {photo2 && <Image src={photo2} alt="" fill sizes="120px" style={{ objectFit: "cover" }}
+              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />}
           </div>
         </div>
 

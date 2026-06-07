@@ -14,12 +14,13 @@ const IS: React.CSSProperties = {
 
 export default function Outro() {
   const { groom, bride } = weddingData;
-  const [outroPhoto, setOutroPhoto] = useState("/gallery/photo-1.jpg");
+  // 로딩 중엔 null → 그레이 박스만, 로딩 후 특별사진(없으면 기본 이미지)
+  const [outroPhoto, setOutroPhoto] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/special").then(r => r.json()).then((d: Record<string,string>) => {
-      if (d["outro"]) setOutroPhoto(d["outro"]);
-    }).catch(() => {});
+      setOutroPhoto(d["outro"] ?? "/gallery/photo-1.jpg");
+    }).catch(() => setOutroPhoto("/gallery/photo-1.jpg"));
   }, []);
 
   return (
@@ -47,8 +48,8 @@ export default function Outro() {
         border: "6px solid rgba(255,255,255,0.9)",
         boxShadow: "0 2px 12px rgba(0,0,0,0.1)", zIndex: 10,
       }}>
-        <Image src={outroPhoto} alt="couple" fill style={{ objectFit: "cover" }} sizes="155px"
-          onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+        {outroPhoto && <Image src={outroPhoto} alt="couple" fill style={{ objectFit: "cover" }} sizes="155px"
+          onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />}
       </div>
 
       {/* 정보 테이블 */}

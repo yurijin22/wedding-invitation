@@ -12,6 +12,7 @@ import { weddingData } from "@/lib/wedding-data";
 export default function Gallery() {
   const { galleryImages: localImages } = weddingData;
   const [blobImages, setBlobImages] = useState<string[]>([]);
+  const [loaded, setLoaded] = useState(false);
   const [visibleCount, setVisibleCount] = useState(12);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -23,7 +24,8 @@ export default function Gallery() {
     fetch("/api/photos")
       .then(r => r.json())
       .then(d => { if (d.urls?.length > 0) setBlobImages(d.urls); })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoaded(true));
   }, []);
 
   // 라이트박스 열릴 때 배경 스크롤 잠금
@@ -35,11 +37,13 @@ export default function Gallery() {
     }
   }, [lightboxIndex]);
 
-  const galleryImages = blobImages.length > 0 ? blobImages : localImages;
+  // 로딩 전엔 로컬 이미지를 띄우지 않음 → 그레이 스켈레톤만 (살색 깜빡임 방지)
+  const galleryImages = blobImages.length > 0 ? blobImages : (loaded ? localImages : []);
   const displayed = galleryImages.slice(0, visibleCount);
   const hasMore = visibleCount < galleryImages.length;
   const rows: string[][] = [];
   for (let i = 0; i < displayed.length; i += 3) rows.push(displayed.slice(i, i + 3));
+  const showSkeleton = !loaded && displayed.length === 0;
 
   const openLightbox = (idx: number) => {
     setActiveIndex(idx);
@@ -60,6 +64,15 @@ export default function Gallery() {
       </motion.p>
 
       <div ref={topRef} style={{ position: "relative" }}>
+        {/* 로딩 중 그레이 스켈레톤 (4행 × 3열) */}
+        {showSkeleton && Array.from({ length: 4 }).map((_, ri) => (
+          <div key={`sk-${ri}`} style={{ display: "flex", gap: 4, marginBottom: 4 }}>
+            {Array.from({ length: 3 }).map((__, ci) => (
+              <div key={ci} style={{ flex: 1, height: 128, backgroundColor: "#E5E5E5" }} />
+            ))}
+          </div>
+        ))}
+
         {/* 사진 그리드 */}
         {rows.map((row, ri) => (
           <div key={ri} style={{ display: "flex", gap: 4, marginBottom: 4 }}>

@@ -15,8 +15,8 @@ export default function Home() {
     <main className="max-w-[390px] mx-auto w-full overflow-hidden">
       <Intro />
       <Greeting />
-      <Visual />
       <DateSection />
+      <Visual />
       <Gallery />
       <Location />
       <HowToGet />
