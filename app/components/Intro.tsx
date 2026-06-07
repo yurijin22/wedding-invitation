@@ -1,13 +1,35 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function Intro() {
   const [specialPhotos, setSpecialPhotos] = useState<Record<string, string>>({});
+  const quoteRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
     fetch("/api/special").then(r => r.json()).then(setSpecialPhotos).catch(() => {});
+  }, []);
+
+  // 인용 문구: 3줄을 유지하면서 폭에 들어가는 "최대 폰트"를 자동 계산
+  useEffect(() => {
+    const el = quoteRef.current;
+    if (!el) return;
+    const fit = () => {
+      const MAX = 13; // 원래 크기
+      el.style.fontSize = `${MAX}px`;
+      let maxW = 0;
+      el.querySelectorAll("span").forEach((s) => {
+        maxW = Math.max(maxW, (s as HTMLElement).scrollWidth);
+      });
+      if (maxW > 0) {
+        const px = Math.min(MAX, (el.clientWidth / maxW) * MAX);
+        el.style.fontSize = `${px}px`;
+      }
+    };
+    fit();
+    window.addEventListener("resize", fit);
+    return () => window.removeEventListener("resize", fit);
   }, []);
 
   const photo1 = specialPhotos["intro-1"] ?? "/gallery/photo-1.jpg";
@@ -38,11 +60,12 @@ export default function Intro() {
           gap: 24,
         }}
       >
-        {/* 1. 인용 텍스트 — 줄바꿈 고정 */}
+        {/* 1. 인용 텍스트 — 3줄 고정 (폭에 맞춰 폰트 자동 맞춤) */}
         <p
+          ref={quoteRef}
           style={{
             fontFamily: "var(--font-serif)",
-            fontSize: "clamp(7px, 2.3vw, 9px)",
+            fontSize: 12,
             lineHeight: "1.9",
             letterSpacing: "0",
             color: "#111111",
@@ -50,9 +73,9 @@ export default function Intro() {
             margin: 0,
           }}
         >
-          <span style={{ display: "block", whiteSpace: "nowrap" }}>The year&apos;s loveliest smile falls softly upon September 20, blessing the moment</span>
-          <span style={{ display: "block", whiteSpace: "nowrap" }}>we become one forever, with love blooming through the years to come,</span>
-          <span style={{ display: "block", whiteSpace: "nowrap" }}>walking hand in hand through the seasons ahead.</span>
+          <span style={{ display: "block", whiteSpace: "nowrap" }}>The year&apos;s loveliest smile falls softly upon September 20, blessing</span>
+          <span style={{ display: "block", whiteSpace: "nowrap" }}>the moment we become one forever, with love blooming through</span>
+          <span style={{ display: "block", whiteSpace: "nowrap" }}>the years to come, walking hand in hand through the seasons ahead.</span>
         </p>
 
         {/* 2. 사진 2장: 각 120×120, gap 8px, 중앙정렬 */}
