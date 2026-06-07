@@ -9,10 +9,12 @@ import HowToGet from "@/app/components/HowToGet";
 import Accounts from "@/app/components/Accounts";
 import Share from "@/app/components/Share";
 import Outro from "@/app/components/Outro";
+import MusicPlayer from "@/app/components/MusicPlayer";
 
 export default function Home() {
   return (
     <main className="max-w-[390px] mx-auto w-full overflow-hidden">
+      <MusicPlayer />
       <Intro />
       <Greeting />
       <DateSection />
