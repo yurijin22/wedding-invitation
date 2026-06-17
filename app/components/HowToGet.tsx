@@ -5,13 +5,28 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { weddingData } from "@/lib/wedding-data";
 
-type TabKey = "car" | "subway" | "walk";
+type TabKey = "car" | "subway" | "bus";
 
-const TABS: { key: TabKey; label: string; active: string; inactive: string }[] = [
+interface TabDef { key: TabKey; label: string; active?: string; inactive?: string; bus?: boolean }
+
+const TABS: TabDef[] = [
   { key: "car",    label: "자차",   active: "/howtoget-icon-car-active.png",     inactive: "/howtoget-icon-car-inactive.png" },
-  { key: "subway", label: "대중교통", active: "/howtoget-icon-public-active.png",  inactive: "/howtoget-icon-public-inactive.png" },
-  { key: "walk",   label: "도보",   active: "/howtoget-icon-walking-active.png",  inactive: "/howtoget-icon-walking-inactive.png" },
+  { key: "subway", label: "지하철", active: "/howtoget-icon-public-active.png",  inactive: "/howtoget-icon-public-inactive.png" },
+  { key: "bus",    label: "버스",   bus: true },
 ];
+
+// 버스 아이콘 (PNG가 없어 인라인 SVG — fg=아이콘색, bg=탭 배경색으로 창문/디테일 컷아웃)
+function BusIcon({ fg, bg }: { fg: string; bg: string }) {
+  return (
+    <svg width={20} height={20} viewBox="0 0 24 24" style={{ flexShrink: 0 }} aria-hidden>
+      <rect x="4" y="3.5" width="16" height="13" rx="2.5" fill={fg} />
+      <rect x="6" y="6.4" width="12" height="3.4" rx="0.8" fill={bg} />
+      <rect x="4.8" y="12.1" width="14.4" height="1" rx="0.5" fill={bg} opacity={0.5} />
+      <circle cx="8" cy="17.4" r="1.7" fill={fg} />
+      <circle cx="16" cy="17.4" r="1.7" fill={fg} />
+    </svg>
+  );
+}
 
 export default function HowToGet() {
   const [active, setActive] = useState<TabKey>("car");
@@ -44,12 +59,16 @@ export default function HowToGet() {
                   transition: "all 0.2s",
                 }}
               >
-                <img
-                  src={isActive ? tab.active : tab.inactive}
-                  alt={tab.label}
-                  width={20} height={20}
-                  style={{ objectFit: "contain", flexShrink: 0 }}
-                />
+                {tab.bus ? (
+                  <BusIcon fg={isActive ? "#fff" : "#361D17"} bg={isActive ? "#5F9DDF" : "#fff"} />
+                ) : (
+                  <img
+                    src={isActive ? tab.active : tab.inactive}
+                    alt={tab.label}
+                    width={20} height={20}
+                    style={{ objectFit: "contain", flexShrink: 0 }}
+                  />
+                )}
                 <span>{tab.label}</span>
               </button>
             );
@@ -76,6 +95,23 @@ export default function HowToGet() {
             ))}
           </motion.ul>
         </AnimatePresence>
+
+        {/* 탑승 가능 버스 — 버스 탭에서만 단계 안내 아래 표시 */}
+        {active === "bus" && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, backgroundColor: "rgba(255,255,255,0.65)", borderRadius: 12, padding: "16px 18px" }}>
+            <p style={{ fontSize: 12.5, fontWeight: 600, color: "#4D4740", margin: 0, letterSpacing: "0.02em" }}>탑승 가능 버스</p>
+            {directions.busRoutes.map(r => (
+              <div key={r.type} style={{ display: "flex", gap: 10, alignItems: "baseline" }}>
+                <span style={{ fontSize: 11, fontWeight: 600, color: "#fff", backgroundColor: r.color, borderRadius: 6, padding: "2px 8px", flexShrink: 0, whiteSpace: "nowrap" }}>
+                  {r.type}
+                </span>
+                <p style={{ fontSize: 13.5, fontWeight: 300, color: "#4D4740", lineHeight: "160%", margin: 0, wordBreak: "keep-all" }}>
+                  {r.routes}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* 주차 안내 — 자차 탭에서만 별도 표시 */}
         {active === "car" && (

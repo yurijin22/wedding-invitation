@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { weddingData } from "@/lib/wedding-data";
-import "leaflet/dist/leaflet.css";
 
 const BG = "#1D1000";
 
@@ -13,58 +12,80 @@ const BUTTONS = [
   { src: "/tmap.png",     fn: "tmap"  },
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare global { interface Window { kakao: any } }
+
 export default function Location() {
   const { wedding } = weddingData;
   const { venue } = wedding;
   const mapRef = useRef<HTMLDivElement>(null);
 
-  // Leaflet 지도 (CARTO Voyager 타일) — 키/계정 불필요, 외부 SDK 차단 영향 없음
+  // 카카오맵 SDK — 동적 로드 후 지도 + 마커 + venue명 오버레이
   useEffect(() => {
-    let cancelled = false;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let map: any;
-    import("leaflet").then((mod) => {
-      const L = mod.default;
-      const el = mapRef.current;
-      if (cancelled || !el || el.dataset.init) return;
-      el.dataset.init = "1";
-      map = L.map(el, { scrollWheelZoom: false, zoomControl: true, attributionControl: true })
-        .setView([venue.lat, venue.lng], 16);
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-        subdomains: "abcd",
-        maxZoom: 20,
-        attribution: '&copy; OpenStreetMap &copy; CARTO',
-      }).addTo(map);
-      const icon = L.divIcon({
-        className: "",
-        html: `<div style="transform:translate(-50%,-50%);background:#1D1000;color:#fff;padding:6px 12px;border-radius:16px;font-size:12px;font-weight:600;white-space:nowrap;font-family:'Noto Sans KR',sans-serif;box-shadow:0 3px 10px rgba(0,0,0,0.3);">${venue.name}</div>`,
-        iconSize: [0, 0],
-        iconAnchor: [0, 0],
+    const el = mapRef.current;
+    if (!el) return;
+
+    const draw = () => {
+      window.kakao.maps.load(() => {
+        const center = new window.kakao.maps.LatLng(venue.lat, venue.lng);
+        const map = new window.kakao.maps.Map(el, { center, level: 3 });
+        map.setZoomable(false); // 스크롤 줌 비활성 (페이지 스크롤 방해 방지)
+
+        new window.kakao.maps.Marker({ position: center, map });
+
+        const overlay = new window.kakao.maps.CustomOverlay({
+          position: center,
+          yAnchor: 2.2,
+          content: `<div style="background:#1D1000;color:#fff;padding:6px 12px;border-radius:16px;font-size:12px;font-weight:600;white-space:nowrap;font-family:'Noto Sans KR',sans-serif;box-shadow:0 3px 10px rgba(0,0,0,0.3);">${venue.name}</div>`,
+        });
+        overlay.setMap(map);
       });
-      L.marker([venue.lat, venue.lng], { icon }).addTo(map);
-      setTimeout(() => map && map.invalidateSize(), 300);
-    });
-    return () => {
-      cancelled = true;
-      if (map) map.remove();
-      if (mapRef.current) delete mapRef.current.dataset.init;
     };
+
+    if (window.kakao?.maps) {
+      draw();
+      return;
+    }
+
+    const existing = document.getElementById("kakao-maps-sdk") as HTMLScriptElement | null;
+    if (existing) {
+      existing.addEventListener("load", draw);
+      return () => existing.removeEventListener("load", draw);
+    }
+
+    const script = document.createElement("script");
+    script.id = "kakao-maps-sdk";
+    script.async = true;
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${weddingData.kakaoAppKey}&autoload=false`;
+    script.addEventListener("load", draw);
+    document.head.appendChild(script);
   }, [venue.lat, venue.lng, venue.name]);
 
   const openNav = (appUrl: string, webUrl: string) => {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     // 데스크탑(앱 없음)에선 앱스킴이 "유효하지 않은 주소" 에러 → 웹 지도로 바로 이동
     if (!isMobile) { window.open(webUrl, "_blank"); return; }
-    // 모바일: 앱 실행 시도 → 안 열리면 웹으로 폴백
-    const t = Date.now();
-    window.location.href = appUrl;
+
+    // 모바일: 앱 스킴을 iframe으로 조용히 시도 → 앱 미설치여도 에러창("링크 없음") 없이 웹으로 폴백
+    let appOpened = false;
+    const onHide = () => { appOpened = true; };
+    document.addEventListener("visibilitychange", onHide);
+
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    iframe.src = appUrl;
+    document.body.appendChild(iframe);
+
     setTimeout(() => {
-      if (Date.now() - t < 1600) window.open(webUrl, "_blank");
-    }, 1200);
+      document.removeEventListener("visibilitychange", onHide);
+      iframe.remove();
+      // 앱이 열려 화면이 백그라운드로 가지 않았다면(=미설치) 웹 지도로 이동
+      if (!appOpened && !document.hidden) window.location.href = webUrl;
+    }, 1500);
   };
 
   const open = (type: string) => {
-    const name = encodeURIComponent("라마다서울신도림호텔");
+    const name = encodeURIComponent("라마다 서울 신도림 호텔");
     const lat = venue.lat;
     const lng = venue.lng;
     const appname = typeof window !== "undefined" ? window.location.hostname : "wedding";
@@ -120,7 +141,7 @@ export default function Location() {
           </div>
         </div>
 
-        {/* 지도 (Leaflet + CARTO 타일) */}
+        {/* 지도 (카카오맵 SDK) */}
         <div ref={mapRef} style={{ width: "100%", height: 245, borderRadius: 8, overflow: "hidden", backgroundColor: "#E5E5E5", zIndex: 0 }} />
 
         {/* 버튼 3개 — img 태그로 직접 로드 */}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Keyboard, Thumbs, FreeMode } from "swiper/modules";
@@ -19,6 +19,11 @@ export default function Gallery() {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const lightboxRef = useRef<SwiperClass | null>(null);
+
+  // 메인 사진 스크롤 줌 (Visual과 동일 효과)
+  const mainRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: mainRef, offset: ["start end", "end start"] });
+  const mainScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   // Blob에서 사진 불러오기 (있으면 Blob 우선, 없으면 로컬)
   useEffect(() => {
@@ -43,7 +48,7 @@ export default function Gallery() {
   const showSkeleton = !loaded && galleryImages.length === 0;
 
   return (
-    <section style={{ backgroundColor: "#fff", padding: "0 16px" }}>
+    <section style={{ backgroundColor: "#F7F3EA", padding: "0 16px" }}>
       {/* 섹션 타이틀 — 다른 섹션과 동일 스타일 */}
       <motion.p
         initial={{ opacity: 0, y: 32 }}
@@ -66,28 +71,29 @@ export default function Gallery() {
         </div>
       ) : (
         <div style={{ paddingBottom: 76 }}>
-          {/* 메인 이미지 — 스와이프 + 탭하면 전체화면 */}
-          <Swiper
-            modules={[Thumbs, Keyboard]}
-            thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : undefined }}
-            keyboard={{ enabled: true }}
-            spaceBetween={8}
-            onSlideChange={(s) => setActiveIndex(s.activeIndex)}
-            style={{ borderRadius: 4, overflow: "hidden" }}
-          >
-            {galleryImages.map((src, i) => (
-              <SwiperSlide key={i}>
-                <div
-                  onClick={() => setLightboxIndex(i)}
-                  style={{ position: "relative", width: "100%", aspectRatio: "3 / 4", backgroundColor: "#E5E5E5", cursor: "pointer" }}
-                >
-                  <Image src={src} alt="" fill style={{ objectFit: "cover" }} sizes="390px" quality={70}
-                    priority={i === 0}
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          {/* 메인 이미지 — 스크롤 줌 + 스와이프 + 탭하면 전체화면 */}
+          <motion.div ref={mainRef} style={{ scale: mainScale, borderRadius: 4, overflow: "hidden" }}>
+            <Swiper
+              modules={[Thumbs, Keyboard]}
+              thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : undefined }}
+              keyboard={{ enabled: true }}
+              spaceBetween={8}
+              onSlideChange={(s) => setActiveIndex(s.activeIndex)}
+            >
+              {galleryImages.map((src, i) => (
+                <SwiperSlide key={i}>
+                  <div
+                    onClick={() => setLightboxIndex(i)}
+                    style={{ position: "relative", width: "100%", aspectRatio: "3 / 4", backgroundColor: "#E5E5E5", cursor: "pointer" }}
+                  >
+                    <Image src={src} alt="" fill style={{ objectFit: "cover" }} sizes="390px" quality={70}
+                      priority={i === 0}
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </motion.div>
 
           {/* 썸네일 스트립 — 가로 스크롤, 탭하면 메인 전환 */}
           <Swiper

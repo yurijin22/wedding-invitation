@@ -43,13 +43,17 @@ export default function Outro() {
 
       {/* 커플 사진 */}
       <div style={{
-        position: "absolute", left: 116, top: 162,
-        width: 155, height: 155, overflow: "hidden", backgroundColor: "#E5E5E5",
-        border: "6px solid rgba(255,255,255,0.9)",
+        position: "absolute", left: "50%", top: 162, transform: "translateX(-50%)",
+        width: 155, height: 155, boxSizing: "border-box", overflow: "hidden", backgroundColor: "#E5E5E5",
+        border: "6px solid rgba(255,255,255,0.9)", borderRadius: 2,
         boxShadow: "0 2px 12px rgba(0,0,0,0.1)", zIndex: 10,
       }}>
-        {outroPhoto && <Image src={outroPhoto} alt="couple" fill style={{ objectFit: "cover" }} sizes="155px"
-          onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />}
+        {outroPhoto && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={outroPhoto} alt="couple"
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+        )}
       </div>
 
       {/* 정보 테이블 */}
@@ -58,9 +62,9 @@ export default function Outro() {
         display: "flex", justifyContent: "space-between", zIndex: 10,
       }}>
         {[
-          { label: "Broom&Bride", value: `${groom.englishName}\n${bride.englishName}` },
+          { label: "Groom&Bride", value: `${groom.englishName}\n${bride.englishName}` },
           { label: "Date", value: "2026.09.20\nSun. 12:10" },
-          { label: "Location", value: "RAMADA Seoul Simdorim\n5F Saint Grace Hall" },
+          { label: "Location", value: "RAMADA Seoul Sindorim\n5F Saint Grace Hall" },
         ].map(({ label, value }) => (
           <div key={label} style={{ display: "flex", flexDirection: "column", gap: 7, width: 100 }}>
             <p style={{ ...IS, fontSize: 14, color: "#141414", textAlign: "center", lineHeight: "20px", margin: 0 }}>
