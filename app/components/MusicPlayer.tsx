@@ -39,7 +39,7 @@ export default function MusicPlayer() {
         onClick={toggle}
         aria-label={playing ? "음악 끄기" : "음악 켜기"}
         style={{
-          position: "fixed", top: 14, right: 14, zIndex: 40,
+          position: "absolute", top: 10, right: 12, zIndex: 60,
           width: 40, height: 40, borderRadius: "50%",
           backgroundColor: "rgba(38,30,26,0.5)", backdropFilter: "blur(4px)",
           WebkitBackdropFilter: "blur(4px)", border: "none", cursor: "pointer",

@@ -1,59 +1,45 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { weddingData } from "@/lib/wedding-data";
+
+const PHOTOS = ["/1.png", "/1-1.png", "/1-2.png"];
 
 export default function Greeting() {
-  const { groom, bride } = weddingData;
-
   return (
-    <section style={{ backgroundColor: "#FFFFFF", paddingTop: 100, paddingBottom: 100 }}>
+    <section style={{ backgroundColor: "#FBF9F4", padding: "90px 24px 96px" }}>
+      {/* 비주얼 3단 — 하나씩 순차 페이드인(stagger) */}
       <motion.div
-        initial={{ opacity: 0, y: 32 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-110px" }}
-        transition={{ duration: 1.15, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-        style={{ width: "100%", display: "flex", flexDirection: "column" }}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-80px" }}
+        variants={{ show: { transition: { staggerChildren: 0.45 } } }}
+        style={{ display: "flex", flexDirection: "column", gap: 14, maxWidth: 236, margin: "0 auto" }}
       >
-        {/* 본문 3단락 */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
-          <p style={{ fontSize: 16, lineHeight: "30px", fontWeight: 300, color: "#111111", textAlign: "center", margin: 0 }}>
-            마음이 먼저 닿던 순간들이 모여<br />어느새 우리가 되었습니다.
-          </p>
-          <p style={{ fontSize: 16, lineHeight: "30px", fontWeight: 300, color: "#111111", textAlign: "center", margin: 0 }}>
-            이 가을을 시작으로,<br />계절마다 깊어지는 마음을 나누며<br />다정한 하루하루를 함께하려 합니다.
-          </p>
-          <p style={{ fontSize: 16, lineHeight: "30px", fontWeight: 300, color: "#111111", textAlign: "center", margin: 0 }}>
-            용욱과 유리의 첫 시작을<br />따뜻한 마음으로 축복해 주세요.<br />서로를 더 깊이 사랑하며 살겠습니다.
-          </p>
-        </div>
-
-        {/* 날짜 — 한글과 간격 48px, 부모님과 간격 56px */}
-        <p style={{ fontFamily: "var(--font-serif)", fontSize: 18, lineHeight: "26px", letterSpacing: "0.1em", color: "#5F9DDF", textAlign: "center", margin: "48px 0 56px" }}>
-          2026.09.20 Sunday 12:10
-        </p>
-
-        {/* 신랑·신부 2컬럼 */}
-        <div style={{ display: "flex", paddingLeft: 27, paddingRight: 27 }}>
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8, alignItems: "center" }}>
-            <p style={{ fontSize: 14, fontWeight: 400, lineHeight: "18px", color: "#9BA2A8", textAlign: "center", margin: 0 }}>
-              {groom.fatherName} · {groom.motherName}의 아들
-            </p>
-            <p style={{ fontSize: 20, fontWeight: 500, lineHeight: "26px", color: "#111111", margin: 0 }}>
-              {groom.name}
-            </p>
-          </div>
-          <div style={{ width: 1, backgroundColor: "#DDDDDD", alignSelf: "stretch", flexShrink: 0 }} />
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8, alignItems: "center" }}>
-            <p style={{ fontSize: 14, fontWeight: 400, lineHeight: "18px", color: "#9BA2A8", textAlign: "center", margin: 0 }}>
-              {bride.fatherName} · {bride.motherName}의 딸
-            </p>
-            <p style={{ fontSize: 20, fontWeight: 500, lineHeight: "26px", color: "#111111", margin: 0 }}>
-              {bride.name}
-            </p>
-          </div>
-        </div>
+        {PHOTOS.map((src) => (
+          <motion.div
+            key={src}
+            variants={{
+              hidden: { opacity: 0, x: -48 },
+              show: { opacity: 1, x: 0, transition: { duration: 1.25, ease: [0.22, 1, 0.36, 1] } },
+            }}
+            style={{ position: "relative", width: "100%", aspectRatio: "3 / 2", overflow: "hidden", backgroundColor: "#E5E5E5" }}
+          >
+            <Image src={src} alt="" fill sizes="342px" style={{ objectFit: "cover" }} />
+          </motion.div>
+        ))}
       </motion.div>
+
+      {/* 하단 필기체 — 살짝 기울임 */}
+      <motion.p
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.2, delay: 0.2 }}
+        style={{ fontFamily: "'England Signature', var(--font-italianno)", fontSize: 33, lineHeight: "26px", color: "#1D1000", textAlign: "center", margin: "30px 0 0", transform: "translateX(18px) rotate(-3deg)" }}
+      >
+        We decide on together<br />from this season to forever
+      </motion.p>
     </section>
   );
 }

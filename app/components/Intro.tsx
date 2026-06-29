@@ -1,104 +1,87 @@
 "use client";
 
-import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { weddingData } from "@/lib/wedding-data";
 
 export default function Intro() {
-  const [specialPhotos, setSpecialPhotos] = useState<Record<string, string>>({});
-  const [specialLoaded, setSpecialLoaded] = useState(false);
-  const quoteRef = useRef<HTMLParagraphElement>(null);
-
-  useEffect(() => {
-    fetch("/api/special").then(r => r.json()).then(setSpecialPhotos).catch(() => {}).finally(() => setSpecialLoaded(true));
-  }, []);
-
-  // 인용 문구: 3줄을 유지하면서 폭에 들어가는 "최대 폰트"를 자동 계산
-  useEffect(() => {
-    const el = quoteRef.current;
-    if (!el) return;
-    const fit = () => {
-      const MAX = 13; // 원래 크기
-      el.style.fontSize = `${MAX}px`;
-      let maxW = 0;
-      el.querySelectorAll("span").forEach((s) => {
-        maxW = Math.max(maxW, (s as HTMLElement).scrollWidth);
-      });
-      if (maxW > 0) {
-        const px = Math.min(MAX, (el.clientWidth / maxW) * MAX);
-        el.style.fontSize = `${px}px`;
-      }
-    };
-    fit();
-    window.addEventListener("resize", fit);
-    return () => window.removeEventListener("resize", fit);
-  }, []);
-
-  // 로딩 중엔 null → 그레이 박스만, 로딩 후 특별사진(없으면 기본 이미지)
-  const photo1 = specialPhotos["intro-1"] ?? (specialLoaded ? "/gallery/photo-1.jpg" : null);
-  const photo2 = specialPhotos["intro-2"] ?? (specialLoaded ? "/gallery/photo-2.jpg" : null);
+  const { groom, bride, wedding, message } = weddingData;
 
   return (
     <section
       style={{
-        width: "100%",
-        height: 728,
-        position: "relative",
-        overflow: "hidden",
-        backgroundImage: "url('/intro-bg.png')",
-        backgroundSize: "100% 100%",
+        backgroundColor: "#EDEAE3",
+        backgroundImage: "url('/paper_texture.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "top center",
         backgroundRepeat: "no-repeat",
-        backgroundPosition: "top left",
+        padding: "70px 30px 80px",
       }}
     >
-      {/* 콘텐츠 블록: 하단 60px 여백, 좌우 16px 패딩 */}
-      <div
-        style={{
-          position: "absolute",
-          left: 16,
-          right: 16,
-          bottom: 60,
-          display: "flex",
-          flexDirection: "column",
-          gap: 24,
-        }}
+      <motion.div
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+        style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", position: "relative", zIndex: 2 }}
       >
-        {/* 1. 인용 텍스트 — 3줄 고정 (폭에 맞춰 폰트 자동 맞춤) */}
-        <p
-          ref={quoteRef}
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontSize: 12,
-            lineHeight: "1.45",
-            letterSpacing: "0",
-            color: "#111111",
-            textAlign: "center",
-            margin: 0,
-          }}
-        >
-          <span style={{ display: "block", whiteSpace: "nowrap" }}>The year&apos;s loveliest smile falls softly upon September 20, blessing the moment</span>
-          <span style={{ display: "block", whiteSpace: "nowrap" }}>we become one forever, with love blooming through the years to come,</span>
-          <span style={{ display: "block", whiteSpace: "nowrap" }}>walking hand in hand through the seasons ahead.</span>
+        {/* 헤더 */}
+        <p style={{ fontFamily: "var(--font-serif)", fontSize: 13, letterSpacing: "0.04em", color: "#6F665C", margin: 0 }}>
+          WE INVITE YOU TO
+        </p>
+        <p style={{ fontFamily: "var(--font-script)", fontStyle: "italic", fontWeight: 500, fontSize: 30, letterSpacing: "-0.01em", color: "#1D1000", margin: "6px 0 22px" }}>
+          Our Wedding Day
         </p>
 
-        {/* 2. 사진 2장: 각 120×120, gap 8px, 중앙정렬 */}
-        <div style={{ display: "flex", justifyContent: "center", gap: 8 }}>
-          <div style={{ width: 120, height: 120, position: "relative", overflow: "hidden", backgroundColor: "#E5E5E5", flexShrink: 0 }}>
-            {photo1 && <Image src={photo1} alt="" fill sizes="120px" style={{ objectFit: "cover" }}
-              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />}
-          </div>
-          <div style={{ width: 120, height: 120, position: "relative", overflow: "hidden", backgroundColor: "#E5E5E5", flexShrink: 0 }}>
-            {photo2 && <Image src={photo2} alt="" fill sizes="120px" style={{ objectFit: "cover" }}
-              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />}
-          </div>
+        {/* 액자 (프레임+사진, 크롭) — public/frameC.png */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/frameC.png" alt="" style={{ width: 240, height: "auto", display: "block", marginBottom: 30 }}
+          onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+
+        {/* 장소 — 0920 위로 */}
+        <p style={{ fontFamily: "var(--font-serif)", fontSize: 18, letterSpacing: "0.05em", color: "#1D1000", margin: 0 }}>
+          RAMADA SEOUL
+        </p>
+        <p style={{ fontFamily: "'Pretendard Variable', Pretendard, sans-serif", fontSize: 12.5, lineHeight: "20px", letterSpacing: "0.01em", color: "#8B8178", margin: "8px 0 40px" }}>
+          {wedding.venue.name}<br />{wedding.venue.addressDetail}
+        </p>
+
+        {/* 09 / 20 (Romans Story) */}
+        <div style={{ lineHeight: 0.96, marginBottom: 24 }}>
+          <div style={{ fontFamily: '"Romans Story", var(--font-serif)', fontSize: 26, color: "#1D1000", WebkitTextStroke: "0.5px #1D1000" }}>09</div>
+          <div style={{ fontFamily: '"Romans Story", var(--font-serif)', fontSize: 26, color: "#1D1000", WebkitTextStroke: "0.5px #1D1000" }}>20</div>
         </div>
 
-        {/* 3. " Save the Date " — 이미지와 간격 32px (gap 24 + marginTop 8) */}
-        <p style={{ textAlign: "center", lineHeight: "20px", letterSpacing: "0.01em", color: "#111111", margin: "8px 0 0" }}>
-          <span style={{ fontFamily: "var(--font-serif)", fontSize: 20 }}>&ldquo; Save the </span>
-          <span style={{ fontFamily: "var(--font-italianno)", fontSize: 24 }}>Date</span>
-          <span style={{ fontFamily: "var(--font-serif)", fontSize: 20 }}> &rdquo;</span>
+        {/* 일시 */}
+        <p style={{ fontFamily: "var(--font-serif)", fontSize: 18, letterSpacing: "0.05em", color: "#4D4740", margin: "0 0 50px" }}>
+          SUNDAY, 12:10 PM
         </p>
-      </div>
+
+        {/* 두번째 섹션 문구 (마음이~) */}
+        <p style={{ fontSize: 14.5, fontWeight: 300, lineHeight: "26px", color: "#4D4740", whiteSpace: "pre-line", margin: 0 }}>
+          {message}
+        </p>
+
+        {/* 혼주 + 신랑·신부 */}
+        <div style={{ display: "flex", width: "100%", maxWidth: 320, marginTop: 56, marginBottom: 40 }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8, alignItems: "center" }}>
+            <p style={{ fontSize: 13, fontWeight: 400, lineHeight: "18px", color: "#9A8E84", margin: 0 }}>
+              {groom.fatherName} · {groom.motherName}의 아들
+            </p>
+            <p style={{ fontSize: 19, fontWeight: 500, lineHeight: "26px", color: "#1D1000", margin: 0 }}>
+              {groom.name}
+            </p>
+          </div>
+          <div style={{ width: 1, backgroundColor: "rgba(29,16,0,0.15)", alignSelf: "stretch", flexShrink: 0 }} />
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8, alignItems: "center" }}>
+            <p style={{ fontSize: 13, fontWeight: 400, lineHeight: "18px", color: "#9A8E84", margin: 0 }}>
+              {bride.fatherName} · {bride.motherName}의 딸
+            </p>
+            <p style={{ fontSize: 19, fontWeight: 500, lineHeight: "26px", color: "#1D1000", margin: 0 }}>
+              {bride.name}
+            </p>
+          </div>
+        </div>
+      </motion.div>
     </section>
   );
 }

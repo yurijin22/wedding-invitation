@@ -34,7 +34,7 @@ const { groom, bride, wedding } = weddingData;
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
+    process.env.NEXT_PUBLIC_SITE_URL || "https://yongwook-yuri.site"
   ),
   title: `${groom.firstName} ♥ ${bride.firstName} 결혼합니다`,
   description: `${wedding.dateKorean} ${wedding.time} ${wedding.venue.name} ${wedding.venue.hall}`,
