@@ -46,7 +46,7 @@ export default function Intro() {
         </p>
 
         {/* 09 / 20 (Romans Story) */}
-        <div style={{ lineHeight: 0.96, marginBottom: 24 }}>
+        <div id="intro-0920" style={{ lineHeight: 0.96, marginBottom: 24 }}>
           <div style={{ fontFamily: '"Romans Story", var(--font-serif)', fontSize: 26, color: "#1D1000", WebkitTextStroke: "0.5px #1D1000" }}>09</div>
           <div style={{ fontFamily: '"Romans Story", var(--font-serif)', fontSize: 26, color: "#1D1000", WebkitTextStroke: "0.5px #1D1000" }}>20</div>
         </div>
