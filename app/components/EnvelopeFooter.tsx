@@ -48,11 +48,13 @@ export default function EnvelopeFooter() {
       const target = docViewportBottom - doc0920Bottom + NOTCH_Y; // 봉투 base 높이
       const clamped = Math.max(MIN_H + 24, Math.min(target, realVH * 0.85));
       setStartH((prev) => (Math.abs(prev - clamped) > 0.5 ? clamped : prev));
-      setDbg(
-        `realVH=${Math.round(realVH)} ih=${Math.round(window.innerHeight)} ` +
-          `bot=${Math.round(rect.bottom)} sY=${Math.round(window.scrollY)} ` +
-          `tgt=${Math.round(target)} sH=${Math.round(clamped)} H=${Math.round(height.get())}`
-      );
+      if (window.location.search.includes("debug")) {
+        setDbg(
+          `realVH=${Math.round(realVH)} ih=${Math.round(window.innerHeight)} ` +
+            `bot=${Math.round(rect.bottom)} sY=${Math.round(window.scrollY)} ` +
+            `tgt=${Math.round(target)} sH=${Math.round(clamped)} H=${Math.round(height.get())}`
+        );
+      }
     };
     const schedule = () => {
       cancelAnimationFrame(raf);
@@ -67,9 +69,10 @@ export default function EnvelopeFooter() {
       ro.observe(document.body); // 이미지/폰트 로드로 본문 높이 바뀌면 재측정
     }
     if (document.fonts?.ready) document.fonts.ready.then(measure).catch(() => {});
+    // ⚠️ 스크롤 재측정은 매 프레임 setState를 유발해 노치가 버벅임 → 제거.
+    // 봉투 높이는 문서 좌표 기반이라 스크롤과 무관. 툴바 변화는 resize로 감지.
     window.addEventListener("resize", schedule);
     window.addEventListener("load", measure);
-    window.addEventListener("scroll", schedule, { passive: true });
     window.visualViewport?.addEventListener("resize", schedule);
     return () => {
       cancelAnimationFrame(raf);
@@ -77,7 +80,6 @@ export default function EnvelopeFooter() {
       ro?.disconnect();
       window.removeEventListener("resize", schedule);
       window.removeEventListener("load", measure);
-      window.removeEventListener("scroll", schedule);
       window.visualViewport?.removeEventListener("resize", schedule);
     };
   }, []);
