@@ -37,13 +37,15 @@ export default function EnvelopeFooter() {
       raf = requestAnimationFrame(measure);
     };
     schedule();
-    const timers = [200, 600, 1200, 2500].map((ms) => window.setTimeout(measure, ms));
+    // 폰트가 늦게 로드되는 인앱브라우저(카카오 등) 대응 — 여러 시점 + 폰트 로드 후 재측정
+    const timers = [200, 600, 1200, 2500, 4000, 6000].map((ms) => window.setTimeout(measure, ms));
     let ro: ResizeObserver | null = null;
     if (typeof ResizeObserver !== "undefined") {
+      // 본문 높이 변화(폰트/이미지 로드)마다 재측정. 계속 살려둠 — 0920 위 변화만 반영되고
+      // 아래 이미지 로드는 0920 위치 불변이라 버벅임 없음. (스크롤로는 본문 높이가 안 변함)
       ro = new ResizeObserver(schedule);
       ro.observe(document.body);
     }
-    const roStop = window.setTimeout(() => ro?.disconnect(), 3500);
     if (document.fonts?.ready) document.fonts.ready.then(measure).catch(() => {});
     // 툴바 슬라이드(높이만 변화)는 무시, 가로폭 변화(회전)만 재측정 → 상단 복귀 스냅 방지.
     let rt = 0;
@@ -60,7 +62,6 @@ export default function EnvelopeFooter() {
       cancelAnimationFrame(raf);
       timers.forEach(clearTimeout);
       window.clearTimeout(rt);
-      window.clearTimeout(roStop);
       ro?.disconnect();
       window.removeEventListener("resize", onResize);
       window.removeEventListener("load", measure);
