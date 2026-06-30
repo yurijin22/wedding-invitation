@@ -2,7 +2,7 @@ import Intro from "@/app/components/Intro";
 import Greeting from "@/app/components/Greeting";
 import DateSection from "@/app/components/DateSection";
 import Gallery from "@/app/components/Gallery";
-import Notice from "@/app/components/Notice";
+import Information from "@/app/components/Information";
 import Location from "@/app/components/Location";
 import HowToGet from "@/app/components/HowToGet";
 import Accounts from "@/app/components/Accounts";
@@ -33,7 +33,7 @@ export default function Home() {
         <Gallery />
         <Location />
         <HowToGet />
-        <Notice />
+        <Information />
         <Accounts />
         <Share />
       </FrameShell>

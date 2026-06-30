@@ -93,6 +93,22 @@ body {
   }
 }
 
+/* INFORMATION 캐러셀 — 가로 스냅 스크롤, 스크롤바 숨김 */
+.info-carousel {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 0 8%;
+}
+.info-carousel::-webkit-scrollbar { display: none; }
+.info-slide {
+  flex: 0 0 84%;
+  scroll-snap-align: center;
+}
+
 /* 라이트박스 */
 .lightbox-overlay {
   position: fixed;
