@@ -22,28 +22,44 @@ export default function EnvelopeFooter() {
   const [startH, setStartH] = useState(DEFAULT_START_H);
 
   useEffect(() => {
+    let raf = 0;
     const measure = () => {
       const el = document.getElementById("intro-0920");
       if (!el) return;
       const rect = el.getBoundingClientRect();
-      // 0920 블록 바로 아래에 노치가 오도록(09·20 둘 다 노치 위에 보이게)
+      // 0920 블록 바로 아래에 노치가 오도록(09·20 둘 다 노치 위에 보이게).
+      // rect.top + scrollY = 문서상 절대위치(스크롤 무관) → 어느 스크롤에서 재든 동일.
       const anchor = rect.bottom + window.scrollY + 6;
-      const vh = window.innerHeight;
-      // 노치 중심(vh - startH + NOTCH_Y) = anchor (스크롤0 기준 뷰포트 위치)
+      const vh = window.innerHeight; // 고정 footer(bottom:0)와 같은 레이아웃 뷰포트 기준
       const target = vh - anchor + NOTCH_Y;
-      const clamped = Math.max(MIN_H + 24, Math.min(target, vh * 0.72));
-      setStartH(clamped);
+      const clamped = Math.max(MIN_H + 24, Math.min(target, vh * 0.85));
+      setStartH((prev) => (Math.abs(prev - clamped) > 0.5 ? clamped : prev));
     };
-    measure();
-    const raf = requestAnimationFrame(measure);
-    const t = setTimeout(measure, 600); // 폰트/이미지 로드 후 보정
-    window.addEventListener("resize", measure);
+    const schedule = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(measure);
+    };
+    schedule();
+    // 폰트/이미지/툴바 등 레이아웃 변화를 모두 추적해 노치 위치를 다시 맞춤
+    const timers = [200, 600, 1200, 2500].map((ms) => window.setTimeout(measure, ms));
+    let ro: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== "undefined") {
+      ro = new ResizeObserver(schedule);
+      ro.observe(document.body); // 이미지/폰트 로드로 본문 높이 바뀌면 재측정
+    }
+    if (document.fonts?.ready) document.fonts.ready.then(measure).catch(() => {});
+    window.addEventListener("resize", schedule);
     window.addEventListener("load", measure);
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.visualViewport?.addEventListener("resize", schedule);
     return () => {
       cancelAnimationFrame(raf);
-      clearTimeout(t);
-      window.removeEventListener("resize", measure);
+      timers.forEach(clearTimeout);
+      ro?.disconnect();
+      window.removeEventListener("resize", schedule);
       window.removeEventListener("load", measure);
+      window.removeEventListener("scroll", schedule);
+      window.visualViewport?.removeEventListener("resize", schedule);
     };
   }, []);
 
