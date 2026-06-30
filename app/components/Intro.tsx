@@ -14,7 +14,7 @@ export default function Intro() {
         backgroundSize: "cover",
         backgroundPosition: "top center",
         backgroundRepeat: "no-repeat",
-        padding: "70px 30px 80px",
+        padding: "40px 30px 80px",
       }}
     >
       <motion.div
@@ -28,20 +28,20 @@ export default function Intro() {
         <p style={{ fontFamily: "var(--font-serif)", fontSize: 13, letterSpacing: "0.04em", color: "#6F665C", margin: 0 }}>
           WE INVITE YOU TO
         </p>
-        <p style={{ fontFamily: "var(--font-script)", fontStyle: "italic", fontWeight: 500, fontSize: 30, letterSpacing: "-0.01em", color: "#1D1000", margin: "6px 0 16px" }}>
+        <p style={{ fontFamily: "var(--font-script)", fontStyle: "italic", fontWeight: 500, fontSize: 30, letterSpacing: "-0.01em", color: "#1D1000", margin: "4px 0 10px" }}>
           Our Wedding Day
         </p>
 
         {/* 액자 (프레임+사진, 크롭) — public/frameC.png */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/frameC.png" alt="" style={{ width: 240, height: "auto", display: "block", marginBottom: 16 }}
+        <img src="/frameC.png" alt="" style={{ width: 184, height: "auto", display: "block", marginBottom: 10 }}
           onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
 
         {/* 장소 — 0920 위로 */}
         <p style={{ fontFamily: "var(--font-serif)", fontSize: 18, letterSpacing: "0.05em", color: "#1D1000", margin: 0 }}>
           RAMADA SEOUL
         </p>
-        <p style={{ fontFamily: "'Pretendard Variable', Pretendard, sans-serif", fontSize: 12.5, lineHeight: "20px", letterSpacing: "0.01em", color: "#8B8178", margin: "8px 0 40px" }}>
+        <p style={{ fontFamily: "'Pretendard Variable', Pretendard, sans-serif", fontSize: 12.5, lineHeight: "20px", letterSpacing: "0.01em", color: "#8B8178", margin: "6px 0 22px" }}>
           {wedding.venue.name}<br />{wedding.venue.addressDetail}
         </p>
 

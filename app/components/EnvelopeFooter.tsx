@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
 import MusicPlayer from "./MusicPlayer";
 
@@ -20,22 +20,39 @@ const MIN_H = 56; // 스크롤 후 최소 높이
 export default function EnvelopeFooter() {
   const { scrollY } = useScroll();
   const [startH, setStartH] = useState(DEFAULT_START_H);
+  const [dbg, setDbg] = useState("");
+  const [debugOn, setDebugOn] = useState(false);
   // 높이를 직접 제어 — startH(측정값) 변경 시 스크롤 없이도 즉시 반영
   const height = useMotionValue(DEFAULT_START_H);
+  const envRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setDebugOn(new URLSearchParams(window.location.search).has("debug"));
+  }, []);
 
   useEffect(() => {
     let raf = 0;
     const measure = () => {
       const el = document.getElementById("intro-0920");
-      if (!el) return;
+      if (!el) {
+        setDbg("0920 요소 못 찾음!");
+        return;
+      }
       const rect = el.getBoundingClientRect();
-      // 0920 블록 바로 아래에 노치가 오도록(09·20 둘 다 노치 위에 보이게).
-      // rect.top + scrollY = 문서상 절대위치(스크롤 무관) → 어느 스크롤에서 재든 동일.
-      const anchor = rect.bottom + window.scrollY + 6;
-      const vh = window.innerHeight; // 고정 footer(bottom:0)와 같은 레이아웃 뷰포트 기준
-      const target = vh - anchor + NOTCH_Y;
-      const clamped = Math.max(MIN_H + 24, Math.min(target, vh * 0.85));
+      // ⭐ innerHeight는 모바일 툴바 때문에 실제 고정-뷰포트와 다름.
+      // 봉투 자신(bottom:0 고정)의 viewport상 하단 = 진짜 뷰포트 높이(realVH). 이게 정확.
+      const realVH = envRef.current?.getBoundingClientRect().bottom ?? window.innerHeight;
+      // 모두 문서 좌표로 통일(스크롤 무관) → 어느 스크롤에서 재도 동일한 base 높이.
+      const doc0920Bottom = rect.bottom + window.scrollY + 6; // 0920 아래 + 여유
+      const docViewportBottom = realVH + window.scrollY; // 뷰포트 하단의 문서 좌표
+      const target = docViewportBottom - doc0920Bottom + NOTCH_Y; // 봉투 base 높이
+      const clamped = Math.max(MIN_H + 24, Math.min(target, realVH * 0.85));
       setStartH((prev) => (Math.abs(prev - clamped) > 0.5 ? clamped : prev));
+      setDbg(
+        `realVH=${Math.round(realVH)} ih=${Math.round(window.innerHeight)} ` +
+          `bot=${Math.round(rect.bottom)} sY=${Math.round(window.scrollY)} ` +
+          `tgt=${Math.round(target)} sH=${Math.round(clamped)} H=${Math.round(height.get())}`
+      );
     };
     const schedule = () => {
       cancelAnimationFrame(raf);
@@ -77,7 +94,14 @@ export default function EnvelopeFooter() {
   const quoteOpacity = useTransform(scrollY, [0, 130], [1, 0], { clamp: true });
 
   return (
+    <>
+    {debugOn && (
+      <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 9999, background: "rgba(190,0,0,0.92)", color: "#fff", fontSize: 10, lineHeight: "14px", padding: "5px 6px", fontFamily: "monospace", wordBreak: "break-all" }}>
+        DEBUG {dbg}
+      </div>
+    )}
     <motion.div
+      ref={envRef}
       style={{
         position: "fixed",
         bottom: 0,
@@ -123,5 +147,6 @@ export default function EnvelopeFooter() {
         {QUOTE_LINE1}<br />{QUOTE_LINE2}
       </motion.p>
     </motion.div>
+    </>
   );
 }
