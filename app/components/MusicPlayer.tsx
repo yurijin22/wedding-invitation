@@ -7,16 +7,22 @@ export default function MusicPlayer() {
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // 첫 사용자 상호작용(탭/스크롤) 시 자동 재생 시도 — 브라우저 자동재생 정책 대응
+  // 열자마자 자동재생 시도 → 막히면(브라우저 정책) 첫 상호작용 시 재생
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
     audio.volume = 0.45;
-    const events = ["click", "touchstart", "scroll", "keydown"] as const;
+    const events = ["click", "touchstart", "pointerdown", "scroll", "keydown"] as const;
     const tryPlay = () => {
-      audio.play().then(() => setPlaying(true)).catch(() => {});
-      events.forEach((e) => window.removeEventListener(e, tryPlay));
+      audio
+        .play()
+        .then(() => {
+          setPlaying(true);
+          events.forEach((e) => window.removeEventListener(e, tryPlay)); // 성공 시에만 해제
+        })
+        .catch(() => {});
     };
+    tryPlay(); // 마운트 즉시 시도(일부 브라우저/인앱에선 바로 재생됨)
     events.forEach((e) => window.addEventListener(e, tryPlay, { passive: true }));
     return () => events.forEach((e) => window.removeEventListener(e, tryPlay));
   }, []);
