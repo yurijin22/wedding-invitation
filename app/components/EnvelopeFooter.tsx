@@ -8,9 +8,8 @@ const FRAME = "#1D1000"; // Our Wedding Day 섹션 배경색과 동일
 const NOTCH = 46; // 상단 중앙 반원 노치 반지름 (0920을 감싸도록 크게)
 const NOTCH_Y = 0; // 노치 중심 y (봉투 top 기준)
 
-// 봉투가 짧은 기기에서도 노치와 겹치지 않도록 2줄로 압축
-const QUOTE_LINE1 = "Upon the loveliest day of the year,";
-const QUOTE_LINE2 = "we two become one — forever, hand in hand.";
+const QUOTE =
+  "The year's loveliest smile falls softly upon September 20, blessing the moment we become one forever, with love blooming through the years to come, walking hand in hand through the seasons ahead.";
 
 const DEFAULT_START_H = 204; // 측정 전 기본 봉투 높이
 const MIN_H = 56; // 스크롤 후 최소 높이
@@ -70,6 +69,8 @@ export default function EnvelopeFooter() {
       ro = new ResizeObserver(schedule);
       ro.observe(document.body); // 이미지/폰트 로드로 본문 높이 바뀌면 재측정
     }
+    // 초기 안정화 후 RO 중단 — 스크롤 중 하단 이미지 로드로 인한 재측정(버벅임) 방지.
+    const roStop = window.setTimeout(() => ro?.disconnect(), 3500);
     if (document.fonts?.ready) document.fonts.ready.then(measure).catch(() => {});
     // ⚠️ 스크롤 재측정은 매 프레임 setState를 유발해 노치가 버벅임 → 제거.
     // 봉투 높이는 문서 좌표 기반이라 스크롤과 무관. 툴바 변화는 resize로 감지.
@@ -86,6 +87,7 @@ export default function EnvelopeFooter() {
       cancelAnimationFrame(raf);
       timers.forEach(clearTimeout);
       window.clearTimeout(rt);
+      window.clearTimeout(roStop);
       ro?.disconnect();
       window.removeEventListener("resize", onResize);
       window.removeEventListener("load", measure);
@@ -97,14 +99,13 @@ export default function EnvelopeFooter() {
     height.set(startH);
   }, [startH, height]);
 
-  // 스크롤하면 transform으로 아래로 밀어 줄어든 것처럼 보이게(=layout 변화 없음 → 부드러움).
+  // 스크롤하면 transform(y)으로 아래로 미끄러져 완전히 사라짐(순수 합성 → 부드럽고 layout 변화 없음).
   useEffect(() => {
-    const max = Math.max(0, startH - MIN_H);
-    const update = () => y.set(Math.min(Math.max(scrollY.get(), 0), max));
+    const update = () => y.set(Math.max(scrollY.get(), 0));
     update();
     const unsub = scrollY.on("change", update);
     return unsub;
-  }, [startH, y, scrollY]);
+  }, [y, scrollY]);
 
   const quoteOpacity = useTransform(scrollY, [0, 130], [1, 0], { clamp: true });
 
@@ -161,7 +162,7 @@ export default function EnvelopeFooter() {
           opacity: quoteOpacity,
         }}
       >
-        {QUOTE_LINE1}<br />{QUOTE_LINE2}
+        {QUOTE}
       </motion.p>
     </motion.div>
     </>
