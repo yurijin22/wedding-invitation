@@ -25,10 +25,7 @@ export default function Intro() {
         style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", position: "relative", zIndex: 2 }}
       >
         {/* 헤더 */}
-        <p style={{ fontFamily: "var(--font-serif)", fontSize: 13, letterSpacing: "0.04em", color: "#6F665C", margin: 0 }}>
-          WE INVITE YOU TO
-        </p>
-        <p style={{ fontFamily: "var(--font-script)", fontStyle: "italic", fontWeight: 500, fontSize: 30, letterSpacing: "-0.01em", color: "#1D1000", margin: "-8px 0 10px" }}>
+        <p style={{ fontFamily: "var(--font-script)", fontStyle: "italic", fontWeight: 500, fontSize: 30, letterSpacing: "-0.01em", color: "#1D1000", margin: "0 0 10px" }}>
           Our Wedding Day
         </p>
 
@@ -41,7 +38,7 @@ export default function Intro() {
         <p style={{ fontFamily: "var(--font-serif)", fontSize: 18, letterSpacing: "0.05em", color: "#1D1000", margin: 0 }}>
           RAMADA SEOUL
         </p>
-        <p style={{ fontFamily: "'Pretendard Variable', Pretendard, sans-serif", fontSize: 12.5, lineHeight: "20px", letterSpacing: "0.01em", color: "#8B8178", margin: "6px 0 clamp(32px, calc(4svh + 12px), 52px)" }}>
+        <p style={{ fontFamily: "'Pretendard Variable', Pretendard, sans-serif", fontSize: 12.5, lineHeight: "20px", letterSpacing: "0.01em", color: "#8B8178", margin: "6px 0 clamp(20px, 4svh, 40px)" }}>
           {wedding.venue.name}<br />{wedding.venue.addressDetail}
         </p>
 
