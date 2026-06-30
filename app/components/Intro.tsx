@@ -14,7 +14,7 @@ export default function Intro() {
         backgroundSize: "cover",
         backgroundPosition: "top center",
         backgroundRepeat: "no-repeat",
-        padding: "clamp(40px, 7dvh, 72px) 30px 80px",
+        padding: "clamp(40px, 7svh, 72px) 30px 80px",
       }}
     >
       <motion.div
@@ -34,14 +34,14 @@ export default function Intro() {
 
         {/* 액자 (프레임+사진, 크롭) — public/frameC.png */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/frameC.png" alt="" style={{ width: "clamp(180px, 32dvh, 240px)", height: "auto", display: "block", marginBottom: "clamp(12px, 2.2dvh, 22px)" }}
+        <img src="/frameC.png" alt="" style={{ width: "clamp(180px, 32svh, 240px)", height: "auto", display: "block", marginBottom: "clamp(12px, 2.2svh, 22px)" }}
           onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
 
         {/* 장소 — 0920 위로 */}
         <p style={{ fontFamily: "var(--font-serif)", fontSize: 18, letterSpacing: "0.05em", color: "#1D1000", margin: 0 }}>
           RAMADA SEOUL
         </p>
-        <p style={{ fontFamily: "'Pretendard Variable', Pretendard, sans-serif", fontSize: 12.5, lineHeight: "20px", letterSpacing: "0.01em", color: "#8B8178", margin: "6px 0 clamp(20px, 4dvh, 40px)" }}>
+        <p style={{ fontFamily: "'Pretendard Variable', Pretendard, sans-serif", fontSize: 12.5, lineHeight: "20px", letterSpacing: "0.01em", color: "#8B8178", margin: "6px 0 clamp(20px, 4svh, 40px)" }}>
           {wedding.venue.name}<br />{wedding.venue.addressDetail}
         </p>
 
