@@ -61,7 +61,7 @@ export default function Intro() {
         {/* 혼주 + 신랑·신부 */}
         <div style={{ display: "flex", width: "100%", maxWidth: 320, marginTop: 56, marginBottom: 40 }}>
           <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8, alignItems: "center" }}>
-            <p style={{ fontSize: 13, fontWeight: 400, lineHeight: "18px", color: "#9A8E84", margin: 0 }}>
+            <p style={{ fontSize: 15, fontWeight: 400, lineHeight: "21px", color: "#6F665C", margin: 0 }}>
               {groom.fatherName} · {groom.motherName}의 아들
             </p>
             <p style={{ fontSize: 19, fontWeight: 500, lineHeight: "26px", color: "#2F1E11", margin: 0 }}>
@@ -70,7 +70,7 @@ export default function Intro() {
           </div>
           <div style={{ width: 1, backgroundColor: "rgba(29,16,0,0.15)", alignSelf: "stretch", flexShrink: 0 }} />
           <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8, alignItems: "center" }}>
-            <p style={{ fontSize: 13, fontWeight: 400, lineHeight: "18px", color: "#9A8E84", margin: 0 }}>
+            <p style={{ fontSize: 15, fontWeight: 400, lineHeight: "21px", color: "#6F665C", margin: 0 }}>
               {bride.fatherName} · {bride.motherName}의 딸
             </p>
             <p style={{ fontSize: 19, fontWeight: 500, lineHeight: "26px", color: "#2F1E11", margin: 0 }}>
