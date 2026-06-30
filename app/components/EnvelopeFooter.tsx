@@ -110,11 +110,15 @@ export default function EnvelopeFooter() {
         {/* 음악 버튼 — 봉투(노치 영역) 우측 상단 */}
         <MusicPlayer />
 
-        {/* 브라운 봉투 — 상단 중앙 반원 노치(mask) */}
+        {/* 브라운 봉투 — 상단 중앙 반원 노치(mask). 하단은 화면 밖으로 더 늘려
+            (스크롤 중 툴바 사라질 때 하단에 흰 라인 비치는 것 방지) */}
         <div
           style={{
             position: "absolute",
-            inset: 0,
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: -160,
             backgroundColor: FRAME,
             WebkitMaskImage: `radial-gradient(${NOTCH}px at 50% ${NOTCH_Y}px, transparent ${NOTCH - 1}px, #000 ${NOTCH}px)`,
             maskImage: `radial-gradient(${NOTCH}px at 50% ${NOTCH_Y}px, transparent ${NOTCH - 1}px, #000 ${NOTCH}px)`,
