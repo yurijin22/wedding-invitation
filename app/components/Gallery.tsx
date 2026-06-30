@@ -11,8 +11,8 @@ import "swiper/css/thumbs";
 import "swiper/css/free-mode";
 import { weddingData } from "@/lib/wedding-data";
 
-export default function Gallery() {
-  const { galleryImages: localImages } = weddingData;
+export default function Gallery({ images }: { images?: string[] }) {
+  const localImages = images && images.length > 0 ? images : weddingData.galleryImages;
   const [activeIndex, setActiveIndex] = useState(0);
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -60,8 +60,10 @@ export default function Gallery() {
         </div>
       ) : (
         <div style={{ paddingBottom: 76 }}>
-          {/* 메인 이미지 — 스크롤 줌 + 스와이프 + 탭하면 전체화면 */}
-          <motion.div ref={mainRef} style={{ scale: mainScale, borderRadius: 4, overflow: "hidden" }}>
+          {/* 메인 이미지 — 스크롤 줌 + 스와이프 + 탭하면 전체화면.
+              줌(scale)이 박스를 넘어 썸네일을 덮지 않도록 클리핑 래퍼로 감쌈 */}
+          <div ref={mainRef} style={{ borderRadius: 4, overflow: "hidden" }}>
+            <motion.div style={{ scale: mainScale }}>
             <Swiper
               modules={[Thumbs, Keyboard]}
               thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : undefined }}
@@ -82,7 +84,8 @@ export default function Gallery() {
                 </SwiperSlide>
               ))}
             </Swiper>
-          </motion.div>
+            </motion.div>
+          </div>
 
           {/* 썸네일 스트립 — 가로 스크롤, 탭하면 메인 전환 */}
           <Swiper

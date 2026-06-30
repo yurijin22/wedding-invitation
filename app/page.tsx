@@ -10,9 +10,18 @@ import Share from "@/app/components/Share";
 import EnvelopeFooter from "@/app/components/EnvelopeFooter";
 import FrameShell from "@/app/components/FrameShell";
 import Petals from "@/app/components/Petals";
+import fs from "fs";
+import path from "path";
 
 // 봉투 프레임 색 (Our Wedding Day 섹션 배경색과 동일)
 const FRAME = "#2F1E11";
+
+// public/gallery 폴더를 자동으로 읽어 이름순 정렬 → 파일만 바꿔도 갤러리 자동 반영(빌드 시)
+const galleryImages = fs
+  .readdirSync(path.join(process.cwd(), "public", "gallery"))
+  .filter((f) => /\.(jpe?g|png)$/i.test(f))
+  .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
+  .map((f) => `/gallery/${f}`);
 
 export default function Home() {
   return (
@@ -31,7 +40,7 @@ export default function Home() {
         <Intro />
         <Greeting />
         <DateSection />
-        <Gallery />
+        <Gallery images={galleryImages} />
         <Location />
         <HowToGet />
         <Information />

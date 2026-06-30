@@ -9,12 +9,12 @@ const { notice, directions } = weddingData;
 // 슬라이드 — 이미지/제목/설명. 추가하려면 여기 항목만 늘리면 됨(점 자동 생성).
 const SLIDES = [
   {
-    img: "/gallery/gallery-03.jpg",
+    img: "/gallery/03.jpg",
     title: "Reception Party",
     body: `본식에 함께하기 어려운 분들을 위해\n작은 피로연 자리를 마련했습니다.\n\n${notice.date}\n${notice.venue}`,
   },
   {
-    img: "/gallery/gallery-07.jpg",
+    img: "/gallery/07.jpg",
     title: "Parking",
     body: `라마다 서울 신도림 호텔 주차장을 이용해 주세요.\n\n${directions.parkingNote}`,
   },
