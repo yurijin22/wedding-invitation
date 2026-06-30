@@ -22,8 +22,10 @@ export default function EnvelopeFooter() {
   const [startH, setStartH] = useState(DEFAULT_START_H);
   const [dbg, setDbg] = useState("");
   const [debugOn, setDebugOn] = useState(false);
-  // 높이를 직접 제어 — startH(측정값) 변경 시 스크롤 없이도 즉시 반영
+  // 높이는 startH(측정값)로 '고정' — 스크롤 중 layout이 매 프레임 안 바뀜.
   const height = useMotionValue(DEFAULT_START_H);
+  // 스크롤 시 줄어드는 효과는 transform(y)로 — GPU 합성이라 버벅임 없음.
+  const y = useMotionValue(0);
   const envRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -84,14 +86,19 @@ export default function EnvelopeFooter() {
     };
   }, []);
 
-  // height = clamp(startH - scrollY, MIN_H, startH) — 스크롤하면 줄어듦.
-  // startH가 바뀌면(측정 반영) update()를 즉시 호출해 정지 상태에서도 갱신.
+  // 높이는 측정값으로 고정(스크롤 무관) — 매 프레임 reflow 방지.
   useEffect(() => {
-    const update = () => height.set(Math.max(MIN_H, Math.min(startH, startH - scrollY.get())));
+    height.set(startH);
+  }, [startH, height]);
+
+  // 스크롤하면 transform으로 아래로 밀어 줄어든 것처럼 보이게(=layout 변화 없음 → 부드러움).
+  useEffect(() => {
+    const max = Math.max(0, startH - MIN_H);
+    const update = () => y.set(Math.min(Math.max(scrollY.get(), 0), max));
     update();
     const unsub = scrollY.on("change", update);
     return unsub;
-  }, [startH, height, scrollY]);
+  }, [startH, y, scrollY]);
 
   const quoteOpacity = useTransform(scrollY, [0, 130], [1, 0], { clamp: true });
 
@@ -109,9 +116,11 @@ export default function EnvelopeFooter() {
         bottom: 0,
         left: "50%",
         x: "-50%",
+        y,
         width: "100%",
         maxWidth: 390,
         height,
+        willChange: "transform",
         zIndex: 50,
       }}
     >
