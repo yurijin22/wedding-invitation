@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Instrument_Serif, Italianno, Noto_Sans_KR } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
@@ -60,6 +60,11 @@ export const metadata: Metadata = {
   },
 };
 
+// 브라우저 UI(상단 상태바/하단 툴바)를 봉투 브라운으로 — 스크롤 시 하단 이음새가 흰색으로 비치는 것 완화
+export const viewport: Viewport = {
+  themeColor: "#1D1000",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -71,9 +76,10 @@ export default function RootLayout({
       className={`${cormorant.variable} ${instrumentSerif.variable} ${italianno.variable} ${notoSansKR.variable}`}
     >
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta name="theme-color" content="#1D1000" />
       </head>
-      <body className="bg-[#FAFAF7] text-[#49311C] antialiased">
+      <body className="antialiased">
         {children}
         <Script
           src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
