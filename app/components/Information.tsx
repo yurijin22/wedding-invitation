@@ -85,7 +85,7 @@ export default function Information() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            style={{ display: "flex", flexDirection: "column", gap: 18, alignItems: "center", padding: "0 24px" }}
+            style={{ display: "flex", flexDirection: "column", gap: 18, alignItems: "center", justifyContent: "flex-start", minHeight: 190, padding: "0 24px" }}
           >
             <p style={{ fontFamily: "var(--font-serif)", fontStyle: "italic", fontSize: 19, color: "#2F1E11", margin: 0 }}>
               {SLIDES[active].title}
