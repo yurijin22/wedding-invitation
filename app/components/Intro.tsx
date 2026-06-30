@@ -38,7 +38,7 @@ export default function Intro() {
         <p style={{ fontFamily: "var(--font-serif)", fontSize: 18, letterSpacing: "0.05em", color: "#1D1000", margin: 0 }}>
           RAMADA SEOUL
         </p>
-        <p style={{ fontFamily: "'Pretendard Variable', Pretendard, sans-serif", fontSize: 12.5, lineHeight: "20px", letterSpacing: "0.01em", color: "#8B8178", margin: "6px 0 clamp(20px, 4svh, 40px)" }}>
+        <p style={{ fontFamily: "'Pretendard Variable', Pretendard, sans-serif", fontSize: 12.5, lineHeight: "20px", letterSpacing: "0.01em", color: "#8B8178", margin: "6px 0 clamp(34px, calc(4svh + 14px), 54px)" }}>
           {wedding.venue.name}<br />{wedding.venue.addressDetail}
         </p>
 
