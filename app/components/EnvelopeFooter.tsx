@@ -16,7 +16,8 @@ const QUOTE_SHORT = "You are invited to our loveliest day"; // 스크롤 시 한
 export default function EnvelopeFooter() {
   const [topPx, setTopPx] = useState<number | null>(null);
   const y = useMotionValue(0); // 슬라이드(transform) — 합성, layout 변화 없음
-  const quoteOpacity = useMotionValue(1); // 긴 문구(상단)
+  const quoteOpacity = useMotionValue(1); // 긴 문구
+  const quoteScale = useMotionValue(1); // 긴 문구가 줄어드는 효과
   const lineOpacity = useMotionValue(0); // 한 줄 문구(스크롤 시)
   const vpRef = useRef<HTMLDivElement>(null); // transform 없는 화면하단 기준점
   const maxSlideRef = useRef(120); // 내려갈 수 있는 최대(=봉투높이의 절반)
@@ -77,8 +78,10 @@ export default function EnvelopeFooter() {
       raf = 0;
       const sY = Math.max(window.scrollY || window.pageYOffset || 0, 0);
       y.set(Math.min(sY, maxSlideRef.current));
-      // 긴 문구 → 한 줄 문구 크로스페이드
-      quoteOpacity.set(Math.max(0, 1 - sY / 70));
+      // 긴 문구가 같은 자리에서 줄어들며(scale↓) 페이드 → 한 줄 문구로 응축
+      const p = Math.max(0, Math.min(1, sY / 70));
+      quoteOpacity.set(1 - p);
+      quoteScale.set(1 - p * 0.14);
       lineOpacity.set(Math.max(0, Math.min(1, (sY - 40) / 60)));
     };
     const onScroll = () => {
@@ -90,7 +93,7 @@ export default function EnvelopeFooter() {
       window.removeEventListener("scroll", onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, [y, quoteOpacity, lineOpacity]);
+  }, [y, quoteOpacity, quoteScale, lineOpacity]);
 
   return (
     <>
@@ -143,11 +146,11 @@ export default function EnvelopeFooter() {
           }}
         />
 
-        {/* 영어 인용문 — 하단 화이트, 스크롤하면 페이드아웃 */}
+        {/* 긴 영어 인용문 — 노치 아래. 스크롤하면 같은 자리에서 줄어들며 페이드아웃 */}
         <motion.p
           style={{
             position: "absolute",
-            bottom: 9,
+            top: 56,
             left: 24,
             right: 24,
             textAlign: "center",
@@ -158,16 +161,18 @@ export default function EnvelopeFooter() {
             letterSpacing: "0.02em",
             color: "rgba(255,255,255,0.82)",
             opacity: quoteOpacity,
+            scale: quoteScale,
+            transformOrigin: "center top",
           }}
         >
           {QUOTE}
         </motion.p>
 
-        {/* 스크롤 시 나타나는 한 줄 문구 — 노치 바로 아래(남는 영역) */}
+        {/* 스크롤 시 같은 자리에 응축되어 나타나는 한 줄 문구 */}
         <motion.p
           style={{
             position: "absolute",
-            top: 58,
+            top: 56,
             left: 24,
             right: 24,
             textAlign: "center",
