@@ -7,7 +7,6 @@ import Location from "@/app/components/Location";
 import HowToGet from "@/app/components/HowToGet";
 import Accounts from "@/app/components/Accounts";
 import Share from "@/app/components/Share";
-import Outro from "@/app/components/Outro";
 import EnvelopeFooter from "@/app/components/EnvelopeFooter";
 import FrameShell from "@/app/components/FrameShell";
 
@@ -38,7 +37,6 @@ export default function Home() {
         <Notice />
         <Accounts />
         <Share />
-        <Outro />
       </FrameShell>
 
       {/* 하단 여백 — 줄어든 고정 바에 마지막 섹션이 가리지 않도록 */}
