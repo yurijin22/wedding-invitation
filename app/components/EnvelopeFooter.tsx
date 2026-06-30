@@ -5,8 +5,8 @@ import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
 import MusicPlayer from "./MusicPlayer";
 
 const FRAME = "#1D1000"; // Our Wedding Day 섹션 배경색과 동일
-const NOTCH = 36; // 상단 중앙 반원 노치 반지름
-const NOTCH_Y = -4; // 노치 중심 y (음수일수록 얕음)
+const NOTCH = 46; // 상단 중앙 반원 노치 반지름 (0920을 감싸도록 크게)
+const NOTCH_Y = 0; // 노치 중심 y (봉투 top 기준)
 
 // 봉투가 짧은 기기에서도 노치와 겹치지 않도록 2줄로 압축
 const QUOTE_LINE1 = "Upon the loveliest day of the year,";
@@ -44,9 +44,8 @@ export default function EnvelopeFooter() {
       // ⭐ innerHeight는 모바일 툴바 때문에 실제 고정-뷰포트와 다름.
       // 봉투 자신(bottom:0 고정)의 viewport상 하단 = 진짜 뷰포트 높이(realVH). 이게 정확.
       const realVH = envRef.current?.getBoundingClientRect().bottom ?? window.innerHeight;
-      // 모두 문서 좌표로 통일(스크롤 무관) → 어느 스크롤에서 재도 동일한 base 높이.
-      // 오프셋이 작을수록 노치가 0920에 더 바짝 붙음(0920이 노치 쪽으로 내려옴).
-      const doc0920Bottom = rect.bottom + window.scrollY - 8;
+      // 노치 중심을 0920 '세로 중앙'에 둬서 숫자가 노치 안에 들어가게.
+      const doc0920Bottom = rect.top + rect.height / 2 + window.scrollY;
       const docViewportBottom = realVH + window.scrollY; // 뷰포트 하단의 문서 좌표
       const target = docViewportBottom - doc0920Bottom + NOTCH_Y; // 봉투 base 높이
       const clamped = Math.max(MIN_H + 24, Math.min(target, realVH * 0.85));
@@ -74,16 +73,22 @@ export default function EnvelopeFooter() {
     if (document.fonts?.ready) document.fonts.ready.then(measure).catch(() => {});
     // ⚠️ 스크롤 재측정은 매 프레임 setState를 유발해 노치가 버벅임 → 제거.
     // 봉투 높이는 문서 좌표 기반이라 스크롤과 무관. 툴바 변화는 resize로 감지.
-    window.addEventListener("resize", schedule);
+    // resize는 디바운스 — 스크롤 중 iOS 툴바 높이 변화로 노치가 튀는 것 방지.
+    // visualViewport는 일부러 구독 안 함(툴바 슬라이드마다 재계산 → 버벅임의 원인).
+    let rt = 0;
+    const onResize = () => {
+      window.clearTimeout(rt);
+      rt = window.setTimeout(measure, 250);
+    };
+    window.addEventListener("resize", onResize);
     window.addEventListener("load", measure);
-    window.visualViewport?.addEventListener("resize", schedule);
     return () => {
       cancelAnimationFrame(raf);
       timers.forEach(clearTimeout);
+      window.clearTimeout(rt);
       ro?.disconnect();
-      window.removeEventListener("resize", schedule);
+      window.removeEventListener("resize", onResize);
       window.removeEventListener("load", measure);
-      window.visualViewport?.removeEventListener("resize", schedule);
     };
   }, []);
 
