@@ -14,16 +14,10 @@ const QUOTE =
 // 스크롤하면 transform(y)으로 절반까지만 내려감(절반은 하단에 남음).
 export default function EnvelopeFooter() {
   const [topPx, setTopPx] = useState<number | null>(null);
-  const [dbg, setDbg] = useState("");
-  const [debugOn, setDebugOn] = useState(false);
   const y = useMotionValue(0); // 슬라이드(transform) — 합성, layout 변화 없음
   const quoteOpacity = useMotionValue(1);
   const vpRef = useRef<HTMLDivElement>(null); // transform 없는 화면하단 기준점
   const maxSlideRef = useRef(120); // 내려갈 수 있는 최대(=봉투높이의 절반)
-
-  useEffect(() => {
-    setDebugOn(new URLSearchParams(window.location.search).has("debug"));
-  }, []);
 
   // 0920 위치 측정 → 봉투 top. 스크롤 무관(문서 좌표). 폰트/이미지/회전 시에만 갱신.
   useEffect(() => {
@@ -37,9 +31,6 @@ export default function EnvelopeFooter() {
       const center0 = rect.top + rect.height / 2 + window.scrollY;
       maxSlideRef.current = Math.max(40, (realVH - center0) * 0.5); // 절반 남김
       setTopPx((prev) => (prev === null || Math.abs(prev - center0) > 0.5 ? center0 : prev));
-      if (window.location.search.includes("debug")) {
-        setDbg(`vh=${Math.round(realVH)} top=${Math.round(center0)} maxSlide=${Math.round(maxSlideRef.current)}`);
-      }
     };
     const schedule = () => {
       cancelAnimationFrame(raf);
@@ -98,11 +89,6 @@ export default function EnvelopeFooter() {
 
   return (
     <>
-      {debugOn && (
-        <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 9999, background: "rgba(190,0,0,0.92)", color: "#fff", fontSize: 10, lineHeight: "14px", padding: "5px 6px", fontFamily: "monospace" }}>
-          DEBUG {dbg}
-        </div>
-      )}
       {/* transform 없는 화면 하단 기준점 — realVH 측정용 */}
       <div ref={vpRef} style={{ position: "fixed", bottom: 0, left: 0, width: 0, height: 0, pointerEvents: "none" }} />
 
