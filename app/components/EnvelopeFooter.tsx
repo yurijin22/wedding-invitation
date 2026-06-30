@@ -81,7 +81,7 @@ export default function EnvelopeFooter() {
       <motion.p
         style={{
           position: "absolute",
-          bottom: 16,
+          bottom: 9,
           left: 24,
           right: 24,
           textAlign: "center",
