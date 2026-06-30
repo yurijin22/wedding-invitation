@@ -25,7 +25,8 @@ export default function EnvelopeFooter() {
   // 스크롤 시 줄어드는 효과는 transform(y)로 — GPU 합성이라 버벅임 없음.
   const y = useMotionValue(0);
   const quoteOpacity = useMotionValue(1);
-  const envRef = useRef<HTMLDivElement>(null);
+  // 화면 하단 기준점 — transform 안 받는 고정 요소(봉투 자신은 transform 때문에 측정 오염됨).
+  const vpRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setDebugOn(new URLSearchParams(window.location.search).has("debug"));
@@ -42,7 +43,7 @@ export default function EnvelopeFooter() {
       const rect = el.getBoundingClientRect();
       // ⭐ innerHeight는 모바일 툴바 때문에 실제 고정-뷰포트와 다름.
       // 봉투 자신(bottom:0 고정)의 viewport상 하단 = 진짜 뷰포트 높이(realVH). 이게 정확.
-      const realVH = envRef.current?.getBoundingClientRect().bottom ?? window.innerHeight;
+      const realVH = vpRef.current?.getBoundingClientRect().bottom ?? window.innerHeight;
       // 0920 중심의 '스크롤0 기준' 뷰포트 위치 = 현재 뷰포트 위치 + 현재 스크롤량.
       // 이렇게 해야 어느 스크롤에서 재측정해도 동일한 base 높이가 나옴(스크롤 무관).
       const center0 = rect.top + rect.height / 2 + window.scrollY;
@@ -128,8 +129,9 @@ export default function EnvelopeFooter() {
         DEBUG {dbg}
       </div>
     )}
+    {/* 화면 하단 기준점 (transform 없음) — realVH 측정용 */}
+    <div ref={vpRef} style={{ position: "fixed", bottom: 0, left: 0, width: 0, height: 0, pointerEvents: "none" }} />
     <motion.div
-      ref={envRef}
       style={{
         position: "fixed",
         bottom: 0,
