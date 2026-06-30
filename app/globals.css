@@ -93,6 +93,15 @@ body {
   }
 }
 
+/* 연핑크 장미 꽃잎이 살랑살랑 떨어지는 효과 */
+@keyframes petal-fall {
+  0%   { transform: translateY(-12vh) translateX(0) rotate(0deg); opacity: 0; }
+  8%   { opacity: 0.85; }
+  50%  { transform: translateY(48vh) translateX(var(--sway, 24px)) rotate(220deg); }
+  92%  { opacity: 0.85; }
+  100% { transform: translateY(114vh) translateX(calc(var(--sway, 24px) * -0.6)) rotate(430deg); opacity: 0; }
+}
+
 /* INFORMATION 캐러셀 — 가로 스냅 스크롤, 스크롤바 숨김 */
 .info-carousel {
   display: flex;

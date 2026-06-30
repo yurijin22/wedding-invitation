@@ -9,6 +9,7 @@ import Accounts from "@/app/components/Accounts";
 import Share from "@/app/components/Share";
 import EnvelopeFooter from "@/app/components/EnvelopeFooter";
 import FrameShell from "@/app/components/FrameShell";
+import Petals from "@/app/components/Petals";
 
 // 봉투 프레임 색 (Our Wedding Day 섹션 배경색과 동일)
 const FRAME = "#2F1E11";
@@ -43,6 +44,9 @@ export default function Home() {
 
       {/* 고정 하단 봉투 — 노치가 0920 감싸다가 스크롤하면 내려와 최하단 흰 영역 위에 안착 */}
       <EnvelopeFooter />
+
+      {/* 연핑크 장미 꽃잎 — 화면 위로 살랑살랑 (장식, 클릭 통과) */}
+      <Petals />
     </main>
   );
 }
