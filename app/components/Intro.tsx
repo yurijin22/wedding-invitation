@@ -28,13 +28,13 @@ export default function Intro() {
         <p style={{ fontFamily: "var(--font-serif)", fontSize: 13, letterSpacing: "0.04em", color: "#6F665C", margin: 0 }}>
           WE INVITE YOU TO
         </p>
-        <p style={{ fontFamily: "var(--font-script)", fontStyle: "italic", fontWeight: 500, fontSize: 30, letterSpacing: "-0.01em", color: "#1D1000", margin: "6px 0 22px" }}>
+        <p style={{ fontFamily: "var(--font-script)", fontStyle: "italic", fontWeight: 500, fontSize: 30, letterSpacing: "-0.01em", color: "#1D1000", margin: "6px 0 16px" }}>
           Our Wedding Day
         </p>
 
         {/* 액자 (프레임+사진, 크롭) — public/frameC.png */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/frameC.png" alt="" style={{ width: 240, height: "auto", display: "block", marginBottom: 30 }}
+        <img src="/frameC.png" alt="" style={{ width: 240, height: "auto", display: "block", marginBottom: 16 }}
           onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
 
         {/* 장소 — 0920 위로 */}
@@ -46,7 +46,7 @@ export default function Intro() {
         </p>
 
         {/* 09 / 20 (Romans Story) */}
-        <div id="intro-0920" style={{ lineHeight: 0.96, marginBottom: 52 }}>
+        <div id="intro-0920" style={{ lineHeight: 0.96, marginBottom: 70 }}>
           <div style={{ fontFamily: '"Romans Story", var(--font-serif)', fontSize: 26, color: "#1D1000", WebkitTextStroke: "0.5px #1D1000" }}>09</div>
           <div style={{ fontFamily: '"Romans Story", var(--font-serif)', fontSize: 26, color: "#1D1000", WebkitTextStroke: "0.5px #1D1000" }}>20</div>
         </div>
