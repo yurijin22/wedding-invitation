@@ -43,10 +43,10 @@ export default function EnvelopeFooter() {
       // ⭐ innerHeight는 모바일 툴바 때문에 실제 고정-뷰포트와 다름.
       // 봉투 자신(bottom:0 고정)의 viewport상 하단 = 진짜 뷰포트 높이(realVH). 이게 정확.
       const realVH = envRef.current?.getBoundingClientRect().bottom ?? window.innerHeight;
-      // 노치 중심을 0920 '세로 중앙'에 둬서 숫자가 노치 안에 들어가게.
-      const doc0920Bottom = rect.top + rect.height / 2 + window.scrollY;
-      const docViewportBottom = realVH + window.scrollY; // 뷰포트 하단의 문서 좌표
-      const target = docViewportBottom - doc0920Bottom + NOTCH_Y; // 봉투 base 높이
+      // 0920 중심의 '스크롤0 기준' 뷰포트 위치 = 현재 뷰포트 위치 + 현재 스크롤량.
+      // 이렇게 해야 어느 스크롤에서 재측정해도 동일한 base 높이가 나옴(스크롤 무관).
+      const center0 = rect.top + rect.height / 2 + window.scrollY;
+      const target = realVH - center0 + NOTCH_Y; // 봉투 base 높이(스크롤0에서 노치가 0920 중앙)
       const clamped = Math.max(MIN_H + 24, Math.min(target, realVH * 0.85));
       setStartH((prev) => (Math.abs(prev - clamped) > 0.5 ? clamped : prev));
       if (window.location.search.includes("debug")) {
