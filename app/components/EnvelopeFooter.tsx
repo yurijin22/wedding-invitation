@@ -27,6 +27,7 @@ export default function EnvelopeFooter() {
   const quoteOpacity = useMotionValue(1);
   // 화면 하단 기준점 — transform 안 받는 고정 요소(봉투 자신은 transform 때문에 측정 오염됨).
   const vpRef = useRef<HTMLDivElement>(null);
+  const startHRef = useRef(DEFAULT_START_H); // 스크롤 핸들러에서 최신 startH 참조용
 
   useEffect(() => {
     setDebugOn(new URLSearchParams(window.location.search).has("debug"));
@@ -77,8 +78,12 @@ export default function EnvelopeFooter() {
     // 봉투 높이는 문서 좌표 기반이라 스크롤과 무관. 툴바 변화는 resize로 감지.
     // resize는 디바운스 — 스크롤 중 iOS 툴바 높이 변화로 노치가 튀는 것 방지.
     // visualViewport는 일부러 구독 안 함(툴바 슬라이드마다 재계산 → 버벅임의 원인).
+    // 툴바 슬라이드(높이만 변화)는 무시하고, 가로폭 변화(회전 등)만 재측정 → 상단 복귀 시 스냅 방지.
     let rt = 0;
+    let lastW = window.innerWidth;
     const onResize = () => {
+      if (window.innerWidth === lastW) return;
+      lastW = window.innerWidth;
       window.clearTimeout(rt);
       rt = window.setTimeout(measure, 250);
     };
@@ -97,6 +102,7 @@ export default function EnvelopeFooter() {
 
   // 높이는 측정값으로 고정(스크롤 무관) — 매 프레임 reflow 방지.
   useEffect(() => {
+    startHRef.current = startH;
     height.set(startH);
   }, [startH, height]);
 
@@ -108,7 +114,9 @@ export default function EnvelopeFooter() {
     const apply = () => {
       raf = 0;
       const sY = Math.max(window.scrollY || window.pageYOffset || 0, 0);
-      y.set(sY);
+      // 완전히 사라지지 않게 — 봉투 높이의 절반까지만 내려감(절반은 하단에 남음).
+      const maxSlide = startHRef.current * 0.5;
+      y.set(Math.min(sY, maxSlide));
       quoteOpacity.set(Math.max(0, 1 - sY / 130));
     };
     const onScroll = () => {
