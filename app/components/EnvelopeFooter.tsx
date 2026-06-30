@@ -8,8 +8,9 @@ const FRAME = "#1D1000"; // Our Wedding Day 섹션 배경색과 동일
 const NOTCH = 36; // 상단 중앙 반원 노치 반지름
 const NOTCH_Y = -4; // 노치 중심 y (음수일수록 얕음)
 
-const QUOTE =
-  "The year's loveliest smile falls softly upon September 20, blessing the moment we become one forever, with love blooming through the years to come, walking hand in hand through the seasons ahead.";
+// 봉투가 짧은 기기에서도 노치와 겹치지 않도록 2줄로 압축
+const QUOTE_LINE1 = "Upon the loveliest day of the year,";
+const QUOTE_LINE2 = "we two become one — forever, hand in hand.";
 
 const DEFAULT_START_H = 204; // 측정 전 기본 봉투 높이
 const MIN_H = 56; // 스크롤 후 최소 높이
@@ -76,24 +77,24 @@ export default function EnvelopeFooter() {
         }}
       />
 
-      {/* 영어 인용문 — 하단 화이트, 스크롤하면 페이드아웃 */}
+      {/* 영어 인용문 — 하단 화이트, 스크롤하면 페이드아웃. 노치와 안 겹치게 2줄 */}
       <motion.p
         style={{
           position: "absolute",
-          bottom: 22,
-          left: 26,
-          right: 26,
+          bottom: 16,
+          left: 24,
+          right: 24,
           textAlign: "center",
           margin: 0,
           fontFamily: "var(--font-serif)",
           fontSize: 11,
-          lineHeight: "17px",
+          lineHeight: "16px",
           letterSpacing: "0.02em",
           color: "rgba(255,255,255,0.82)",
           opacity: quoteOpacity,
         }}
       >
-        {QUOTE}
+        {QUOTE_LINE1}<br />{QUOTE_LINE2}
       </motion.p>
     </motion.div>
   );
