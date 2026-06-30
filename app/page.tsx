@@ -39,7 +39,7 @@ export default function Home() {
       </FrameShell>
 
       {/* 하단 흰 여백 — Share 아래 화이트를 확대해, 최하단에서 봉투 노치가 이 흰 영역 위에 떠 있게 */}
-      <div style={{ height: 190, backgroundColor: "#fff" }} />
+      <div style={{ height: 120, backgroundColor: "#fff" }} />
 
       {/* 고정 하단 봉투 — 노치가 0920 감싸다가 스크롤하면 내려와 최하단 흰 영역 위에 안착 */}
       <EnvelopeFooter />
