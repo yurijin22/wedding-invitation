@@ -35,11 +35,11 @@ export default function Notice() {
         <div style={{ display: "flex", flexDirection: "column", gap: 12, alignItems: "center" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <span style={{ fontSize: 14, fontWeight: 400, color: "#8C8C8C", minWidth: 25, textAlign: "center" }}>일시</span>
-            <span style={{ fontSize: 15, fontWeight: 500, color: "#5F9DDF", lineHeight: "18px" }}>{notice.date}</span>
+            <span style={{ fontSize: 15, fontWeight: 500, color: "#2F1E11", lineHeight: "18px" }}>{notice.date}</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <span style={{ fontSize: 14, fontWeight: 400, color: "#8C8C8C", minWidth: 25, textAlign: "center" }}>장소</span>
-            <span style={{ fontSize: 15, fontWeight: 500, color: "#5F9DDF", lineHeight: "18px" }}>{notice.venue}</span>
+            <span style={{ fontSize: 15, fontWeight: 500, color: "#2F1E11", lineHeight: "18px" }}>{notice.venue}</span>
           </div>
         </div>
       </motion.div>

@@ -33,7 +33,7 @@ export default function HowToGet() {
   const { directions } = weddingData;
 
   return (
-    <section style={{ backgroundColor: "#E8F4FF", paddingLeft: 24, paddingRight: 24, paddingTop: 90, paddingBottom: 90 }}>
+    <section style={{ backgroundColor: "#F7F3EA", paddingLeft: 24, paddingRight: 24, paddingTop: 90, paddingBottom: 90 }}>
       <motion.div
         initial={{ opacity: 0, y: 32 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -53,14 +53,14 @@ export default function HowToGet() {
                   flex: 1, height: 52,
                   display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                   borderRadius: 12, border: "none", cursor: "pointer",
-                  backgroundColor: isActive ? "#5F9DDF" : "#fff",
+                  backgroundColor: isActive ? "#2F1E11" : "#fff",
                   color: isActive ? "#fff" : "#361D17",
                   fontSize: 14, fontWeight: isActive ? 600 : 400,
                   transition: "all 0.2s",
                 }}
               >
                 {tab.bus ? (
-                  <BusIcon fg={isActive ? "#fff" : "#361D17"} bg={isActive ? "#5F9DDF" : "#fff"} />
+                  <BusIcon fg={isActive ? "#fff" : "#361D17"} bg={isActive ? "#2F1E11" : "#fff"} />
                 ) : (
                   <img
                     src={isActive ? tab.active : tab.inactive}
@@ -85,7 +85,7 @@ export default function HowToGet() {
           >
             {directions[active].map((line, i) => (
               <li key={i} style={{ display: "flex", gap: 12, alignItems: "center" }}>
-                <span style={{ width: 22, height: 22, borderRadius: "50%", backgroundColor: "#A0CEFF", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 600, flexShrink: 0 }}>
+                <span style={{ width: 22, height: 22, borderRadius: "50%", backgroundColor: "#2F1E11", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 600, flexShrink: 0 }}>
                   {i + 1}
                 </span>
                 <p style={{ fontSize: 14.5, fontWeight: 300, color: "#4D4740", lineHeight: "170%", margin: 0, wordBreak: "keep-all" }}>
@@ -116,7 +116,7 @@ export default function HowToGet() {
         {/* 주차 안내 — 자차 탭에서만 별도 표시 */}
         {active === "car" && (
           <div style={{ display: "flex", gap: 10, alignItems: "flex-start", backgroundColor: "rgba(255,255,255,0.65)", borderRadius: 12, padding: "14px 16px" }}>
-            <span style={{ width: 22, height: 22, borderRadius: 6, backgroundColor: "#5F9DDF", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, flexShrink: 0 }}>
+            <span style={{ width: 22, height: 22, borderRadius: 6, backgroundColor: "#2F1E11", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, flexShrink: 0 }}>
               P
             </span>
             <p style={{ fontSize: 13.5, fontWeight: 300, color: "#4D4740", lineHeight: "165%", margin: 0, wordBreak: "keep-all" }}>

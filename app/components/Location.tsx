@@ -129,7 +129,7 @@ export default function Location() {
               {venue.nameKorean}
             </p>
             {/* 영문 venue명 */}
-            <p style={{ fontFamily: "var(--font-serif)", fontSize: 16, color: "#9EC5EE", letterSpacing: "0.04em", display: "block", textAlign: "center", transform: "scaleX(0.92)", transformOrigin: "center center", margin: 0 }}>
+            <p style={{ fontFamily: "var(--font-serif)", fontSize: 16, color: "#E9E3D7", letterSpacing: "0.04em", display: "block", textAlign: "center", transform: "scaleX(0.92)", transformOrigin: "center center", margin: 0 }}>
               {venue.nameEnglish}
             </p>
             <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.12)", margin: "14px 0" }} />

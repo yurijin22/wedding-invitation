@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 const BG = "#2F1E11";
-const ACCENT = "#9EC5EE";
+const ACCENT = "#E9E3D7";
 const DAY_COLOR = "#867774";
 const DAYS = ["Thu","Fri","Sat","Sun","Mon","Tue","Wed"];
 const NUMS = [17, 18, 19, 20, 21, 22, 23];

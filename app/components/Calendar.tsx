@@ -48,7 +48,7 @@ export default function Calendar() {
               <div
                 key={d}
                 className={`text-center text-[11px] font-sans font-light py-1 tracking-widest
-                  ${i === 0 ? "text-[#c8826a]" : i === 6 ? "text-[#6a94b8]" : "text-[#6B7870]/60"}`}
+                  ${i === 0 ? "text-[#c8826a]" : i === 6 ? "text-[#E9E3D7]" : "text-[#6B7870]/60"}`}
               >
                 {d}
               </div>
@@ -69,7 +69,7 @@ export default function Calendar() {
                           : di === 0
                           ? "text-[#c8826a]"
                           : di === 6
-                          ? "text-[#6a94b8]"
+                          ? "text-[#E9E3D7]"
                           : "text-[#262626]/70"
                         }
                       `}

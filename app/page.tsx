@@ -12,7 +12,6 @@ import FrameShell from "@/app/components/FrameShell";
 
 // 봉투 프레임 색 (Our Wedding Day 섹션 배경색과 동일)
 const FRAME = "#2F1E11";
-const BAR_H = 100; // 스크롤 후 하단에 남는 봉투(절반) 높이만큼 여백 확보
 
 export default function Home() {
   return (
@@ -39,10 +38,10 @@ export default function Home() {
         <Share />
       </FrameShell>
 
-      {/* 하단 여백 — 줄어든 고정 바에 마지막 섹션이 가리지 않도록 */}
-      <div style={{ height: BAR_H + 14 }} />
+      {/* 하단 흰 여백 — Share 아래 화이트를 확대해, 최하단에서 봉투 노치가 이 흰 영역 위에 떠 있게 */}
+      <div style={{ height: 190, backgroundColor: "#fff" }} />
 
-      {/* 고정 하단 봉투 — 처음 크게 → 스크롤 시 작아짐 */}
+      {/* 고정 하단 봉투 — 노치가 0920 감싸다가 스크롤하면 내려와 최하단 흰 영역 위에 안착 */}
       <EnvelopeFooter />
     </main>
   );
