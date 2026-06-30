@@ -9,13 +9,15 @@ const NOTCH = 46; // 0920을 감싸는 반원 노치 반지름
 const NOTCH_Y = 0; // 노치 중심 = 봉투 top (= 0920 중앙)
 const QUOTE =
   "The year's loveliest smile falls softly upon September 20, blessing the moment we become one forever, with love blooming through the years to come, walking hand in hand through the seasons ahead.";
+const QUOTE_SHORT = "You are invited to our loveliest day"; // 스크롤 시 한 줄로 교체
 
 // 봉투를 0920 위치(top)에 직접 고정 + bottom:0 → 높이 자동. 노치는 툴바와 무관하게 0920에 정렬.
 // 스크롤하면 transform(y)으로 절반까지만 내려감(절반은 하단에 남음).
 export default function EnvelopeFooter() {
   const [topPx, setTopPx] = useState<number | null>(null);
   const y = useMotionValue(0); // 슬라이드(transform) — 합성, layout 변화 없음
-  const quoteOpacity = useMotionValue(1);
+  const quoteOpacity = useMotionValue(1); // 긴 문구(상단)
+  const lineOpacity = useMotionValue(0); // 한 줄 문구(스크롤 시)
   const vpRef = useRef<HTMLDivElement>(null); // transform 없는 화면하단 기준점
   const maxSlideRef = useRef(120); // 내려갈 수 있는 최대(=봉투높이의 절반)
 
@@ -75,7 +77,9 @@ export default function EnvelopeFooter() {
       raf = 0;
       const sY = Math.max(window.scrollY || window.pageYOffset || 0, 0);
       y.set(Math.min(sY, maxSlideRef.current));
-      quoteOpacity.set(Math.max(0, 1 - sY / 130));
+      // 긴 문구 → 한 줄 문구 크로스페이드
+      quoteOpacity.set(Math.max(0, 1 - sY / 70));
+      lineOpacity.set(Math.max(0, Math.min(1, (sY - 40) / 60)));
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(apply);
@@ -86,7 +90,7 @@ export default function EnvelopeFooter() {
       window.removeEventListener("scroll", onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, [y, quoteOpacity]);
+  }, [y, quoteOpacity, lineOpacity]);
 
   return (
     <>
@@ -157,6 +161,26 @@ export default function EnvelopeFooter() {
           }}
         >
           {QUOTE}
+        </motion.p>
+
+        {/* 스크롤 시 나타나는 한 줄 문구 — 노치 바로 아래(남는 영역) */}
+        <motion.p
+          style={{
+            position: "absolute",
+            top: 58,
+            left: 24,
+            right: 24,
+            textAlign: "center",
+            margin: 0,
+            fontFamily: "var(--font-serif)",
+            fontStyle: "italic",
+            fontSize: 14,
+            letterSpacing: "0.03em",
+            color: "rgba(255,255,255,0.9)",
+            opacity: lineOpacity,
+          }}
+        >
+          {QUOTE_SHORT}
         </motion.p>
       </motion.div>
     </>

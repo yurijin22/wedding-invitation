@@ -29,10 +29,12 @@
 html {
   scroll-behavior: smooth;
   background: #1D1000; /* 캔버스/오버스크롤 영역까지 브라운 — 하단 흰 영역 방지 */
+  overscroll-behavior: none; /* 맨 위/아래 고무줄 오버스크롤 차단(숨겨진 영역 노출 방지) */
 }
 
 body {
   background: #1D1000; /* 봉투 프레임색 — 390px 콘텐츠 좌우 여백을 흰색 대신 브라운으로 */
+  overscroll-behavior: none;
   color: #1A1A1A;
   font-family: 'Pretendard Variable', Pretendard, var(--font-sans), 'Noto Sans KR', sans-serif;
   letter-spacing: -0.004em; /* Pretendard 기본 자간 -0.4% */
