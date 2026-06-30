@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 import MusicPlayer from "./MusicPlayer";
 
 const FRAME = "#1D1000"; // Our Wedding Day 섹션 배경색과 동일
@@ -17,7 +17,6 @@ const MIN_H = 56; // 스크롤 후 최소 높이
 // 처음엔 크게(봉투가 편지/문안을 덮음) → 스크롤하면 작아져 문안이 드러남.
 // 노치는 0920(#intro-0920) 실제 위치에 맞춰 봉투 높이를 기기별로 자동 계산.
 export default function EnvelopeFooter() {
-  const { scrollY } = useScroll();
   const [startH, setStartH] = useState(DEFAULT_START_H);
   const [dbg, setDbg] = useState("");
   const [debugOn, setDebugOn] = useState(false);
@@ -25,6 +24,7 @@ export default function EnvelopeFooter() {
   const height = useMotionValue(DEFAULT_START_H);
   // 스크롤 시 줄어드는 효과는 transform(y)로 — GPU 합성이라 버벅임 없음.
   const y = useMotionValue(0);
+  const quoteOpacity = useMotionValue(1);
   const envRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -99,15 +99,27 @@ export default function EnvelopeFooter() {
     height.set(startH);
   }, [startH, height]);
 
-  // 스크롤하면 transform(y)으로 아래로 미끄러져 완전히 사라짐(순수 합성 → 부드럽고 layout 변화 없음).
+  // 스크롤 시 봉투를 아래로 미끄러뜨려 사라지게(노치도 함께 내려감).
+  // framer useScroll 대신 '네이티브 스크롤' 사용 — 일부 인앱브라우저에서 useScroll이
+  // 스크롤을 못 잡아 봉투가 안 내려가고 모든 섹션 바닥에 떠 있던 문제 해결.
   useEffect(() => {
-    const update = () => y.set(Math.max(scrollY.get(), 0));
-    update();
-    const unsub = scrollY.on("change", update);
-    return unsub;
-  }, [y, scrollY]);
-
-  const quoteOpacity = useTransform(scrollY, [0, 130], [1, 0], { clamp: true });
+    let raf = 0;
+    const apply = () => {
+      raf = 0;
+      const sY = Math.max(window.scrollY || window.pageYOffset || 0, 0);
+      y.set(sY);
+      quoteOpacity.set(Math.max(0, 1 - sY / 130));
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(apply);
+    };
+    apply();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [y, quoteOpacity]);
 
   return (
     <>
