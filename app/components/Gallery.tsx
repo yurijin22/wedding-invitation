@@ -13,8 +13,6 @@ import { weddingData } from "@/lib/wedding-data";
 
 export default function Gallery() {
   const { galleryImages: localImages } = weddingData;
-  const [blobImages, setBlobImages] = useState<string[]>([]);
-  const [loaded, setLoaded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -25,15 +23,6 @@ export default function Gallery() {
   const { scrollYProgress } = useScroll({ target: mainRef, offset: ["start end", "end start"] });
   const mainScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
-  // Blob에서 사진 불러오기 (있으면 Blob 우선, 없으면 로컬)
-  useEffect(() => {
-    fetch("/api/photos")
-      .then(r => r.json())
-      .then(d => { if (d.urls?.length > 0) setBlobImages(d.urls); })
-      .catch(() => {})
-      .finally(() => setLoaded(true));
-  }, []);
-
   // 라이트박스 열릴 때 배경 스크롤 잠금
   useEffect(() => {
     if (lightboxIndex !== null) {
@@ -43,9 +32,9 @@ export default function Gallery() {
     }
   }, [lightboxIndex]);
 
-  // 로딩 전엔 로컬 이미지를 띄우지 않음 → 그레이 스켈레톤만
-  const galleryImages = blobImages.length > 0 ? blobImages : (loaded ? localImages : []);
-  const showSkeleton = !loaded && galleryImages.length === 0;
+  // 로컬 gallery 폴더 이미지를 직접 사용 (Blob 미사용)
+  const galleryImages = localImages;
+  const showSkeleton = false;
 
   return (
     <section style={{ backgroundColor: "#F7F3EA", padding: "0 16px" }}>
