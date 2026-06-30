@@ -62,6 +62,37 @@ body {
   font-family: var(--font-italianno), 'Italianno', cursive;
 }
 
+/* 스크롤 기반 애니메이션(지원 브라우저) — 봉투/문구를 GPU 합성으로 부드럽게(JS 미사용) */
+@keyframes sd-envelope-slide {
+  from { transform: translateX(-50%) translateY(0); }
+  to { transform: translateX(-50%) translateY(var(--sd-slide, 120px)); }
+}
+@keyframes sd-quote-fade {
+  from { opacity: 0.82; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.86); }
+}
+@keyframes sd-line-fade {
+  from { opacity: 0; }
+  to { opacity: 0.9; }
+}
+@supports (animation-timeline: scroll()) {
+  .sd-envelope {
+    animation: sd-envelope-slide linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 0 var(--sd-range, 120px);
+  }
+  .sd-quote {
+    animation: sd-quote-fade linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 0 70px;
+  }
+  .sd-line {
+    animation: sd-line-fade linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 40px 100px;
+  }
+}
+
 /* 라이트박스 */
 .lightbox-overlay {
   position: fixed;

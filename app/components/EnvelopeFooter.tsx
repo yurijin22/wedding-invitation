@@ -15,12 +15,21 @@ const QUOTE_SHORT = "You are invited to our loveliest day"; // 스크롤 시 한
 // 스크롤하면 transform(y)으로 절반까지만 내려감(절반은 하단에 남음).
 export default function EnvelopeFooter() {
   const [topPx, setTopPx] = useState<number | null>(null);
-  const y = useMotionValue(0); // 슬라이드(transform) — 합성, layout 변화 없음
-  const quoteOpacity = useMotionValue(1); // 긴 문구
+  // CSS 스크롤 기반 애니메이션 지원 여부 — 지원하면 GPU 합성으로 부드럽게(JS 미사용), 아니면 JS 폴백
+  const [cssScroll, setCssScroll] = useState(false);
+  const y = useMotionValue(0); // 슬라이드(transform) — JS 폴백용
+  const quoteOpacity = useMotionValue(0.82); // 긴 문구
   const quoteScale = useMotionValue(1); // 긴 문구가 줄어드는 효과
   const lineOpacity = useMotionValue(0); // 한 줄 문구(스크롤 시)
   const vpRef = useRef<HTMLDivElement>(null); // transform 없는 화면하단 기준점
+  const envRef = useRef<HTMLDivElement>(null); // 봉투 컨테이너(CSS 변수 주입용)
   const maxSlideRef = useRef(120); // 내려갈 수 있는 최대(=봉투높이의 절반)
+
+  useEffect(() => {
+    setCssScroll(
+      typeof CSS !== "undefined" && !!CSS.supports && CSS.supports("animation-timeline: scroll()")
+    );
+  }, []);
 
   // 0920 위치 측정 → 봉투 top. 스크롤 무관(문서 좌표). 폰트/이미지/회전 시에만 갱신.
   useEffect(() => {
@@ -32,7 +41,11 @@ export default function EnvelopeFooter() {
       const realVH = vpRef.current?.getBoundingClientRect().bottom ?? window.innerHeight;
       // 0920 중심의 문서 위치(= 스크롤0에서의 뷰포트 위치). 툴바 변해도 불변 → 상단 복귀 시 항상 정렬.
       const center0 = rect.top + rect.height / 2 + window.scrollY;
-      maxSlideRef.current = Math.max(40, (realVH - center0) * 0.5); // 절반 남김
+      const maxSlide = Math.max(40, (realVH - center0) * 0.5); // 절반 남김
+      maxSlideRef.current = maxSlide;
+      // CSS 스크롤 애니메이션용 변수(슬라이드 거리 = 스크롤 범위 = maxSlide)
+      envRef.current?.style.setProperty("--sd-slide", `${maxSlide}px`);
+      envRef.current?.style.setProperty("--sd-range", `${maxSlide}px`);
       setTopPx((prev) => (prev === null || Math.abs(prev - center0) > 0.5 ? center0 : prev));
     };
     const schedule = () => {
@@ -71,8 +84,9 @@ export default function EnvelopeFooter() {
     };
   }, []);
 
-  // 스크롤 → 봉투를 아래로 슬라이드(절반까지). 네이티브 스크롤 + rAF + transform → 부드러움.
+  // JS 폴백 — CSS 스크롤 애니메이션 미지원 브라우저에서만 동작.
   useEffect(() => {
+    if (cssScroll) return; // 지원 브라우저는 CSS가 처리(부드러움)
     let raf = 0;
     const apply = () => {
       raf = 0;
@@ -80,9 +94,9 @@ export default function EnvelopeFooter() {
       y.set(Math.min(sY, maxSlideRef.current));
       // 긴 문구가 같은 자리에서 줄어들며(scale↓) 페이드 → 한 줄 문구로 응축
       const p = Math.max(0, Math.min(1, sY / 70));
-      quoteOpacity.set(1 - p);
+      quoteOpacity.set(0.82 * (1 - p));
       quoteScale.set(1 - p * 0.14);
-      lineOpacity.set(Math.max(0, Math.min(1, (sY - 40) / 60)));
+      lineOpacity.set(Math.max(0, Math.min(1, (sY - 40) / 60)) * 0.9);
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(apply);
@@ -93,7 +107,7 @@ export default function EnvelopeFooter() {
       window.removeEventListener("scroll", onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, [y, quoteOpacity, quoteScale, lineOpacity]);
+  }, [cssScroll, y, quoteOpacity, quoteScale, lineOpacity]);
 
   return (
     <>
@@ -101,6 +115,8 @@ export default function EnvelopeFooter() {
       <div ref={vpRef} style={{ position: "fixed", bottom: 0, left: 0, width: 0, height: 0, pointerEvents: "none" }} />
 
       <motion.div
+        ref={envRef}
+        className={cssScroll ? "sd-envelope" : undefined}
         style={{
           position: "fixed",
           top: topPx ?? 0,
@@ -148,6 +164,7 @@ export default function EnvelopeFooter() {
 
         {/* 긴 영어 인용문 — 노치 아래. 스크롤하면 같은 자리에서 줄어들며 페이드아웃 */}
         <motion.p
+          className={cssScroll ? "sd-quote" : undefined}
           style={{
             position: "absolute",
             top: 56,
@@ -170,6 +187,7 @@ export default function EnvelopeFooter() {
 
         {/* 스크롤 시 같은 자리에 응축되어 나타나는 한 줄 문구 */}
         <motion.p
+          className={cssScroll ? "sd-line" : undefined}
           style={{
             position: "absolute",
             top: 56,
