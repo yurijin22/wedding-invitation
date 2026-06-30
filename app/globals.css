@@ -28,6 +28,7 @@
 
 html {
   scroll-behavior: smooth;
+  background: #1D1000; /* 캔버스/오버스크롤 영역까지 브라운 — 하단 흰 영역 방지 */
 }
 
 body {
