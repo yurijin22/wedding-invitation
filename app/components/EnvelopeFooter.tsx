@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
 import MusicPlayer from "./MusicPlayer";
 
 const FRAME = "#1D1000"; // Our Wedding Day 섹션 배경색과 동일
@@ -20,6 +20,8 @@ const MIN_H = 56; // 스크롤 후 최소 높이
 export default function EnvelopeFooter() {
   const { scrollY } = useScroll();
   const [startH, setStartH] = useState(DEFAULT_START_H);
+  // 높이를 직접 제어 — startH(측정값) 변경 시 스크롤 없이도 즉시 반영
+  const height = useMotionValue(DEFAULT_START_H);
 
   useEffect(() => {
     let raf = 0;
@@ -63,7 +65,15 @@ export default function EnvelopeFooter() {
     };
   }, []);
 
-  const height = useTransform(scrollY, [0, startH - MIN_H], [startH, MIN_H], { clamp: true });
+  // height = clamp(startH - scrollY, MIN_H, startH) — 스크롤하면 줄어듦.
+  // startH가 바뀌면(측정 반영) update()를 즉시 호출해 정지 상태에서도 갱신.
+  useEffect(() => {
+    const update = () => height.set(Math.max(MIN_H, Math.min(startH, startH - scrollY.get())));
+    update();
+    const unsub = scrollY.on("change", update);
+    return unsub;
+  }, [startH, height, scrollY]);
+
   const quoteOpacity = useTransform(scrollY, [0, 130], [1, 0], { clamp: true });
 
   return (
