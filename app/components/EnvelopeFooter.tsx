@@ -190,7 +190,7 @@ export default function EnvelopeFooter() {
           className={cssScroll ? "sd-line" : undefined}
           style={{
             position: "absolute",
-            top: 82,
+            top: 58,
             left: 24,
             right: 24,
             textAlign: "center",

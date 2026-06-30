@@ -141,20 +141,23 @@ export default function Location() {
           </div>
         </div>
 
-        {/* 지도 (카카오맵 SDK) */}
-        <div ref={mapRef} style={{ width: "100%", height: 245, borderRadius: 8, overflow: "hidden", backgroundColor: "#E5E5E5", zIndex: 0 }} />
+        {/* 지도 + 길찾기 버튼 — 가깝게(간격 12) */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {/* 지도 (카카오맵 SDK) */}
+          <div ref={mapRef} style={{ width: "100%", height: 245, borderRadius: 8, overflow: "hidden", backgroundColor: "#E5E5E5", zIndex: 0 }} />
 
-        {/* 버튼 3개 — img 태그로 직접 로드 */}
-        <div style={{ display: "flex", gap: 8 }}>
-          {BUTTONS.map(({ src, fn }) => (
-            <button
-              key={fn}
-              onClick={() => open(fn)}
-              style={{ flex: 1, height: 46, backgroundColor: "transparent", border: "none", borderRadius: 8, cursor: "pointer", padding: 0, overflow: "hidden" }}
-            >
-              <img src={src} alt={fn} style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} />
-            </button>
-          ))}
+          {/* 버튼 3개 — img 태그로 직접 로드 */}
+          <div style={{ display: "flex", gap: 8 }}>
+            {BUTTONS.map(({ src, fn }) => (
+              <button
+                key={fn}
+                onClick={() => open(fn)}
+                style={{ flex: 1, height: 46, backgroundColor: "transparent", border: "none", borderRadius: 8, cursor: "pointer", padding: 0, overflow: "hidden" }}
+              >
+                <img src={src} alt={fn} style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} />
+              </button>
+            ))}
+          </div>
         </div>
       </motion.div>
     </section>
