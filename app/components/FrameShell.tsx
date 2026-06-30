@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { useEffect } from "react";
 import { motion, useMotionValue } from "framer-motion";
 
-const FRAME = "#1D1000"; // 봉투 프레임색
+const FRAME = "#2F1E11"; // 봉투 프레임색
 const FRAME_MARGIN = 14; // 좌우 프레임 두께
 
 // 봉투 프레임 — 상단 헤더 + 좌우 브라운 테두리. 스크롤하면 좌우 테두리가 옆으로 미끄러져

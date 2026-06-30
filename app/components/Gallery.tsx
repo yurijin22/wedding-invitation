@@ -112,7 +112,7 @@ export default function Gallery() {
                     position: "relative", width: 60, height: 60, borderRadius: 4, overflow: "hidden",
                     backgroundColor: "#E5E5E5", cursor: "pointer",
                     opacity: i === activeIndex ? 1 : 0.45,
-                    outline: i === activeIndex ? "2px solid #1D1000" : "none",
+                    outline: i === activeIndex ? "2px solid #2F1E11" : "none",
                     outlineOffset: -2, transition: "opacity 0.2s",
                   }}
                 >

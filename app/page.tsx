@@ -12,7 +12,7 @@ import EnvelopeFooter from "@/app/components/EnvelopeFooter";
 import FrameShell from "@/app/components/FrameShell";
 
 // 봉투 프레임 색 (Our Wedding Day 섹션 배경색과 동일)
-const FRAME = "#1D1000";
+const FRAME = "#2F1E11";
 const BAR_H = 100; // 스크롤 후 하단에 남는 봉투(절반) 높이만큼 여백 확보
 
 export default function Home() {

@@ -36,7 +36,7 @@ export default function Greeting() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 1.2, delay: 0.2 }}
-        style={{ fontFamily: "'England Signature', var(--font-italianno)", fontSize: 33, lineHeight: "26px", color: "#1D1000", textAlign: "center", margin: "30px 0 0", transform: "translateX(18px) rotate(-3deg)" }}
+        style={{ fontFamily: "'England Signature', var(--font-italianno)", fontSize: 33, lineHeight: "26px", color: "#2F1E11", textAlign: "center", margin: "30px 0 0", transform: "translateX(18px) rotate(-3deg)" }}
       >
         We decide on together<br />from this season to forever
       </motion.p>

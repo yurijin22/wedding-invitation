@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, useMotionValue } from "framer-motion";
 import MusicPlayer from "./MusicPlayer";
 
-const FRAME = "#1D1000"; // 봉투 브라운
+const FRAME = "#2F1E11"; // 봉투 브라운
 const NOTCH = 46; // 0920을 감싸는 반원 노치 반지름
 const NOTCH_Y = 0; // 노치 중심 = 봉투 top (= 0920 중앙)
 const QUOTE =

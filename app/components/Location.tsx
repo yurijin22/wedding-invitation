@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { weddingData } from "@/lib/wedding-data";
 
-const BG = "#1D1000";
+const BG = "#2F1E11";
 
 const BUTTONS = [
   { src: "/navermap.png", fn: "naver" },
@@ -36,7 +36,7 @@ export default function Location() {
         const overlay = new window.kakao.maps.CustomOverlay({
           position: center,
           yAnchor: 2.2,
-          content: `<div style="background:#1D1000;color:#fff;padding:6px 12px;border-radius:16px;font-size:12px;font-weight:600;white-space:nowrap;font-family:'Noto Sans KR',sans-serif;box-shadow:0 3px 10px rgba(0,0,0,0.3);">${venue.name}</div>`,
+          content: `<div style="background:#2F1E11;color:#fff;padding:6px 12px;border-radius:16px;font-size:12px;font-weight:600;white-space:nowrap;font-family:'Noto Sans KR',sans-serif;box-shadow:0 3px 10px rgba(0,0,0,0.3);">${venue.name}</div>`,
         });
         overlay.setMap(map);
       });

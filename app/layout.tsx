@@ -62,7 +62,7 @@ export const metadata: Metadata = {
 
 // 브라우저 UI(상단 상태바/하단 툴바)를 봉투 브라운으로 — 스크롤 시 하단 이음새가 흰색으로 비치는 것 완화
 export const viewport: Viewport = {
-  themeColor: "#1D1000",
+  themeColor: "#2F1E11",
 };
 
 export default function RootLayout({
@@ -77,7 +77,7 @@ export default function RootLayout({
     >
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-        <meta name="theme-color" content="#1D1000" />
+        <meta name="theme-color" content="#2F1E11" />
       </head>
       <body className="antialiased">
         {children}
