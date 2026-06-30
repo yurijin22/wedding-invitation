@@ -167,7 +167,7 @@ export default function EnvelopeFooter() {
           className={cssScroll ? "sd-quote" : undefined}
           style={{
             position: "absolute",
-            top: 56,
+            top: 82,
             left: 24,
             right: 24,
             textAlign: "center",
@@ -190,7 +190,7 @@ export default function EnvelopeFooter() {
           className={cssScroll ? "sd-line" : undefined}
           style={{
             position: "absolute",
-            top: 56,
+            top: 82,
             left: 24,
             right: 24,
             textAlign: "center",
