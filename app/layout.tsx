@@ -34,7 +34,7 @@ const { groom, bride, wedding } = weddingData;
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://yongwook-yuri.site";
 const OG_TITLE = `${groom.firstName} ♥ ${bride.firstName} 결혼합니다`;
-const OG_DESC = "26년 9월 20일 (일) 오후 12:10\n라마다 서울 신도림 호텔 5F";
+const OG_DESC = "26년 9월 20일 (일) 오후 12:10 · 라마다 서울 신도림 호텔 5F";
 const OG_IMAGE = `${SITE}/og.jpg`;
 
 // og 태그는 metadata가 아니라 <head> 최상단에 직접 배치(아래) — 카톡 스크래퍼가 head 앞부분만
