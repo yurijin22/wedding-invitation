@@ -144,7 +144,7 @@ export default function Location() {
         {/* 지도 + 길찾기 버튼 */}
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
           {/* 지도 (카카오맵 SDK) */}
-          <div ref={mapRef} style={{ width: "100%", height: 245, borderRadius: 8, overflow: "hidden", backgroundColor: "#E5E5E5", zIndex: 0 }} />
+          <div ref={mapRef} style={{ width: "100%", height: 245, overflow: "hidden", backgroundColor: "#E5E5E5", zIndex: 0 }} />
 
           {/* 버튼 3개 — img 태그로 직접 로드 */}
           <div style={{ display: "flex", gap: 8 }}>
