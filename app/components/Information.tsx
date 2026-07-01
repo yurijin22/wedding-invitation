@@ -7,8 +7,8 @@ import { motion, AnimatePresence } from "framer-motion";
 const SLIDES = [
   {
     img: "/gallery/03.jpg",
-    title: "Banquet Hall",
-    body: "4층 딜라이트 연회장 (에스컬레이터 이용)\n예식 시작 30분 전부터 입장 가능\n연회장은 2시간 사용됩니다.",
+    title: "Dining",
+    body: "식사는 4층 딜라이트 연회장 (에스컬레이터 이용)\n예식 시작 30분 전부터 입장 가능\n연회장은 2시간 사용됩니다.",
   },
   {
     img: "/gallery/07.jpg",
