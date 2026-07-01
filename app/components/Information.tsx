@@ -7,17 +7,17 @@ import { motion, AnimatePresence } from "framer-motion";
 const SLIDES = [
   {
     img: "/gallery/03.jpg",
-    title: "Dining",
+    title: "연회장",
     body: "식사는 4층 딜라이트 연회장 (에스컬레이터 이용)\n예식 시작 30분 전부터 입장 가능\n연회장은 2시간 사용됩니다.",
   },
   {
     img: "/gallery/07.jpg",
-    title: "Parking",
-    body: "무료 주차 1시간 30분\n(초과 시 15분당 1,000원)\n\n서울 구로구 경인로 624\n약 800대 수용 가능",
+    title: "주차",
+    body: "무료 주차 1시간 30분\n(초과 시 15분당 1,000원)\n\n약 800대 수용 가능",
   },
   {
     img: "/gallery/10.jpg",
-    title: "Shuttle Bus",
+    title: "셔틀버스",
     body: "신도림역 1번 출구 앞\n(홈플러스 건너편)에서\n예식 당일 수시로 셔틀버스를 운행합니다.",
   },
 ];
@@ -89,7 +89,7 @@ export default function Information() {
             transition={{ duration: 0.3 }}
             style={{ display: "flex", flexDirection: "column", gap: 18, alignItems: "center", justifyContent: "flex-start", minHeight: 200, padding: "0 24px" }}
           >
-            <p style={{ fontFamily: "var(--font-serif)", fontStyle: "italic", fontSize: 19, color: "#2F1E11", margin: 0 }}>
+            <p style={{ fontFamily: "'Pretendard Variable', Pretendard, sans-serif", fontSize: 18, fontWeight: 600, letterSpacing: "0.02em", color: "#2F1E11", margin: 0 }}>
               {SLIDES[active].title}
             </p>
             <p style={{ fontSize: 15, fontWeight: 300, lineHeight: "27px", color: "#6B6258", textAlign: "center", whiteSpace: "pre-line", margin: 0 }}>
