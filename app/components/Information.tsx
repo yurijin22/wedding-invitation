@@ -22,6 +22,19 @@ const SLIDES = [
   },
 ];
 
+// 괄호 (…) 안의 값은 그레이로 렌더
+function renderBody(text: string) {
+  return text.split(/(\([^)]*\))/g).map((part, i) =>
+    /^\([^)]*\)$/.test(part) ? (
+      <span key={i} style={{ color: "#9A8E84" }}>
+        {part}
+      </span>
+    ) : (
+      part
+    )
+  );
+}
+
 export default function Information() {
   const [active, setActive] = useState(0);
   const carRef = useRef<HTMLDivElement>(null);
@@ -93,7 +106,7 @@ export default function Information() {
               {SLIDES[active].title}
             </p>
             <p style={{ fontSize: 15, fontWeight: 400, lineHeight: "27px", color: "#4A423B", textAlign: "center", whiteSpace: "pre-line", margin: 0 }}>
-              {SLIDES[active].body}
+              {renderBody(SLIDES[active].body)}
             </p>
           </motion.div>
         </AnimatePresence>
