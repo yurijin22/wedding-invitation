@@ -92,7 +92,7 @@ export default function Information() {
             <p style={{ fontFamily: "'Pretendard Variable', Pretendard, sans-serif", fontSize: 18, fontWeight: 600, letterSpacing: "0.02em", color: "#2F1E11", margin: 0 }}>
               {SLIDES[active].title}
             </p>
-            <p style={{ fontSize: 15, fontWeight: 300, lineHeight: "27px", color: "#6B6258", textAlign: "center", whiteSpace: "pre-line", margin: 0 }}>
+            <p style={{ fontSize: 15, fontWeight: 400, lineHeight: "27px", color: "#4A423B", textAlign: "center", whiteSpace: "pre-line", margin: 0 }}>
               {SLIDES[active].body}
             </p>
           </motion.div>
