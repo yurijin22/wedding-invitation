@@ -2,9 +2,6 @@
 
 import { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { weddingData } from "@/lib/wedding-data";
-
-const { notice } = weddingData;
 
 // 슬라이드 — 이미지/제목/설명. 추가하려면 여기 항목만 늘리면 됨(점 자동 생성).
 const SLIDES = [
@@ -22,11 +19,6 @@ const SLIDES = [
     img: "/gallery/10.jpg",
     title: "Shuttle Bus",
     body: "신도림역 1번 출구 앞\n(홈플러스 건너편)에서\n예식 당일 수시로 셔틀버스를 운행합니다.",
-  },
-  {
-    img: "/gallery/14.jpg",
-    title: "Reception Party",
-    body: `본식에 함께하기 어려운 분들을 위해\n작은 피로연 자리를 마련했습니다.\n\n${notice.date}\n${notice.venue}`,
   },
 ];
 
