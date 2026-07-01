@@ -61,7 +61,7 @@ export default function Information() {
         style={{ display: "flex", flexDirection: "column", gap: 36 }}
       >
         {/* 타이틀 — 다른 섹션과 동일한 필기체 스타일 */}
-        <p style={{ fontFamily: "var(--font-script)", fontStyle: "italic", fontWeight: 500, fontSize: 30, color: "#141414", textAlign: "center", lineHeight: "42px", margin: 0 }}>
+        <p style={{ fontFamily: "var(--font-script)", fontStyle: "italic", fontWeight: 500, fontSize: 30, color: "#141414", textAlign: "center", lineHeight: "42px", margin: "0 0 20px" }}>
           Information
         </p>
 

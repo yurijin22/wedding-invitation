@@ -135,8 +135,8 @@ export default function Location() {
             <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.12)", margin: "14px 0" }} />
             {/* 주소 / 전화 — gap 16px */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16 }}>
-              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", margin: 0 }}>{venue.address}</p>
-              <a href={`tel:${venue.tel}`} style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", textDecoration: "none", flexShrink: 0 }}>{venue.tel}</a>
+              <p style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", margin: 0 }}>{venue.address}</p>
+              <a href={`tel:${venue.tel}`} style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", textDecoration: "none", flexShrink: 0 }}>{venue.tel}</a>
             </div>
           </div>
         </div>
