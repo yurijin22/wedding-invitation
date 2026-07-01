@@ -13,7 +13,7 @@ const SLIDES = [
   {
     img: "/gallery/07.jpg",
     title: "주차",
-    body: "무료 주차 1시간 30분\n(초과 시 15분당 1,000원)\n\n약 800대 수용 가능",
+    body: "무료 주차 1시간 30분\n(초과 시 15분당 1,000원)",
   },
   {
     img: "/gallery/10.jpg",
