@@ -23,7 +23,6 @@
 @theme inline {
   --font-script: var(--font-script);
   --font-serif: var(--font-serif);
-  --font-sans: var(--font-sans);
 }
 
 html {
@@ -36,7 +35,7 @@ body {
   background: #2F1E11; /* 봉투 프레임색 — 390px 콘텐츠 좌우 여백을 흰색 대신 브라운으로 */
   overscroll-behavior: none;
   color: #1A1A1A;
-  font-family: 'Pretendard Variable', Pretendard, var(--font-sans), 'Noto Sans KR', sans-serif;
+  font-family: 'Pretendard Variable', Pretendard, sans-serif;
   letter-spacing: -0.004em; /* Pretendard 기본 자간 -0.4% */
   -webkit-font-smoothing: antialiased;
 }
@@ -54,7 +53,7 @@ body {
 
 /* Pretendard 유틸 */
 .font-pretendard {
-  font-family: 'Pretendard Variable', Pretendard, 'Noto Sans KR', sans-serif;
+  font-family: 'Pretendard Variable', Pretendard, sans-serif;
 }
 
 /* Italianno */

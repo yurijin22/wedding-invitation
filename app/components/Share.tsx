@@ -53,7 +53,7 @@ export default function Share() {
         {/* 버튼 */}
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <button onClick={shareKakao}
-            style={{ height: 58, backgroundColor: "#FEE500", border: "none", borderRadius: 12, fontSize: 16, fontWeight: 400, letterSpacing: "0.05em", color: "#381C1C", cursor: "pointer", fontFamily: "'Noto Sans KR', sans-serif" }}>
+            style={{ height: 58, backgroundColor: "#FEE500", border: "none", borderRadius: 12, fontSize: 16, fontWeight: 400, letterSpacing: "0.05em", color: "#381C1C", cursor: "pointer", fontFamily: "'Pretendard Variable', Pretendard, sans-serif" }}>
             카카오톡 공유하기
           </button>
           <button onClick={copyURL}

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Instrument_Serif, Italianno, Noto_Sans_KR } from "next/font/google";
+import { Cormorant_Garamond, Instrument_Serif, Italianno } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { weddingData } from "@/lib/wedding-data";
@@ -22,12 +22,6 @@ const italianno = Italianno({
   variable: "--font-italianno",
   subsets: ["latin"],
   weight: ["400"],
-});
-
-const notoSansKR = Noto_Sans_KR({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
 });
 
 const { groom, bride, wedding } = weddingData;
@@ -58,7 +52,7 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${cormorant.variable} ${instrumentSerif.variable} ${italianno.variable} ${notoSansKR.variable}`}
+      className={`${cormorant.variable} ${instrumentSerif.variable} ${italianno.variable}`}
     >
       <head>
         {/* ⭐ OG/카톡 썸네일 — head 최상단(preload 링크들보다 앞)에 둬서 스크래퍼가 즉시 찾음 */}
