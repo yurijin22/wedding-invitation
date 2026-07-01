@@ -4,19 +4,29 @@ import { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { weddingData } from "@/lib/wedding-data";
 
-const { notice, directions } = weddingData;
+const { notice } = weddingData;
 
 // 슬라이드 — 이미지/제목/설명. 추가하려면 여기 항목만 늘리면 됨(점 자동 생성).
 const SLIDES = [
   {
     img: "/gallery/03.jpg",
-    title: "Reception Party",
-    body: `본식에 함께하기 어려운 분들을 위해\n작은 피로연 자리를 마련했습니다.\n\n${notice.date}\n${notice.venue}`,
+    title: "Banquet Hall",
+    body: "4층 연회장 (에스컬레이터 이용)\n예식 시작 30분 전부터 입장 가능\n연회장은 2시간 사용됩니다.",
   },
   {
     img: "/gallery/07.jpg",
     title: "Parking",
-    body: `라마다 서울 신도림 호텔 주차장을 이용해 주세요.\n\n${directions.parkingNote}`,
+    body: "무료 주차 1시간 30분\n(초과 시 15분당 1,000원)\n\n서울 구로구 경인로 624\n약 800대 수용 가능",
+  },
+  {
+    img: "/gallery/10.jpg",
+    title: "Shuttle Bus",
+    body: "신도림역 1번 출구 앞\n(홈플러스 건너편)에서\n예식 당일 수시로 셔틀버스를 운행합니다.",
+  },
+  {
+    img: "/gallery/14.jpg",
+    title: "Reception Party",
+    body: `본식에 함께하기 어려운 분들을 위해\n작은 피로연 자리를 마련했습니다.\n\n${notice.date}\n${notice.venue}`,
   },
 ];
 
@@ -85,7 +95,7 @@ export default function Information() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            style={{ display: "flex", flexDirection: "column", gap: 18, alignItems: "center", justifyContent: "flex-start", minHeight: 190, padding: "0 24px" }}
+            style={{ display: "flex", flexDirection: "column", gap: 18, alignItems: "center", justifyContent: "flex-start", minHeight: 200, padding: "0 24px" }}
           >
             <p style={{ fontFamily: "var(--font-serif)", fontStyle: "italic", fontSize: 19, color: "#2F1E11", margin: 0 }}>
               {SLIDES[active].title}
