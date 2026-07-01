@@ -49,7 +49,7 @@ export default function Intro() {
         </div>
 
         {/* 일시 */}
-        <p style={{ fontFamily: "var(--font-serif)", fontSize: 18, letterSpacing: "0.05em", color: "#4D4740", margin: "0 0 50px" }}>
+        <p style={{ fontFamily: "var(--font-serif)", fontSize: 22, letterSpacing: "0.05em", color: "#4D4740", margin: "0 0 50px" }}>
           SUNDAY, 12:10 PM
         </p>
 
