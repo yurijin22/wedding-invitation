@@ -35,7 +35,7 @@ const { groom, bride, wedding } = weddingData;
 const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://yongwook-yuri.site";
 const OG_TITLE = `${groom.firstName} ♥ ${bride.firstName} 결혼합니다`;
 const OG_DESC = `${wedding.dateKorean} ${wedding.time} · ${wedding.venue.name} ${wedding.venue.hall}`;
-const OG_IMAGE = `${SITE}/og-image.jpg?v=2`;
+const OG_IMAGE = `${SITE}/og.jpg`;
 
 // og 태그는 metadata가 아니라 <head> 최상단에 직접 배치(아래) — 카톡 스크래퍼가 head 앞부분만
 // 읽어도 og:image를 바로 찾도록. metadata엔 title/description만 둠(중복·후순위 방지).
