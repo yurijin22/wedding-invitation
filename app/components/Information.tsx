@@ -58,9 +58,9 @@ export default function Information() {
         transition={{ duration: 1.15, ease: [0.22, 1, 0.36, 1] }}
         style={{ display: "flex", flexDirection: "column", gap: 36 }}
       >
-        {/* 타이틀 */}
-        <p style={{ fontFamily: "var(--font-serif)", fontStyle: "italic", fontSize: 28, letterSpacing: "0.08em", color: "#2F1E11", textAlign: "center", margin: 0 }}>
-          INFORMATION
+        {/* 타이틀 — 다른 섹션과 동일한 필기체 스타일 */}
+        <p style={{ fontFamily: "var(--font-script)", fontStyle: "italic", fontWeight: 500, fontSize: 30, color: "#141414", textAlign: "center", lineHeight: "42px", margin: 0 }}>
+          Information
         </p>
 
         {/* 이미지 캐러셀 (가로 스냅) */}
