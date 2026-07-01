@@ -135,14 +135,14 @@ export default function Location() {
             <div style={{ height: 1, backgroundColor: "rgba(255,255,255,0.12)", margin: "14px 0" }} />
             {/* 주소 / 전화 — gap 16px */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16 }}>
-              <p style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", margin: 0 }}>{venue.address}</p>
-              <a href={`tel:${venue.tel}`} style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", textDecoration: "none", flexShrink: 0 }}>{venue.tel}</a>
+              <p style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", margin: 0 }}>{venue.address}</p>
+              <a href={`tel:${venue.tel}`} style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", textDecoration: "none", flexShrink: 0 }}>{venue.tel}</a>
             </div>
           </div>
         </div>
 
-        {/* 지도 + 길찾기 버튼 — 가깝게(간격 12) */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        {/* 지도 + 길찾기 버튼 */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
           {/* 지도 (카카오맵 SDK) */}
           <div ref={mapRef} style={{ width: "100%", height: 245, borderRadius: 8, overflow: "hidden", backgroundColor: "#E5E5E5", zIndex: 0 }} />
 

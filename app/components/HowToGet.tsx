@@ -112,18 +112,6 @@ export default function HowToGet() {
             ))}
           </div>
         )}
-
-        {/* 주차 안내 — 자차 탭에서만 별도 표시 */}
-        {active === "car" && (
-          <div style={{ display: "flex", gap: 10, alignItems: "flex-start", backgroundColor: "rgba(255,255,255,0.65)", borderRadius: 12, padding: "14px 16px" }}>
-            <span style={{ width: 22, height: 22, borderRadius: 6, backgroundColor: "#2F1E11", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, flexShrink: 0 }}>
-              P
-            </span>
-            <p style={{ fontSize: 13.5, fontWeight: 300, color: "#4D4740", lineHeight: "165%", margin: 0, wordBreak: "keep-all" }}>
-              {directions.parkingNote}
-            </p>
-          </div>
-        )}
       </motion.div>
     </section>
   );
