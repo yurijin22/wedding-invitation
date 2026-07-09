@@ -14,7 +14,6 @@ import { weddingData } from "@/lib/wedding-data";
 // pos = objectPosition "x% y%" (y 클수록 사진 아래쪽이 보여 피사체가 위로 올라옴 / y 작을수록 위쪽·머리가 보임)
 const MAIN_ADJUST: Record<number, { pos?: string; scale?: number }> = {
   2: { pos: "50% 88%", scale: 1.05 }, // 아래 드레스 더 보이게 + 살짝 확대
-  3: { pos: "50% 22%", scale: 1.32 }, // 3:4라 상하이동 무효 → 확대로 상체(머리+부케) 크게, 빈 하단 크롭
   6: { pos: "50% 68%" },              // 살짝 위로
   7: { pos: "50% 82%", scale: 1.12 }, // 더 위로 + 확대
   8: { pos: "50% 82%" },              // 더 위로
