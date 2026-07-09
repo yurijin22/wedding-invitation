@@ -6,17 +6,17 @@ import { motion, AnimatePresence } from "framer-motion";
 // 슬라이드 — 이미지/제목/설명. 추가하려면 여기 항목만 늘리면 됨(점 자동 생성).
 const SLIDES = [
   {
-    img: "/gallery/03.jpg",
+    img: "/info/banquet.jpg",
     title: "연회장",
     body: "식사는 4층 딜라이트 연회장\n(에스컬레이터 이용)\n\n예식 시간 30분 전부터 2시간 이용 가능합니다.",
   },
   {
-    img: "/gallery/08.jpg",
+    img: "/info/parking.jpg",
     title: "주차",
     body: "무료 주차 1시간 30분\n(초과 시 15분당 1,000원)\n\n만차 시 인근 디큐브시티·테크노마트\n주차장을 이용해 주세요",
   },
   {
-    img: "/gallery/06.jpg",
+    img: "/info/shuttle.jpg",
     title: "셔틀버스",
     body: "신도림역 1번 출구 앞 탑승\n(홈플러스 건너편)\n\n예식 당일 수시로 셔틀버스를 운행합니다.",
   },
