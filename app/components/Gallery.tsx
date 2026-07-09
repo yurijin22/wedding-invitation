@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Keyboard, Thumbs, FreeMode } from "swiper/modules";
 import type { Swiper as SwiperClass } from "swiper";
@@ -77,8 +76,9 @@ export default function Gallery({ images }: { images?: string[] }) {
                     onClick={() => setLightboxIndex(i)}
                     style={{ position: "relative", width: "100%", aspectRatio: "3 / 4", backgroundColor: "#E5E5E5", cursor: "pointer" }}
                   >
-                    <Image src={src} alt="" fill style={{ objectFit: "cover" }} sizes="390px" quality={70}
-                      priority={i === 0}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={src} alt="" loading={i === 0 ? "eager" : "lazy"}
+                      style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                       onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
                   </div>
                 </SwiperSlide>
@@ -108,7 +108,9 @@ export default function Gallery({ images }: { images?: string[] }) {
                     outlineOffset: -2, transition: "opacity 0.2s",
                   }}
                 >
-                  <Image src={src} alt="" fill style={{ objectFit: "cover" }} sizes="60px" quality={40} loading="lazy"
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={src} alt="" loading="lazy"
+                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                     onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
                 </div>
               </SwiperSlide>
@@ -149,7 +151,8 @@ export default function Gallery({ images }: { images?: string[] }) {
                       style={{ position: "relative", width: "100%", height: "100%" }}
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <Image src={src} alt="" fill style={{ objectFit: "contain" }} sizes="100vw" priority={i === lightboxIndex} />
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={src} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain" }} />
                     </div>
                   </div>
                 </SwiperSlide>
