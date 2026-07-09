@@ -10,6 +10,27 @@ import "swiper/css/thumbs";
 import "swiper/css/free-mode";
 import { weddingData } from "@/lib/wedding-data";
 
+// 큰 메인 사진 개별 보정 (갤러리 표시번호 기준). objectFit cover라 3:4 박스에서 잘리는 걸 위치/확대로 조정.
+// pos = objectPosition "x% y%" (y 클수록 사진 아래쪽이 보여 피사체가 위로 올라옴 / y 작을수록 위쪽·머리가 보임)
+const MAIN_ADJUST: Record<number, { pos?: string; scale?: number }> = {
+  2: { pos: "50% 88%", scale: 1.05 }, // 아래 드레스 더 보이게 + 살짝 확대
+  3: { pos: "50% 12%" },              // 머리 더 보이게(위쪽)
+  6: { pos: "50% 68%" },              // 살짝 위로
+  7: { pos: "50% 66%", scale: 1.12 }, // 살짝 위로 + 확대
+  8: { pos: "50% 68%" },              // 살짝 위로
+  10: { pos: "50% 68%" },             // 살짝 위로
+  11: { pos: "50% 68%" },             // 살짝 위로
+  12: { pos: "50% 32%" },             // 살짝 아래로(위 치우침)
+  13: { pos: "50% 68%" },             // 살짝 위로
+  14: { pos: "50% 68%" },             // 살짝 위로
+  15: { pos: "50% 68%" },             // 살짝 위로
+  17: { pos: "50% 68%" },             // 살짝 위로
+  21: { pos: "50% 32%" },             // 살짝 아래로(위 치우침)
+  23: { pos: "50% 68%" },             // 살짝 위로
+  25: { pos: "8% 50%", scale: 1.22 }, // 오른쪽 벽돌 가리게 왼쪽으로 + 확대
+  29: { pos: "50% 68%" },             // 살짝 위로
+};
+
 export default function Gallery({ images }: { images?: string[] }) {
   const localImages = images && images.length > 0 ? images : weddingData.galleryImages;
   const [activeIndex, setActiveIndex] = useState(0);
@@ -70,19 +91,27 @@ export default function Gallery({ images }: { images?: string[] }) {
               spaceBetween={8}
               onSlideChange={(s) => setActiveIndex(s.activeIndex)}
             >
-              {galleryImages.map((src, i) => (
+              {galleryImages.map((src, i) => {
+                const a = MAIN_ADJUST[i + 1] || {};
+                return (
                 <SwiperSlide key={i}>
                   <div
                     onClick={() => setLightboxIndex(i)}
-                    style={{ position: "relative", width: "100%", aspectRatio: "3 / 4", backgroundColor: "#E5E5E5", cursor: "pointer" }}
+                    style={{ position: "relative", width: "100%", aspectRatio: "3 / 4", backgroundColor: "#E5E5E5", cursor: "pointer", overflow: "hidden" }}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={src} alt="" loading={i === 0 ? "eager" : "lazy"}
-                      style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                      style={{
+                        position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover",
+                        objectPosition: a.pos ?? "50% 50%",
+                        transform: a.scale ? `scale(${a.scale})` : undefined,
+                        transformOrigin: a.pos ?? "50% 50%",
+                      }}
                       onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
                   </div>
                 </SwiperSlide>
-              ))}
+                );
+              })}
             </Swiper>
             </motion.div>
           </div>
