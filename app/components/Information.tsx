@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 // 슬라이드 — 이미지/제목/설명. 추가하려면 여기 항목만 늘리면 됨(점 자동 생성).
 const SLIDES = [
   {
-    img: "/gallery/03.jpg",
+    img: "/gallery/04.jpg",
     title: "연회장",
     body: "식사는 4층 딜라이트 연회장\n(에스컬레이터 이용)\n\n예식 시간 30분 전부터 2시간 이용 가능합니다.",
   },
