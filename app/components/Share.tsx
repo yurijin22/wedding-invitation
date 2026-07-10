@@ -22,9 +22,7 @@ export default function Share() {
       content: {
         title: `${groom.firstName} ♥ ${bride.firstName} 결혼합니다`,
         description: `${wedding.dateKorean} ${wedding.time}\n${wedding.venue.name} ${wedding.venue.hall}`,
-        imageUrl: `${window.location.origin}/kakao-share.jpg`,
-        imageWidth: 880,
-        imageHeight: 1100,
+        imageUrl: `${window.location.origin}/og.jpg`,
         link: { mobileWebUrl: window.location.href, webUrl: window.location.href },
       },
       buttons: [{ title: "청첩장 보기", link: { mobileWebUrl: window.location.href, webUrl: window.location.href } }],

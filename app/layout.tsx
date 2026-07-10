@@ -29,7 +29,7 @@ const { groom, bride, wedding } = weddingData;
 const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://yongwook-yuri.site";
 const OG_TITLE = `${groom.firstName} ♥ ${bride.firstName} 결혼합니다`;
 const OG_DESC = "26년 9월 20일 (일) 오후 12:10 · 라마다 서울 신도림 호텔 5F";
-const OG_IMAGE = `${SITE}/kakao-share.jpg`;
+const OG_IMAGE = `${SITE}/og.jpg`;
 
 // og 태그는 metadata가 아니라 <head> 최상단에 직접 배치(아래) — 카톡 스크래퍼가 head 앞부분만
 // 읽어도 og:image를 바로 찾도록. metadata엔 title/description만 둠(중복·후순위 방지).
@@ -61,8 +61,8 @@ export default function RootLayout({
         <meta property="og:title" content={OG_TITLE} />
         <meta property="og:description" content={OG_DESC} />
         <meta property="og:image" content={OG_IMAGE} />
-        <meta property="og:image:width" content="880" />
-        <meta property="og:image:height" content="1100" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         <meta property="og:image:type" content="image/jpeg" />
         <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
